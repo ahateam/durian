@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<p>22222</p>
+		<p>帖子列表</p>
 	</div>
 </template>
 
