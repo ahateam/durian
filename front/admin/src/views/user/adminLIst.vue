@@ -4,7 +4,7 @@
 			用户管理
 		</el-row>
 		<el-row class="content-box">
-			<el-button type="primary" round @click="adduser">创建管理员</el-button>
+			<el-button type="primary" round @click="dialogVisible = true">创建管理员</el-button>
 		</el-row>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData">
@@ -14,14 +14,27 @@
 				</el-table-column>
 				<el-table-column prop="address" label="地址">
 				</el-table-column>
+				<el-table-column label="操作" width="200">
+					<template slot-scope="scope">
+						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
+						<el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button>
+						<el-button @click="delBtn(scope.row)" type="text" size="small">删除</el-button>
+					</template>
+				</el-table-column>
 			</el-table>
 		</el-row>
 		<el-row style="height: 80px;">
-			<el-col :span="24">
-				<el-pagination background layout="prev, pager, next" :total="1000">
-				</el-pagination>
-			</el-col>
+			当前页数：{{page}}
+			<el-button type="primary" size="small" :disabled="page==1" @click="changePage(0)">上一页</el-button>
+			<el-button type="primary" size="small" :disabled="pageOver" @click="changePage(1)">下一页</el-button>
 		</el-row>
+		<el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+			<span>这是一段信息</span>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="dialogVisible = false">取 消</el-button>
+				<el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+			</span>
+		</el-dialog>
 	</div>
 </template>
 
@@ -29,24 +42,35 @@
 	export default {
 		data() {
 			return {
-				tableData: [{
-					date: '2016-05-02',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1518 弄'
-				}, {
-					date: '2016-05-04',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1517 弄'
-				}, {
-					date: '2016-05-01',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1519 弄'
-				}, {
-					date: '2016-05-03',
-					name: '王小虎',
-					address: '上海市普陀区金沙江路 1516 弄'
-				}]
+				dialogVisible: false,
+				tableData: [],
+				count: 10,
+				page: 1,
+				pageOver: true,
 			}
+		},
+		methods: {
+			adduser() {
+
+			},
+			changePage(e) {
+				if (e) {
+					console.log(e)
+					this.page += 1
+				} else {
+					console.log(e)
+					this.page -= 1
+				}
+				localStorage.setItem("page_contentList", this.page)
+				//获取内容列表
+				let cnt = {
+					count: this.count,
+					offset: (this.page - 1) * this.count
+				}
+			},
+		},
+		mounted() {
+
 		}
 	}
 </script>
