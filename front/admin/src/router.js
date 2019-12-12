@@ -6,6 +6,7 @@ import login from './views/login'
 const addContent = () => import('./views/content/addContent')
 const contentList = () => import('./views/content/contentList')
 const ReplyList = () => import('./views/content/ReplyList')
+const contentInfo = () => import('./views/content/contentInfo')
 // 商品列表
 const goodsType = () => import('./views/commodity/goodsType')
 const goodsList = () => import('./views/commodity/goodsList')
@@ -50,6 +51,12 @@ export default new Router({
 				name: 'contentList',
 				component: contentList
 			},
+			{
+				path: '/contentInfo',
+				name: 'contentInfo',
+				component: contentInfo
+			}
+			,
 			{
 				path: '/addContent',
 				name: 'addContent',
