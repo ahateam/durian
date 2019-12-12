@@ -57,11 +57,14 @@ const menu = [{
 		title: '审核管理',
 		icon: 'course_user',
 		child: [{
-			path: '/interexamine',
+			path: '/interExamine',
 			title: '中介资质审核'
 		}, {
 			path: '/contentExamine',
 			title: '文章审核'
+		},{
+			path: '/goodsExamine',
+			title: '商品审核'
 		}]
 	},
 	{

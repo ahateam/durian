@@ -18,8 +18,9 @@ const interUserList = () => import('./views/user/interUserList')
 //任务管理
 const taskList = () => import('./views/taskList/taskList')
 //审核管理
-const interexamine = () => import('./views/examine/interexamine')
+const interExamine = () => import('./views/examine/interExamine')
 const contentExamine = () => import('./views/examine/contentExamine')
+const goodsExamine = () => import('./views/examine/goodsExamine')
 //平台币管理
 const investList = () => import('./views/currency/investList')
 const virtualcoinList = () => import('./views/currency/virtualcoinList')
@@ -94,17 +95,21 @@ export default new Router({
 				name: 'taskList',
 				component: taskList
 				
-			},  { //审核管理
-				path: '/interexamine',
-				name: 'interexamine',
-				component: interexamine
+			}, { //审核管理
+				path: '/interExamine',
+				name: 'interExamine',
+				component: interExamine
 				
 			}, { 
 				path: '/contentExamine',
 				name: 'contentExamine',
 				component: contentExamine
 				
-			},  { //平台币管理
+			}, {
+				path: '/goodsExamine',
+				name: 'goodsExamine',
+				component: goodsExamine
+			}, { //平台币管理
 				path: '/investList',
 				name: 'investList',
 				component: investList

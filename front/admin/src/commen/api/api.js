@@ -15,7 +15,10 @@ api.delPosting = function (cnt, callback) {
     util.call(baseUrl + '/posting/delPosting', cnt, callback)
 }
 
-
+// 获取待审核帖子
+api.getPostingList = function (cnt, callback) {
+	util.call(baseUrl+'/posting/getPostingList', cnt, callback)
+}
 
 export default api
 
