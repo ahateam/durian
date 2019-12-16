@@ -15,6 +15,7 @@ const orderList = () => import('./views/commodity/orderList')
 const adminLIst = () => import('./views/user/adminLIst')
 const userList = () => import('./views/user/userList')
 const interUserList = () => import('./views/user/interUserList')
+const userInfo = () => import('./views/user/userInfo')
 //任务管理
 const taskList = () => import('./views/taskList/taskList')
 //审核管理
@@ -90,7 +91,12 @@ export default new Router({
 				path: '/interUserList',
 				name: 'interUserList',
 				component: interUserList
-			}, { //任务管理
+			}, {
+				path: '/userInfo',
+				name: 'userInfo',
+				component: userInfo
+			}, 
+			{ //任务管理
 				path: '/taskList',
 				name: 'taskList',
 				component: taskList

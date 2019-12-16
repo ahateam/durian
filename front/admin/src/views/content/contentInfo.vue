@@ -8,7 +8,10 @@
 		<el-row class="row-title">
 			<h1>基本信息：</h1>
 			<p>内容id：{{postingId}}</p>
-			<p>标题：{{postingTextDate}}</p>
+			<div style="border: #333333 1px solid;width: 50%;">
+				<p>文本内容：{{postingTextDate}}</p>
+				<p><img :src="src" v-for="src in postingDate" style="width: 20%;" /></p>
+			</div>
 			<p>创建时间：{{postingCreateTime}}</p>
 			<p>扩展信息：{{postingExt}}</p>
 			<p>浏览量：{{postingPageView}}</p>
@@ -19,7 +22,7 @@
 			<p>修改时间：{{postingUpdateTime}}</p>
 			<p>发布者id ：{{userId}}</p>
 			<p>发布者名称 ：{{userName}}</p>
-			<p>发布者头像：<img style="width: 50px;height: 50px;" :src="userHead"/> </p>
+			<p>发布者头像：<img style="width: 50px;height: 50px;" :src="userHead" /> </p>
 			<hr />
 		</el-row>
 
@@ -52,20 +55,21 @@
 		name: "contetnInfo",
 		data() {
 			return {
-				contentInfo:'',
-				postingId:'',
-				postingTextDate:'',
-				postingCreateTime:'',
-				postingExt:'',
-				postingPageView:'',
-				postingShareNumber:'',
-				postingStatus:'',
-				postingTags:'',
-				postingType:'',
-				postingUpdateTime:'',
-				userId:'',
-				userName:'',
-				userHead:'',
+				contentInfo: '',
+				postingId: '',
+				postingTextDate: '',
+				postingDate: [],
+				postingCreateTime: '',
+				postingExt: '',
+				postingPageView: '',
+				postingShareNumber: '',
+				postingStatus: '',
+				postingTags: '',
+				postingType: '',
+				postingUpdateTime: '',
+				userId: '',
+				userName: '',
+				userHead: '',
 				statusList: this.$constData.statusList,
 				typeList: this.$constData.typeList,
 			}
@@ -101,6 +105,7 @@
 			console.log(info)
 			this.postingId = info.postingId
 			this.postingTextDate = info.postingTextDate
+			this.postingDate = JSON.parse(info.postingDate)
 			this.postingCreateTime = this.timeFliter(info.postingCreateTime)
 			this.postingExt = info.postingExt
 			this.postingPageView = info.postingPageView
@@ -131,6 +136,7 @@
 		font-size: 16px;
 		color: #666;
 		border-left: 4px solid #67C23A;
+		margin-bottom: 100px;
 	}
 
 	.row-box1 {

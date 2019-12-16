@@ -38,4 +38,19 @@ constData.typeList = [{
 		value: 3
 	}
 ]
+constData.showList = [
+	{
+		name: '所有可见',
+		value: 0
+	},
+	{
+		name: '仅校内可见',
+		value: 1
+	},
+	{
+		name: '仅校外可见',
+		value: 2
+	}
+]
+
 export default constData

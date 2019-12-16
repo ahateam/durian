@@ -19,6 +19,17 @@ api.delPosting = function (cnt, callback) {
 api.getPostingList = function (cnt, callback) {
 	util.call(baseUrl+'/posting/getPostingList', cnt, callback)
 }
-
+// 创建帖子
+api.createPosting = function (cnt, callback) {
+	util.call(baseUrl+'/posting/createPosting', cnt, callback)
+}
+// 修改帖子
+api.updatePosting = function (cnt, callback) {
+	util.call(baseUrl+'/posting/updatePosting', cnt, callback)
+}
+// 查询用户
+api.getUserList = function (cnt, callback) {
+	util.call(baseUrl+'/user/getUserList', cnt, callback)
+}
 export default api
 
