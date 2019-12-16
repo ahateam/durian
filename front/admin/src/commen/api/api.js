@@ -15,21 +15,24 @@ api.delPosting = function (cnt, callback) {
     util.call(baseUrl + '/posting/delPosting', cnt, callback)
 }
 
-// 获取待审核帖子
+// 获取帖子
 api.getPostingList = function (cnt, callback) {
 	util.call(baseUrl+'/posting/getPostingList', cnt, callback)
 }
-// 创建帖子
-api.createPosting = function (cnt, callback) {
-	util.call(baseUrl+'/posting/createPosting', cnt, callback)
-}
+
 // 修改帖子
 api.updatePosting = function (cnt, callback) {
 	util.call(baseUrl+'/posting/updatePosting', cnt, callback)
 }
-// 查询用户
-api.getUserList = function (cnt, callback) {
-	util.call(baseUrl+'/user/getUserList', cnt, callback)
+
+// 查询商品
+api.getGoodsList = function (cnt, callback) {
+	util.call(baseUrl+'/goods/getGoodsList', cnt, callback)
+}
+
+// 修改商品状态
+api.setGoodsStatus = function (cnt, callback) {
+	util.call(baseUrl+'/goods/setGoodsStatus', cnt, callback)
 }
 export default api
 

@@ -3,6 +3,11 @@
 		<el-row class="title-box">
 			文章审核
 		</el-row>
+		<div style="margin-top: 15px; width: 50%; margin-left: 20px;">
+			<el-input placeholder="请输入文章标题" v-model="title" class="input-with-select" @input="getDefault">
+				<el-button slot="append" icon="el-icon-search" @click="toSearch"></el-button>
+			</el-input>
+		</div>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData" v-loading="loading">
 				<el-table-column prop="posting.postingUpdateTime" label="日期" width="180" :formatter="timeFliter">
@@ -13,9 +18,9 @@
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
-						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
+						<el-button @click="infoBtn(scope.row)" type="text" size="small">查看详情</el-button>
 						<el-button @click="updateBtn(scope.row)" type="text" size="small">通过</el-button>
-						<el-button @click="delBtn(scope.row)" type="text" size="small">不通过</el-button>
+						<el-button @click="delBtn(scope.row)" type="text" size="small" style="color: red;">不通过</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -25,13 +30,6 @@
 			<el-button type="primary" size="small" :disabled="page==1" @click="changePage(0)">上一页</el-button>
 			<el-button type="primary" size="small" :disabled="pageOver" @click="changePage(1)">下一页</el-button>
 		</el-row>
-		<!-- <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-			<span>这是一段信息</span>
-			<span slot="footer" class="dialog-footer">
-				<el-button @click="dialogVisible = false">取 消</el-button>
-				<el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-			</span>
-		</el-dialog> -->
 	</div>
 </template>
 
@@ -39,18 +37,40 @@
 	export default {
 		data() {
 			return {
-				dialogVisible: false,
 				tableData: [],
+				moduleId: 1190,
 				count: 10,
 				offset: 0,
 				sort: false,
 				page: 1,
 				pageOver: false,
-				loading: true
+				loading: true,
+				title: '',
 			}
 		},
 		methods: {
-			// 页面跳转
+			// 搜索栏清空重新获取
+			getDefault(){
+				if(this.title == ''){
+					this.page = 1
+					this.offset = 0
+					this.pageOver = true
+					this.loading = true
+					this.getPostingList()
+				}
+			},
+			// 文章标题搜索
+			toSearch() {
+				if(this.title == '') {
+					return
+				}
+				this.page = 1
+				this.offset = 0
+				this.pageOver = true
+				this.loading = true
+				this.getPostingList()
+			},
+			// 页面跳转，查看待审核文章详情
 			infoBtn(info) {
 				this.$router.push({
 					path: '/contentInfo',
@@ -60,17 +80,31 @@
 					}
 				})
 			},
-			// 查看待审核文章详情
-			infoBtn() {
-
-			},
 			// 待审核文章不通过审核
-			delBtn() {
-
+			delBtn(info) {
+				let cnt = {
+					id: info.posting.postingId,
+					status: 2
+				}
+				this.$api.updatePosting(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.getPostingList()
+						console.log("未通过审核")
+					}
+				})
 			},
 			// 待审核文章通过审核
-			updateBtn() {
-
+			updateBtn(info) {
+				let cnt = {
+					id: info.posting.postingId,
+					status: 4
+				}
+				this.$api.updatePosting(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.getPostingList()
+						console.log("通过审核")
+					}
+				})
 			},
 			// 将时间戳转化为中国时间
 			timeFliter(row, col, val) {
@@ -99,11 +133,13 @@
 			// 获取待审核文章
 			getPostingList() {
 				let cnt = {
-					moduleId: 1190,
+					moduleId: this.moduleId,
 					sort: this.sort,
 					status: 1,
 					count: this.count,
-					offset: this.offset
+					offset: this.offset,
+					text: this.title,
+					// isShowShare: 1
 				}
 				this.$api.getPostingList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {

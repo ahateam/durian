@@ -15,13 +15,13 @@ const orderList = () => import('./views/commodity/orderList')
 const adminLIst = () => import('./views/user/adminLIst')
 const userList = () => import('./views/user/userList')
 const interUserList = () => import('./views/user/interUserList')
-const userInfo = () => import('./views/user/userInfo')
 //任务管理
 const taskList = () => import('./views/taskList/taskList')
 //审核管理
 const interExamine = () => import('./views/examine/interExamine')
 const contentExamine = () => import('./views/examine/contentExamine')
 const goodsExamine = () => import('./views/examine/goodsExamine')
+const goodsInfo = () => import('./views/examine/goodsInfo')
 //平台币管理
 const investList = () => import('./views/currency/investList')
 const virtualcoinList = () => import('./views/currency/virtualcoinList')
@@ -91,12 +91,7 @@ export default new Router({
 				path: '/interUserList',
 				name: 'interUserList',
 				component: interUserList
-			}, {
-				path: '/userInfo',
-				name: 'userInfo',
-				component: userInfo
-			}, 
-			{ //任务管理
+			}, { //任务管理
 				path: '/taskList',
 				name: 'taskList',
 				component: taskList
@@ -115,6 +110,10 @@ export default new Router({
 				path: '/goodsExamine',
 				name: 'goodsExamine',
 				component: goodsExamine
+			}, {
+				path: '/goodsInfo',
+				name: 'goodsInfo',
+				component: goodsInfo
 			}, { //平台币管理
 				path: '/investList',
 				name: 'investList',

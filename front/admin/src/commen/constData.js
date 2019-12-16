@@ -38,19 +38,28 @@ constData.typeList = [{
 		value: 3
 	}
 ]
-constData.showList = [
-	{
-		name: '所有可见',
+/*商品状态*/
+constData.goodsStatusList = [{
+		name:'正常',
 		value: 0
 	},
 	{
-		name: '仅校内可见',
+		name:'禁用',
 		value: 1
 	},
 	{
-		name: '仅校外可见',
+		name:'待审核',
 		value: 2
 	}
 ]
-
+/*是否在线商品*/
+constData.isOnlineList = [{
+		name:'是',
+		value: 0
+	},
+	{
+		name:'否',
+		value: 1
+	},
+]
 export default constData
