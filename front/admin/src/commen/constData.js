@@ -62,17 +62,44 @@ constData.isOnlineList = [{
 		value: 1
 	},
 ]
-/*任务状态*/
-constData.taskStatus = [{
-		name:'等待中',
+/*任务类型*/
+constData.taskTypeList = [{
+		name:'全案助理',
 		value: 0
 	},
 	{
-		name:'进行中',
+		name:'翻译',
 		value: 1
-	},{
-		name:'完成',
+	}, 
+	{
+		name:'表格填写',
 		value: 2
+	},
+	{
+		name:'撰写文书',
+		value: 3
+	},
+	{
+		name:'其他',
+		value: 4
+	}
+]
+/*任务状态*/
+constData.taskStatus = [{
+		name:'等待接收',
+		value: 0
+	},
+	{
+		name:'进行中/已分配',
+		value: 1
+	},
+	{
+		name:'完成未付/收款',
+		value: 2
+	},
+	{
+		name:'已付/收款',
+		value: 3
 	}
 ]
 export default constData

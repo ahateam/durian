@@ -42,7 +42,10 @@ api.getUserList = function (cnt, callback) {
 api.getTaskList = function (cnt, callback) {
 	util.call(baseUrl+'/task/getTaskList', cnt, callback)
 }
-		
 
+// 时间范围查询
+api.getTaskListByTime = function (cnt, callback) {
+	util.call(baseUrl+'	/task/getTaskListByTime', cnt, callback)
+}
 export default api
 

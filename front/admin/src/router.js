@@ -19,6 +19,7 @@ const interUserList = () => import('./views/user/interUserList')
 const userInfo = () => import('./views/user/userInfo')
 //任务管理
 const taskList = () => import('./views/taskList/taskList')
+const taskInfo = () => import('./views/taskList/taskInfo')
 //审核管理
 const interExamine = () => import('./views/examine/interExamine')
 const contentExamine = () => import('./views/examine/contentExamine')
@@ -105,7 +106,10 @@ export default new Router({
 				path: '/taskList',
 				name: 'taskList',
 				component: taskList
-				
+			}, {
+				path: '/taskInfo',
+				name: 'taskInfo',
+				component: taskInfo
 			}, { //审核管理
 				path: '/interExamine',
 				name: 'interExamine',

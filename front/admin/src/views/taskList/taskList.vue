@@ -5,21 +5,29 @@
 		</el-row>
 		<el-row class="content-box">
 			<div style="margin-top: 15px;">
-			  <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-			    <el-select v-model="select" slot="prepend" placeholder="请选择">
-			      <el-option label="餐厅名" value="1"></el-option>
-			      <el-option label="订单号" value="2"></el-option>
-			      <el-option label="用户电话" value="3"></el-option>
-			    </el-select>
-			    <el-button slot="append" icon="el-icon-search"></el-button>
-			  </el-input>
+				<el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+					<el-select v-model="select" slot="prepend" placeholder="请选择">
+						<el-option label="餐厅名" value="1"></el-option>
+						<el-option label="订单号" value="2"></el-option>
+						<el-option label="用户电话" value="3"></el-option>
+					</el-select>
+					<el-button slot="append" icon="el-icon-search"></el-button>
+				</el-input>
 			</div>
 		</el-row>
+		<div class="block">
+			<span class="demonstration">请选择时间范围</span>
+			<el-date-picker v-model="timeRange" value-format="yyyyMMddHHmmss" type="datetimerange" :picker-options="pickerOptions" range-separator="至"
+				start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getTimeRange" @blur="loseFocus">
+			</el-date-picker>
+		</div>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData">
 				<el-table-column prop="taskName" label="任务名称" width="180">
 				</el-table-column>
-				<el-table-column prop="taskStatus" label="状态" width="180" :formatter="taskStatusFliter">
+				<el-table-column prop="taskStatus" label="状态" width="180" :formatter="taskStatusFliter" 
+					:filters="[{ text: '等待接收', value: 0 }, { text: '进行中/已分配', value: 1 }, { text: '完成未付/收款', value: 2}, { text: '已付/收款', value: 3}]"
+					:filter-method="filterTag">
 				</el-table-column>
 				<el-table-column prop="taskCreateTime" label="创建时间" :formatter="timeFliter">
 				</el-table-column>
@@ -36,7 +44,7 @@
 			<el-button type="primary" size="small" :disabled="page==1" @click="changePage(0)">上一页</el-button>
 			<el-button type="primary" size="small" :disabled="pageOver" @click="changePage(1)">下一页</el-button>
 		</el-row>
-		
+
 		<el-dialog title="提示" :visible.sync="isUserInfo" width="30%">
 			<p>1111</p>
 			<span slot="footer" class="dialog-footer">
@@ -51,17 +59,51 @@
 	export default {
 		data() {
 			return {
-				input3:'',
-				isUserInfo:false,
+				select: '',
+				input3: '',
+				isUserInfo: false,
 				dialogVisible: false,
 				tableData: [],
 				count: 10,
 				page: 1,
 				pageOver: true,
-				taskStatus:this.$constData.taskStatus
+				taskStatus: this.$constData.taskStatus,
+				timeRange: '',
+				pickerOptions: {
+					shortcuts: [{
+						text: '最近一周',
+						onClick(picker) {
+							const end = new Date();
+							const start = new Date();
+							start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+							picker.$emit('pick', [start, end]);
+						}
+					}, {
+						text: '最近一个月',
+						onClick(picker) {
+							const end = new Date();
+							const start = new Date();
+							start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+							picker.$emit('pick', [start, end]);
+						}
+					}, {
+						text: '最近三个月',
+						onClick(picker) {
+							const end = new Date();
+							const start = new Date();
+							start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+							picker.$emit('pick', [start, end]);
+						}
+					}]
+				},
 			}
 		},
 		methods: {
+			// 状态筛选
+			filterTag(value, row) {
+				return row.taskStatus === value
+			},
+			// 时间格式转换
 			timeFliter(row, col, val) {
 				let timer = new Date(val)
 				let dataTime = timer.toLocaleDateString() + ' ' + timer.toLocaleTimeString('chinese', {
@@ -90,12 +132,12 @@
 				}
 				localStorage.setItem("page_contentList", this.page)
 				//获取内容列表
-				let cnt = {
-					count: this.count,
-					offset: (this.page - 1) * this.count
-				}
+				// let cnt = {
+				// 	count: this.count,
+				// 	offset: (this.page - 1) * this.count
+				// }
 			},
-			getContents(cnt){
+			getContents(cnt) {
 				this.$api.getTaskList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
@@ -111,14 +153,38 @@
 					}
 				})
 			},
-			infoBtn(info){
+			infoBtn(info) {
 				this.$router.push({
-					path: '/userInfo',
-					name: 'userInfo',
+					path: '/taskInfo',
+					name: 'taskInfo',
 					params: {
 						info: info
 					}
 				})
+			},
+			// 时间范围筛选
+			getTimeRange(){
+				let cnt = {
+					startTime: this.timeRange[0],
+					endTime: this.timeRange[1],
+					count: 10,
+					offset: 0
+				}
+				this.$api.getTaskListByTime(cnt, (res) => {
+					if(res.data.rc == this.$util.RC.SUCCESS) {
+						this.tableData = this.$util.tryParseJson(res.data.c)
+					}
+				})
+			},
+			// 失去焦点
+			loseFocus() {
+				if(this.timeRange == null || this.timeRange == "") {
+					let cnt = {
+						count: 10,
+						offset: 0
+					}
+					this.getContents(cnt)
+				}
 			}
 		},
 		mounted() {
