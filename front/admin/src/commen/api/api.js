@@ -34,5 +34,10 @@ api.getGoodsList = function (cnt, callback) {
 api.setGoodsStatus = function (cnt, callback) {
 	util.call(baseUrl+'/goods/setGoodsStatus', cnt, callback)
 }
+// 用户
+api.getUserList = function (cnt, callback) {
+	util.call(baseUrl+'/user/getUserList', cnt, callback)
+}
+
 export default api
 

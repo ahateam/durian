@@ -30,12 +30,7 @@
 				<el-button type="primary" @click="subBtn" style="margin: 0 auto 100px auto;display: block;padding: 15px 50px">提交
 				</el-button>
 			</el-col>
-			<!-- <el-col :span="12">
-				<el-button @click="subBtnByDraft" style="margin: 0 auto 100px auto;display: block;padding: 15px 50px">存入草稿箱
-				</el-button>
-			</el-col> -->
 		</el-row>
-
 	</div>
 </template>
 

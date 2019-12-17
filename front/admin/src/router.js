@@ -11,10 +11,12 @@ const contentInfo = () => import('./views/content/contentInfo')
 const goodsType = () => import('./views/commodity/goodsType')
 const goodsList = () => import('./views/commodity/goodsList')
 const orderList = () => import('./views/commodity/orderList')
+const addGoods = () => import('./views/commodity/addGoods')
 //用户管理
 const adminLIst = () => import('./views/user/adminLIst')
 const userList = () => import('./views/user/userList')
 const interUserList = () => import('./views/user/interUserList')
+const userInfo = () => import('./views/user/userInfo')
 //任务管理
 const taskList = () => import('./views/taskList/taskList')
 //审核管理
@@ -72,6 +74,10 @@ export default new Router({
 				name: 'goodsType',
 				component: goodsType
 			},  {
+				path: '/addGoods',
+				name: 'addGoods',
+				component: addGoods
+			},  {
 				path: '/goodsList',
 				name: 'goodsList',
 				component: goodsList
@@ -91,6 +97,10 @@ export default new Router({
 				path: '/interUserList',
 				name: 'interUserList',
 				component: interUserList
+			}, {
+				path: '/userInfo',
+				name: 'userInfo',
+				component: userInfo
 			}, { //任务管理
 				path: '/taskList',
 				name: 'taskList',
