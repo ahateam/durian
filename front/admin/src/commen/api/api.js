@@ -38,6 +38,11 @@ api.setGoodsStatus = function (cnt, callback) {
 api.getUserList = function (cnt, callback) {
 	util.call(baseUrl+'/user/getUserList', cnt, callback)
 }
+// 查询任务
+api.getTaskList = function (cnt, callback) {
+	util.call(baseUrl+'/task/getTaskList', cnt, callback)
+}
+		
 
 export default api
 

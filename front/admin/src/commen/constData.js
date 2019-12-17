@@ -62,4 +62,17 @@ constData.isOnlineList = [{
 		value: 1
 	},
 ]
+/*任务状态*/
+constData.taskStatus = [{
+		name:'等待中',
+		value: 0
+	},
+	{
+		name:'进行中',
+		value: 1
+	},{
+		name:'完成',
+		value: 2
+	}
+]
 export default constData

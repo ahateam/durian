@@ -4,15 +4,24 @@
 			用户管理
 		</el-row>
 		<el-row class="content-box">
-			<el-button type="primary" round @click="dialogVisible = true">创建管理员</el-button>
+			<div style="margin-top: 15px;">
+			  <el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+			    <el-select v-model="select" slot="prepend" placeholder="请选择">
+			      <el-option label="餐厅名" value="1"></el-option>
+			      <el-option label="订单号" value="2"></el-option>
+			      <el-option label="用户电话" value="3"></el-option>
+			    </el-select>
+			    <el-button slot="append" icon="el-icon-search"></el-button>
+			  </el-input>
+			</div>
 		</el-row>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData">
-				<el-table-column prop="userName" label="用户名" width="180">
+				<el-table-column prop="taskName" label="任务名称" width="180">
 				</el-table-column>
-				<el-table-column prop="phone" label="电话" width="180">
+				<el-table-column prop="taskStatus" label="状态" width="180" :formatter="taskStatusFliter">
 				</el-table-column>
-				<el-table-column prop="createTime" label="创建时间" :formatter="timeFliter">
+				<el-table-column prop="taskCreateTime" label="创建时间" :formatter="timeFliter">
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
@@ -42,12 +51,14 @@
 	export default {
 		data() {
 			return {
+				input3:'',
 				isUserInfo:false,
 				dialogVisible: false,
 				tableData: [],
 				count: 10,
 				page: 1,
 				pageOver: true,
+				taskStatus:this.$constData.taskStatus
 			}
 		},
 		methods: {
@@ -57,6 +68,14 @@
 					hour12: false
 				})
 				return dataTime
+			},
+			taskStatusFliter(row, col, val) {
+				let statusList = this.taskStatus
+				for (let i = 0; i < statusList.length; i++) {
+					if (statusList[i].value == val) {
+						return statusList[i].name
+					}
+				}
 			},
 			adduser() {
 
@@ -77,7 +96,7 @@
 				}
 			},
 			getContents(cnt){
-				this.$api.getUserList(cnt, (res) => {
+				this.$api.getTaskList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
 						console.log(this.tableData)
@@ -104,7 +123,6 @@
 		},
 		mounted() {
 			let cnt = {
-				type: 1, // Byte <选填> 用户类型
 				count: this.count,
 				offset: (this.page - 1) * this.count
 			};
