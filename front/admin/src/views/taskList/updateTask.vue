@@ -19,15 +19,13 @@
 		<el-row style="margin-bottom: 100px;">
 			<div>
 				<el-steps direction="vertical" :active="active" finish-status="success">
-					<el-step :title="item.stepName" :description="timeFliter(item.changeTime)" v-for="(item,index) in stepList" :key="index"></el-step>
+					<el-step :title="item.text" :description="Date()" v-for="(item,index) in stepList" :key="index"></el-step>
 				</el-steps>
 			</div>
 			<el-button style="margin-top: 12px;" @click="readyNext">下一步</el-button>
 		</el-row>
 
 		<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-			<el-button style="margin-bottom: 8px;" :type="stepCurr == index?'primary':'text'" size="mini" round @click="changeType(index)"
-			 v-for="(item,index) in stepTypeList">{{item.name}}</el-button>
 			<el-select v-model="region" placeholder="请选择活动步骤描述" filterable clearable @change="stepListValueFun">
 				<el-option :label="item.stepName" :value="item.stepId" v-for="(item,index) in explainList" :key="index"></el-option>
 			</el-select>
@@ -41,18 +39,16 @@
 
 <script>
 	export default {
-		name: "contetnInfo",
+		name: "updateTask",
 		data() {
 			return {
-				type: 0,
-				stepCurr: 0,
 				dialogVisible: false,
 				region: '',
 				regionName: '',
 				stepList: [{
-					"stepName": "生成任务"
+					"text": "生成任务"
 				}, {
-					"stepName": "创建任务完成"
+					"text": "创建任务完成"
 				}],
 				explainList: [{
 					"stepId": 1,
@@ -77,32 +73,18 @@
 				taskCreateTime: '',
 				finishDate: '',
 				taskTypeList: this.$constData.taskTypeList,
-				taskStatus: this.$constData.taskStatus,
-				stepTypeList: this.$constData.stepTypeList
+				taskStatus: this.$constData.taskStatus
 			}
 		},
 		methods: {
-			// 时间格式转换
-			timeFliter(val) {
-				let timer = new Date(val)
-				let dataTime = timer.toLocaleDateString() + ' ' + timer.toLocaleTimeString('chinese', {
-					hour12: false
-				})
-				return dataTime
-			},
-			changeType(e) {
-				this.stepCurr = e
-				this.type = e
-				this.getTaskStepsList()
-			},
-			stepListValueFun(val) {
-				let obj = {};
-				obj = this.explainList.find((item) => {
-					return item.stepId === val;
-				});
-				let getName = ''
-				getName = obj.stepName;
-				this.regionName = getName
+			stepListValueFun(val){
+				 let obj = {};
+				  obj = this.explainList.find((item)=>{
+				     return item.stepId=== val;
+				  });
+				  let getName = ''
+				  getName = obj.stepName;
+				  this.regionName = getName
 			},
 			readyNext() {
 				if (this.active++ > 1) {
@@ -123,25 +105,8 @@
 						text: this.regionName
 					}
 					//增加记录
-					let cnt = {
-						stepId: this.region, // Long 步骤id
-						taskId: this.taskId, // Long 任务id
-					};
-					this.$api.createChangeRecord(cnt, (res) => {
-						if (res.data.rc == this.$util.RC.SUCCESS) {
-							this.$message({
-								message: '成功',
-								type: 'success'
-							});
-						} else {
-							this.$message({
-								message: '发生错误',
-								type: 'error'
-							});
-						}
-					})
 					this.stepList.push(step)
-					this.getChangeRecordList(this.taskId)
+					this.region = ''
 				}
 			},
 			timeFliter(val) {
@@ -166,35 +131,6 @@
 						return taskStatus[i].name
 					}
 				}
-			},
-			getTaskStepsList() {
-				let cnt = {
-					stepType: this.type,
-					count: 400,
-					offset: 0,
-				};
-				this.$api.getTaskStepsList(cnt, (res) => {
-					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.explainList = this.$util.tryParseJson(res.data.c)
-					} else {
-						this.tableData = []
-					}
-				})
-			},
-			getChangeRecordList(id) {
-				let cnt = {
-					taskId: id, // Long 任务id
-					count: 400, // Integer 
-					offset: 0, // Integer 
-				};
-				this.$api.getChangeRecordList(cnt, (res) => {
-					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.stepList = this.$util.tryParseJson(res.data.c)
-						console.log(this.stepList)
-					} else {
-						this.tableData = []
-					}
-				})
 			}
 		},
 		mounted() {
@@ -211,8 +147,6 @@
 			this.taskBudget = info.taskBudget
 			this.taskCreateTime = this.timeFliter(info.taskCreateTime)
 			this.finishDate = this.timeFliter(info.finishDate)
-			this.getTaskStepsList(info.taskId)
-			this.getChangeRecordList(info.taskId)
 		}
 	}
 </script>

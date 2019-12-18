@@ -51,6 +51,9 @@ const menu = [{
 		child: [{
 			path: '/taskList',
 			title: '任务列表'
+		},{
+			path: '/stepList',
+			title: '任务步骤配置'
 		}],
 	},
 	{

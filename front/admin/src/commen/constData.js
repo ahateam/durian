@@ -102,4 +102,14 @@ constData.taskStatus = [{
 		value: 3
 	}
 ]
+/*任务步骤类型*/
+constData.stepTypeList = [{
+		name:'留学',
+		value: 0
+	},
+	{
+		name:'移民',
+		value: 1
+	}
+]
 export default constData

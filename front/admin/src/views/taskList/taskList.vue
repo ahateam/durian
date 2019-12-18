@@ -4,30 +4,31 @@
 			用户管理
 		</el-row>
 		<el-row class="content-box">
-			<div style="margin-top: 15px;">
-				<el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-					<el-select v-model="select" slot="prepend" placeholder="请选择">
-						<el-option label="餐厅名" value="1"></el-option>
-						<el-option label="订单号" value="2"></el-option>
-						<el-option label="用户电话" value="3"></el-option>
-					</el-select>
-					<el-button slot="append" icon="el-icon-search"></el-button>
-				</el-input>
-			</div>
+			<el-col :span="7" style="margin-bottom: 15px;">
+				<div style="margin-top: 15px;">
+					<el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
+						<el-select v-model="select" slot="prepend" placeholder="请选择">
+							<el-option label="名" value="1"></el-option>
+						</el-select>
+						<el-button slot="append" icon="el-icon-search"></el-button>
+					</el-input>
+				</div>
+			</el-col>
+			<el-col :span="24">
+				<div class="block">
+					<span style="font-size: 15px;">请选择时间范围</span>
+					<el-date-picker v-model="timeRange" value-format="yyyyMMddHHmmss" type="datetimerange" :picker-options="pickerOptions"
+					 range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getTimeRange" @blur="loseFocus">
+					</el-date-picker>
+				</div>
+			</el-col>
 		</el-row>
-		<div class="block">
-			<span class="demonstration">请选择时间范围</span>
-			<el-date-picker v-model="timeRange" value-format="yyyyMMddHHmmss" type="datetimerange" :picker-options="pickerOptions" range-separator="至"
-				start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getTimeRange" @blur="loseFocus">
-			</el-date-picker>
-		</div>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData">
 				<el-table-column prop="taskName" label="任务名称" width="180">
 				</el-table-column>
-				<el-table-column prop="taskStatus" label="状态" width="180" :formatter="taskStatusFliter" 
-					:filters="[{ text: '等待接收', value: 0 }, { text: '进行中/已分配', value: 1 }, { text: '完成未付/收款', value: 2}, { text: '已付/收款', value: 3}]"
-					:filter-method="filterTag">
+				<el-table-column prop="taskStatus" label="状态" width="180" :formatter="taskStatusFliter" :filters="[{ text: '等待接收', value: 0 }, { text: '进行中/已分配', value: 1 }, { text: '完成未付/收款', value: 2}, { text: '已付/收款', value: 3}]"
+				 :filter-method="filterTag">
 				</el-table-column>
 				<el-table-column prop="taskCreateTime" label="创建时间" :formatter="timeFliter">
 				</el-table-column>
@@ -124,18 +125,15 @@
 			},
 			changePage(e) {
 				if (e) {
-					console.log(e)
 					this.page += 1
 				} else {
-					console.log(e)
 					this.page -= 1
 				}
-				localStorage.setItem("page_contentList", this.page)
-				//获取内容列表
-				// let cnt = {
-				// 	count: this.count,
-				// 	offset: (this.page - 1) * this.count
-				// }
+				let cnt = {
+					count: this.count,
+					offset: (this.page - 1) * this.count
+				};
+				this.getContents(cnt)
 			},
 			getContents(cnt) {
 				this.$api.getTaskList(cnt, (res) => {
@@ -162,8 +160,17 @@
 					}
 				})
 			},
+			updateBtn(info) {
+				this.$router.push({
+					path: '/updateTask',
+					name: 'updateTask',
+					params: {
+						info: info
+					}
+				})
+			},
 			// 时间范围筛选
-			getTimeRange(){
+			getTimeRange() {
 				let cnt = {
 					startTime: this.timeRange[0],
 					endTime: this.timeRange[1],
@@ -171,14 +178,14 @@
 					offset: 0
 				}
 				this.$api.getTaskListByTime(cnt, (res) => {
-					if(res.data.rc == this.$util.RC.SUCCESS) {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
 					}
 				})
 			},
 			// 失去焦点
 			loseFocus() {
-				if(this.timeRange == null || this.timeRange == "") {
+				if (this.timeRange == null || this.timeRange == "") {
 					let cnt = {
 						count: 10,
 						offset: 0

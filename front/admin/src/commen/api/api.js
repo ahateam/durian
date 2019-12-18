@@ -42,10 +42,34 @@ api.getUserList = function (cnt, callback) {
 api.getTaskList = function (cnt, callback) {
 	util.call(baseUrl+'/task/getTaskList', cnt, callback)
 }
-
+//创建任务步骤	
+api.createTaskSteps = function (cnt, callback) {
+	util.call(baseUrl+'/task/createTaskSteps', cnt, callback)
+}
+//查询任务步骤
+api.getTaskStepsList = function (cnt, callback) {
+	util.call(baseUrl+'/task/getTaskStepsList', cnt, callback)
+}
+//删除任务步骤	
+api.deleteTaskSteps = function (cnt, callback) {
+	util.call(baseUrl+'/task/deleteTaskSteps', cnt, callback)
+}
+//修改任务步骤	
+api.editTaskSteps = function (cnt, callback) {
+	util.call(baseUrl+'/task/editTaskSteps', cnt, callback)
+}
+//查询任务完成记录
+api.getChangeRecordList = function (cnt, callback) {
+	util.call(baseUrl+'/task/getChangeRecordList', cnt, callback)
+}
+//创建任务步骤完成记录	
+api.createChangeRecord = function (cnt, callback) {
+	util.call(baseUrl+'/task/createChangeRecord', cnt, callback)
+}
 // 时间范围查询
 api.getTaskListByTime = function (cnt, callback) {
 	util.call(baseUrl+'	/task/getTaskListByTime', cnt, callback)
 }
+
 export default api
 
