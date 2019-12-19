@@ -1,20 +1,27 @@
 <template>
 	<div>
 		<el-row class="row-title">
-			<h1>基本信息：</h1>
-			<p>任务id：{{taskId}}</p>
-			<p>发布者id：{{publishUserId}}</p>
-			<p>接受者id：{{pickUpUserId}}</p>
-			<p>任务类型：{{taskType}}</p>
-			<p>任务状态：{{taskStatus}}</p>
-			<p>任务名称：{{taskName}}</p>
-			<p>接收者所需资质：{{qualifications}}</p>
-			<p>任务描述：{{taskDescribe}}</p>
-			<p>其他说明：{{otherDescribe}}</p>
-			<p>任务预算金额：{{taskBudget}}</p>
-			<p>创建时间：{{taskCreateTime}}</p>
-			<p>完成时间：{{finishDate}}</p>
-			<hr />
+			<el-col :span="12">
+				<h1>基本信息：</h1>
+				<p>任务id：{{taskId}}</p>
+				<p>发布者id：{{publishUserId}}</p>
+				<p>发布者头像：<img width="5%" :src="userInfo.publishUser.userHead"/></p>
+				<p>发布者名称：{{userInfo.publishUser.userName}}</p>
+				<p>接受者id：{{pickUpUserId}}</p>
+				<p>接受者头像：<img width="5%" :src="userInfo.pickUpUser.userHead" /></p>
+				<p>接受者名称：{{userInfo.pickUpUser.userName}}</p>
+			</el-col>
+			<el-col :span="12">
+				<p>任务类型：{{taskType}}</p>
+				<p>任务状态：{{taskStatus}}</p>
+				<p>任务名称：{{taskName}}</p>
+				<p>接收者所需资质：{{qualifications}}</p>
+				<p>任务描述：{{taskDescribe}}</p>
+				<p>其他说明：{{otherDescribe}}</p>
+				<p>任务预算金额：{{taskBudget}}</p>
+				<p>创建时间：{{taskCreateTime}}</p>
+				<p>完成时间：{{finishDate}}</p>
+			</el-col>
 		</el-row>
 		<el-row style="margin-bottom: 100px;">
 			<div>
@@ -29,7 +36,7 @@
 			<el-button style="margin-bottom: 8px;" :type="stepCurr == index?'primary':'text'" size="mini" round @click="changeType(index)"
 			 v-for="(item,index) in stepTypeList">{{item.name}}</el-button>
 			<el-select v-model="region" placeholder="请选择活动步骤描述" filterable clearable @change="stepListValueFun">
-				<el-option :label="item.stepName" :value="item.stepId" v-for="(item,index) in explainList" :key="index"></el-option>
+				<el-option :label="item.stepName" :value="item.stepId" v-for="(item,index) in explainList" :key="index"  :disabled="item.disabled"></el-option>
 			</el-select>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">取 消</el-button>
@@ -44,6 +51,14 @@
 		name: "contetnInfo",
 		data() {
 			return {
+				userInfo:{
+					"publishUser":{
+						"userHead":''
+					},
+					"pickUpUser":{
+						"userHead":''
+					}
+				},
 				type: 0,
 				stepCurr: 0,
 				dialogVisible: false,
@@ -142,6 +157,7 @@
 					})
 					this.stepList.push(step)
 					this.getChangeRecordList(this.taskId)
+					this.region = ''
 				}
 			},
 			timeFliter(val) {
@@ -175,7 +191,7 @@
 				};
 				this.$api.getTaskStepsList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.explainList = this.$util.tryParseJson(res.data.c)
+						this.explainList = this.comparison(this.stepList,this.$util.tryParseJson(res.data.c))
 					} else {
 						this.tableData = []
 					}
@@ -190,7 +206,30 @@
 				this.$api.getChangeRecordList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.stepList = this.$util.tryParseJson(res.data.c)
-						console.log(this.stepList)
+						this.active = this.stepList.length
+						this.explainList = this.comparison(this.stepList,this.explainList)
+					} else {
+						this.tableData = []
+					}
+				})
+			},
+			comparison(stepArr,expArr){
+				for(let i=0;i<stepArr.length;i++){
+					for(let j=0;j<expArr.length;j++){
+						if(stepArr[i].stepId == expArr[j].stepId){
+							expArr[j].disabled = true
+						}
+					}
+				}
+				return expArr
+			},
+			getUserByTaskId(id) {
+				let cnt = {
+					taskId: id, // Long 任务id
+				};
+				this.$api.getUserByTaskId(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.userInfo = this.$util.tryParseJson(res.data.c)
 					} else {
 						this.tableData = []
 					}
@@ -211,8 +250,9 @@
 			this.taskBudget = info.taskBudget
 			this.taskCreateTime = this.timeFliter(info.taskCreateTime)
 			this.finishDate = this.timeFliter(info.finishDate)
-			this.getTaskStepsList(info.taskId)
 			this.getChangeRecordList(info.taskId)
+			this.getTaskStepsList(info.taskId)
+			this.getUserByTaskId(info.taskId)
 		}
 	}
 </script>
@@ -232,6 +272,7 @@
 		font-size: 16px;
 		color: #666;
 		border-left: 4px solid #67C23A;
+		margin-bottom: 15px;
 	}
 
 	.row-box1 {

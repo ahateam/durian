@@ -66,6 +66,10 @@ api.getChangeRecordList = function (cnt, callback) {
 api.createChangeRecord = function (cnt, callback) {
 	util.call(baseUrl+'/task/createChangeRecord', cnt, callback)
 }
+//根据任务id任务发布者和接受者	
+api.getUserByTaskId = function (cnt, callback) {
+	util.call(baseUrl+'/task/getUserByTaskId', cnt, callback)
+}
 // 时间范围查询
 api.getTaskListByTime = function (cnt, callback) {
 	util.call(baseUrl+'	/task/getTaskListByTime', cnt, callback)

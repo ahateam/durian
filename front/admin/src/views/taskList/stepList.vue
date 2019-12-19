@@ -152,7 +152,6 @@
 					stepName: this.inputUpStep, // String <选填> 步骤名称
 					stepType: this.stepInfo.stepType, // Byte <选填> 步骤类型
 				};
-				console.log(cnt)
 				this.$api.editTaskSteps(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						let cnt = {
@@ -189,7 +188,6 @@
 				this.$api.getTaskStepsList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
-						console.log(this.tableData)
 						this.loading = false
 					} else {
 						this.tableData = []

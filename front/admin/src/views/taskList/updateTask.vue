@@ -1,40 +1,36 @@
 <template>
-	<div>
-		<el-row class="row-title">
-			<h1>基本信息：</h1>
-			<p>任务id：{{taskId}}</p>
-			<p>发布者id：{{publishUserId}}</p>
-			<p>接受者id：{{pickUpUserId}}</p>
-			<p>任务类型：{{taskType}}</p>
-			<p>任务状态：{{taskStatus}}</p>
-			<p>任务名称：{{taskName}}</p>
-			<p>接收者所需资质：{{qualifications}}</p>
-			<p>任务描述：{{taskDescribe}}</p>
-			<p>其他说明：{{otherDescribe}}</p>
-			<p>任务预算金额：{{taskBudget}}</p>
-			<p>创建时间：{{taskCreateTime}}</p>
-			<p>完成时间：{{finishDate}}</p>
-			<hr />
-		</el-row>
-		<el-row style="margin-bottom: 100px;">
+	<el-tabs v-model="activeName">
+		<el-tab-pane label="基本信息" name="first">
 			<div>
-				<el-steps direction="vertical" :active="active" finish-status="success">
-					<el-step :title="item.text" :description="Date()" v-for="(item,index) in stepList" :key="index"></el-step>
-				</el-steps>
+				<el-row class="row-title">
+					<el-col :span="12">
+						<h1>基本信息：</h1>
+						<p>任务id：{{taskId}}</p>
+						<p>发布者id：{{publishUserId}}</p>
+						<p>发布者头像：<img width="5%" :src="userInfo.publishUser.userHead"/></p>
+						<p>发布者名称：{{userInfo.publishUser.userName}}</p>
+						<p>接受者id：{{pickUpUserId}}</p>
+						<p>接受者头像：<img width="5%" :src="userInfo.pickUpUser.userHead" /></p>
+						<p>接受者名称：{{userInfo.pickUpUser.userName}}</p>
+					</el-col>
+					<el-col :span="12">
+						<p>任务类型：{{taskType}}</p>
+						<p>任务状态：{{taskStatus}}</p>
+						<p>任务名称：{{taskName}}</p>
+						<p>接收者所需资质：{{qualifications}}</p>
+						<p>任务描述：{{taskDescribe}}</p>
+						<p>其他说明：{{otherDescribe}}</p>
+						<p>任务预算金额：{{taskBudget}}</p>
+						<p>创建时间：{{taskCreateTime}}</p>
+						<p>完成时间：{{finishDate}}</p>
+					</el-col>
+				</el-row>
 			</div>
-			<el-button style="margin-top: 12px;" @click="readyNext">下一步</el-button>
-		</el-row>
-
-		<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-			<el-select v-model="region" placeholder="请选择活动步骤描述" filterable clearable @change="stepListValueFun">
-				<el-option :label="item.stepName" :value="item.stepId" v-for="(item,index) in explainList" :key="index"></el-option>
-			</el-select>
-			<span slot="footer" class="dialog-footer">
-				<el-button @click="dialogVisible = false">取 消</el-button>
-				<el-button type="primary" @click="next">确 定</el-button>
-			</span>
-		</el-dialog>
-	</div>
+		</el-tab-pane>
+		<el-tab-pane label="文件管理" name="second">
+			4444
+		</el-tab-pane>
+	</el-tabs>
 </template>
 
 <script>
@@ -42,27 +38,19 @@
 		name: "updateTask",
 		data() {
 			return {
-				dialogVisible: false,
+				activeName: 'second',
 				region: '',
 				regionName: '',
-				stepList: [{
-					"text": "生成任务"
-				}, {
-					"text": "创建任务完成"
-				}],
-				explainList: [{
-					"stepId": 1,
-					"stepName": "签证已递交"
-				}, {
-					"stepId": 2,
-					"stepName": "签证申请补材料清单已发"
-				}, {
-					"stepId": 3,
-					"stepName": "签证申请补材料已发"
-				}],
-				active: 2,
 				taskId: '',
 				publishUserId: '',
+				userInfo:{
+					"publishUser":{
+						"userHead":''
+					},
+					"pickUpUser":{
+						"userHead":''
+					}
+				},
 				pickUpUserId: '',
 				taskType: '',
 				taskName: '',
@@ -77,38 +65,6 @@
 			}
 		},
 		methods: {
-			stepListValueFun(val){
-				 let obj = {};
-				  obj = this.explainList.find((item)=>{
-				     return item.stepId=== val;
-				  });
-				  let getName = ''
-				  getName = obj.stepName;
-				  this.regionName = getName
-			},
-			readyNext() {
-				if (this.active++ > 1) {
-					this.dialogVisible = true
-				}
-			},
-			next() {
-				if (this.region == '') {
-					this.$message({
-						message: '请选择一个活动步骤描述',
-						type: 'warning'
-					});
-					return
-				}
-				this.dialogVisible = false
-				if (this.active++ > 1) {
-					let step = {
-						text: this.regionName
-					}
-					//增加记录
-					this.stepList.push(step)
-					this.region = ''
-				}
-			},
 			timeFliter(val) {
 				let timer = new Date(val)
 				let dataTime = timer.toLocaleDateString() + ' ' + timer.toLocaleTimeString('chinese', {
@@ -131,6 +87,18 @@
 						return taskStatus[i].name
 					}
 				}
+			},
+			getUserByTaskId(id) {
+				let cnt = {
+					taskId: id, // Long 任务id
+				};
+				this.$api.getUserByTaskId(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.userInfo = this.$util.tryParseJson(res.data.c)
+					} else {
+						this.tableData = []
+					}
+				})
 			}
 		},
 		mounted() {
@@ -147,6 +115,7 @@
 			this.taskBudget = info.taskBudget
 			this.taskCreateTime = this.timeFliter(info.taskCreateTime)
 			this.finishDate = this.timeFliter(info.finishDate)
+			this.getUserByTaskId(info.taskId)
 		}
 	}
 </script>
@@ -166,6 +135,7 @@
 		font-size: 16px;
 		color: #666;
 		border-left: 4px solid #67C23A;
+		margin-bottom: 15px;
 	}
 
 	.row-box1 {
