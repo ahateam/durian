@@ -4,13 +4,14 @@
 			用户管理
 		</el-row>
 		<el-row class="content-box">
-			<el-col :span="7" style="margin-bottom: 15px;">
+			<el-col :span="10" style="margin-bottom: 15px;">
 				<div style="margin-top: 15px;">
-					<el-input placeholder="请输入内容" v-model="input3" class="input-with-select">
-						<el-select v-model="select" slot="prepend" placeholder="请选择">
-							<el-option label="名" value="1"></el-option>
+					<el-input placeholder="请输入用户名或手机号" v-model="userName" class="input-with-select">
+						<el-select v-model="isPublishUser" slot="prepend" placeholder="请选择" width="30%">
+							<el-option label="发布者" value="true"></el-option>
+							<el-option label="接受者" value="false"></el-option>
 						</el-select>
-						<el-button slot="append" icon="el-icon-search"></el-button>
+						<el-button slot="append" icon="el-icon-search" @click="getTaskListByUserName"></el-button>
 					</el-input>
 				</div>
 			</el-col>
@@ -60,8 +61,8 @@
 	export default {
 		data() {
 			return {
-				select: '',
-				input3: '',
+				isPublishUser: '',
+				userName: '',
 				isUserInfo: false,
 				dialogVisible: false,
 				tableData: [],
@@ -100,6 +101,23 @@
 			}
 		},
 		methods: {
+			// 发布者或接受者昵称模糊查询
+			getTaskListByUserName() {
+				if (this.isPublishUser.length == 0 || this.userName.length == 0) {
+					this.$alert('请选择类别并输入数据', '搜索有误')
+				} else {
+					let cnt = {
+						userName: this.userName,
+						isPublishUser: this.isPublishUser,
+						count: 10,
+						offset: 0
+					}
+					this.$api.getTaskListByUserName(cnt, (res) => {
+						this.tableData = this.$util.tryParseJson(res.data.c)
+						console.log(this.tableData)
+					})
+				}
+			},
 			// 状态筛选
 			filterTag(value, row) {
 				return row.taskStatus === value
@@ -220,5 +238,9 @@
 	.table-box {
 		padding: 20px;
 
+	}
+
+	.el-select .el-input {
+		width: 100px;
 	}
 </style>

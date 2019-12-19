@@ -72,8 +72,11 @@ api.getUserByTaskId = function (cnt, callback) {
 }
 // 时间范围查询
 api.getTaskListByTime = function (cnt, callback) {
-	util.call(baseUrl+'	/task/getTaskListByTime', cnt, callback)
+	util.call(baseUrl+'/task/getTaskListByTime', cnt, callback)
 }
-
+// 发布者或接受者昵称模糊查询
+api.getTaskListByUserName = function (cnt, callback) {
+	util.call(baseUrl+'/task/getTaskListByUserName', cnt, callback)
+}
 export default api
 
