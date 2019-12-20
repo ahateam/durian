@@ -82,6 +82,14 @@ api.getTaskListByUserName = function (cnt, callback) {
 api.updateTaskByTaskId = function (cnt, callback) {
 	util.call(baseUrl+'/task/updateTaskByTaskId', cnt, callback)
 }
+// 添加管理员
+api.createUser = function (cnt, callback) {
+	util.call(baseUrl+'/user/createUser', cnt, callback)
+}
+// 删除用户
+api.deleteUser = function (cnt, callback) {
+	util.call(baseUrl+'/user/deleteUser', cnt, callback)
+}
 
 export default api
 

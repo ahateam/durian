@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<el-row class="title-box">
-			用户管理
+			管理员管理
 		</el-row>
 		<el-row class="content-box">
-			<el-button type="primary" round @click="dialogVisible = true">创建管理员</el-button>
+			<el-button type="primary" round @click="addUser">创建管理员</el-button>
 		</el-row>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData">
@@ -18,6 +18,7 @@
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
 						<el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button>
+						<el-button @click="deleteBtn(scope.row)" type="text" size="small">删除</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -27,7 +28,7 @@
 			<el-button type="primary" size="small" :disabled="page==1" @click="changePage(0)">上一页</el-button>
 			<el-button type="primary" size="small" :disabled="pageOver" @click="changePage(1)">下一页</el-button>
 		</el-row>
-		
+
 		<el-dialog title="提示" :visible.sync="isUserInfo" width="30%">
 			<p>1111</p>
 			<span slot="footer" class="dialog-footer">
@@ -42,8 +43,7 @@
 	export default {
 		data() {
 			return {
-				isUserInfo:false,
-				dialogVisible: false,
+				isUserInfo: false,
 				tableData: [],
 				count: 10,
 				page: 1,
@@ -58,8 +58,12 @@
 				})
 				return dataTime
 			},
-			adduser() {
-
+			// 添加管理员
+			addUser() {
+				this.$router.push({
+					path: '/addAdmin',
+					name: 'addAdmin',
+				})
 			},
 			changePage(e) {
 				if (e) {
@@ -76,7 +80,7 @@
 					offset: (this.page - 1) * this.count
 				}
 			},
-			getContents(cnt){
+			getContents(cnt) {
 				this.$api.getUserList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
@@ -92,7 +96,7 @@
 					}
 				})
 			},
-			infoBtn(info){
+			infoBtn(info) {
 				this.$router.push({
 					path: '/userInfo',
 					name: 'userInfo',
@@ -100,11 +104,41 @@
 						info: info
 					}
 				})
+			},
+			deleteBtn(info) {
+				this.$confirm('是否删除该管理员', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+					type: 'warning'
+				}).then(() => {
+					let cnt = {
+						userId: info.userId
+					}
+					this.$api.deleteUser(cnt, (res) => {
+						if(res.data.rc == this.$util.RC.SUCCESS) {
+							this.$message({
+								type: 'success',
+								message: '删除成功!'
+							});
+							let cnt = {
+								type: 0, // Byte <选填> 用户类型
+								count: this.count,
+								offset: (this.page - 1) * this.count
+							};
+							this.getContents(cnt)
+						}
+					})
+				}).catch(() => {
+					this.$message({
+						type: 'info',
+						message: '已取消删除'
+					});
+				});
 			}
 		},
 		mounted() {
 			let cnt = {
-				type: 1, // Byte <选填> 用户类型
+				type: 0, // Byte <选填> 用户类型
 				count: this.count,
 				offset: (this.page - 1) * this.count
 			};

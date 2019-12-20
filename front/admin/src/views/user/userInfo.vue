@@ -7,15 +7,15 @@
 		</el-row>
 		<el-row class="row-title">
 			<h1>基本信息：</h1>
-			<p><img :src="userHead" width="5%" /> </p>
+			<p>用户头像：<img :src="userHead" width="5%" /> </p>
 			<p>用户名称：{{userName}}</p>
-			<p>性别：{{sex}}</p>
+			<p v-if="sex">性别：{{sex}}</p>
 			<p>电话：{{phone}}</p>
-			<p>生日：{{brithday}}</p>
+			<p v-if="brithday">生日：{{brithday}}</p>
 			<p>创建时间：{{createTime}}</p>
 			<p>平台币余额：{{currency}}</p>
 			<p>密码：{{pwd}}</p>
-			<p>信息更改时间：{{updateTime}}</p>
+			<p v-if="updateTime">信息更改时间：{{updateTime}}</p>
 			<p>状态：{{userStatus}}</p>
 		</el-row>
 	</div>
@@ -40,6 +40,7 @@
 				userSigCreateTime: '',
 				userStatus: '',
 				userType: '',
+				userTypeList: this.$constData.userTypeList
 			}
 		},
 		methods: {
@@ -50,21 +51,33 @@
 				})
 				return dataTime
 			},
+			userTypeFliter(val) {
+				let userTypeList = this.userTypeList
+				for(let i = 0; i< userTypeList.length; i++) {
+					if(userTypeList[i].value == val) {
+						return userTypeList[i].name
+					}
+				}
+			}
 		},
 		mounted() {
 			let info = this.$route.params.info
 			console.log(info)
-			this.brithday = this.timeFliter(info.brithday)
+			if(info.brithday != null) {
+				this.brithday = this.timeFliter(info.brithday)
+			}
 			this.createTime = this.timeFliter(info.createTime)
 			this.currency = info.currency
 			this.phone = info.phone
 			this.pwd = info.pwd
 			this.sex = info.sex
-			this.updateTime = this.timeFliter(info.updateTime)
+			if(info.updateTime != null) {
+				this.updateTime = this.timeFliter(info.updateTime)
+			}
 			this.userHead = info.userHead
 			this.userId = info.userId
 			this.userName = info.userName
-			this.userStatus = info.userStatus
+			this.userStatus = this.userTypeFliter(info.userStatus)
 		}
 	}
 </script>

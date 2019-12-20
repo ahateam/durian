@@ -111,4 +111,14 @@ constData.stepTypeList = [{
 		value: 1
 	}
 ]
+/*用户状态*/
+constData.userTypeList = [{
+		name:'正常',
+		value: 0
+	},
+	{
+		name:'禁言',
+		value: 1
+	}
+]
 export default constData

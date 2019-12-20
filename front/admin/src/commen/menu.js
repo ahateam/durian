@@ -39,10 +39,10 @@ const menu = [{
 			title: '管理员管理',
 		},{
 			path: '/userList',
-			title: '普通用户管理',
+			title: '中介用户管理',
 		},{
 			path: '/interUserList',
-			title: '管理员管理',
+			title: '学生管理',
 		}]
 	},
 	{
