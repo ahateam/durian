@@ -78,5 +78,10 @@ api.getTaskListByTime = function (cnt, callback) {
 api.getTaskListByUserName = function (cnt, callback) {
 	util.call(baseUrl+'/task/getTaskListByUserName', cnt, callback)
 }
+// 修改任务
+api.updateTaskByTaskId = function (cnt, callback) {
+	util.call(baseUrl+'/task/updateTaskByTaskId', cnt, callback)
+}
+
 export default api
 

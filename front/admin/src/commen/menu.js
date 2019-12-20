@@ -68,6 +68,9 @@ const menu = [{
 		},{
 			path: '/goodsExamine',
 			title: '商品审核'
+		},{
+			path: '/taskExamine',
+			title: '任务审核'
 		}]
 	},
 	{

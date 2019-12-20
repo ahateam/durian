@@ -15,14 +15,6 @@
 					</el-input>
 				</div>
 			</el-col>
-			<el-col :span="24">
-				<div class="block">
-					<span style="font-size: 15px;">请选择时间范围</span>
-					<el-date-picker v-model="timeRange" value-format="yyyyMMddHHmmss" type="datetimerange" :picker-options="pickerOptions"
-					 range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getTimeRange" @blur="loseFocus">
-					</el-date-picker>
-				</div>
-			</el-col>
 		</el-row>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData">
@@ -35,8 +27,8 @@
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
-						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
-						<el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button>
+						<el-button @click="infoBtn(scope.row,1)" type="text" size="small">通过</el-button>
+						<el-button @click="infoBtn(scope.row,0)" type="text" size="small">不通过</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -70,34 +62,6 @@
 				page: 1,
 				pageOver: true,
 				taskStatus: this.$constData.taskStatus,
-				timeRange: '',
-				pickerOptions: {
-					shortcuts: [{
-						text: '最近一周',
-						onClick(picker) {
-							const end = new Date();
-							const start = new Date();
-							start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-							picker.$emit('pick', [start, end]);
-						}
-					}, {
-						text: '最近一个月',
-						onClick(picker) {
-							const end = new Date();
-							const start = new Date();
-							start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-							picker.$emit('pick', [start, end]);
-						}
-					}, {
-						text: '最近三个月',
-						onClick(picker) {
-							const end = new Date();
-							const start = new Date();
-							start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-							picker.$emit('pick', [start, end]);
-						}
-					}]
-				},
 			}
 		},
 		methods: {
@@ -154,6 +118,7 @@
 				this.getContents(cnt)
 			},
 			getContents(cnt) {
+				cnt.status = 3
 				this.$api.getTaskList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
@@ -169,52 +134,29 @@
 					}
 				})
 			},
-			infoBtn(info) {
-				this.$router.push({
-					path: '/taskInfo',
-					name: 'taskInfo',
-					params: {
-						info: info
-					}
-				})
-			},
-			updateBtn(info) {
-				this.$router.push({
-					path: '/updateTask',
-					name: 'updateTask',
-					params: {
-						info: info
-					}
-				})
-			},
-			// 时间范围筛选
-			getTimeRange() {
+			infoBtn(info, e) {
 				let cnt = {
-					startTime: this.timeRange[0],
-					endTime: this.timeRange[1],
-					count: 10,
-					offset: 0
+					taskId: info.taskId,
 				}
-				this.$api.getTaskListByTime(cnt, (res) => {
+				if (e) {
+					cnt.status = 0
+				} else {
+					cnt.status = 1
+				}
+				this.$api.updateTaskByTaskId(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.tableData = this.$util.tryParseJson(res.data.c)
+						let cnt = {
+							taskStatus: 3,
+							count: this.count,
+							offset: (this.page - 1) * this.count
+						};
+						this.getContents(cnt)
 					}
 				})
 			},
-			// 失去焦点
-			loseFocus() {
-				if (this.timeRange == null || this.timeRange == "") {
-					let cnt = {
-						count: 10,
-						offset: 0
-					}
-					this.getContents(cnt)
-				}
-			}
 		},
 		mounted() {
 			let cnt = {
-				status: 0,
 				count: this.count,
 				offset: (this.page - 1) * this.count
 			};

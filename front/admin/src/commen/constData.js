@@ -3,8 +3,7 @@
 const constData = {}
 
 constData.module = 1190,
-
-
+constData.httpurl = 'http://durian-file.oss-ap-southeast-2.aliyuncs.com/',
 /* 帖子状态*/
 constData.statusList = [{
 		name: '草稿箱',

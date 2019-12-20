@@ -5,11 +5,13 @@
 				<h1>基本信息：</h1>
 				<p>任务id：{{taskId}}</p>
 				<p>发布者id：{{publishUserId}}</p>
-				<p>发布者头像：<img width="5%" :src="userInfo.publishUser.userHead"/></p>
+				<p>发布者头像：<img width="5%" :src="userInfo.publishUser.userHead" /></p>
 				<p>发布者名称：{{userInfo.publishUser.userName}}</p>
-				<p>接受者id：{{pickUpUserId}}</p>
-				<p>接受者头像：<img width="5%" :src="userInfo.pickUpUser.userHead" /></p>
-				<p>接受者名称：{{userInfo.pickUpUser.userName}}</p>
+				<div v-if="pickUpUserId">
+					<p>接受者id：{{pickUpUserId}}</p>
+					<p>接受者头像：<img width="5%" :src="userInfo.pickUpUser.userHead" /></p>
+					<p>接受者名称：{{userInfo.pickUpUser.userName}}</p>
+				</div>
 			</el-col>
 			<el-col :span="12">
 				<p>任务类型：{{taskType}}</p>
@@ -36,7 +38,7 @@
 			<el-button style="margin-bottom: 8px;" :type="stepCurr == index?'primary':'text'" size="mini" round @click="changeType(index)"
 			 v-for="(item,index) in stepTypeList">{{item.name}}</el-button>
 			<el-select v-model="region" placeholder="请选择活动步骤描述" filterable clearable @change="stepListValueFun">
-				<el-option :label="item.stepName" :value="item.stepId" v-for="(item,index) in explainList" :key="index"  :disabled="item.disabled"></el-option>
+				<el-option :label="item.stepName" :value="item.stepId" v-for="(item,index) in explainList" :key="index" :disabled="item.disabled"></el-option>
 			</el-select>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">取 消</el-button>
@@ -51,12 +53,12 @@
 		name: "contetnInfo",
 		data() {
 			return {
-				userInfo:{
-					"publishUser":{
-						"userHead":''
+				userInfo: {
+					"publishUser": {
+						"userHead": ''
 					},
-					"pickUpUser":{
-						"userHead":''
+					"pickUpUser": {
+						"userHead": ''
 					}
 				},
 				type: 0,
@@ -191,7 +193,7 @@
 				};
 				this.$api.getTaskStepsList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.explainList = this.comparison(this.stepList,this.$util.tryParseJson(res.data.c))
+						this.explainList = this.comparison(this.stepList, this.$util.tryParseJson(res.data.c))
 					} else {
 						this.tableData = []
 					}
@@ -207,16 +209,16 @@
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.stepList = this.$util.tryParseJson(res.data.c)
 						this.active = this.stepList.length
-						this.explainList = this.comparison(this.stepList,this.explainList)
+						this.explainList = this.comparison(this.stepList, this.explainList)
 					} else {
 						this.tableData = []
 					}
 				})
 			},
-			comparison(stepArr,expArr){
-				for(let i=0;i<stepArr.length;i++){
-					for(let j=0;j<expArr.length;j++){
-						if(stepArr[i].stepId == expArr[j].stepId){
+			comparison(stepArr, expArr) {
+				for (let i = 0; i < stepArr.length; i++) {
+					for (let j = 0; j < expArr.length; j++) {
+						if (stepArr[i].stepId == expArr[j].stepId) {
 							expArr[j].disabled = true
 						}
 					}

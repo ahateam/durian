@@ -27,6 +27,8 @@ const interExamine = () => import('./views/examine/interExamine')
 const contentExamine = () => import('./views/examine/contentExamine')
 const goodsExamine = () => import('./views/examine/goodsExamine')
 const goodsInfo = () => import('./views/examine/goodsInfo')
+const taskExamine = () => import('./views/examine/taskExamine')
+
 //平台币管理
 const investList = () => import('./views/currency/investList')
 const virtualcoinList = () => import('./views/currency/virtualcoinList')
@@ -138,7 +140,12 @@ export default new Router({
 				path: '/goodsInfo',
 				name: 'goodsInfo',
 				component: goodsInfo
-			}, { //平台币管理
+			},{
+				path: '/taskExamine',
+				name: 'taskExamine',
+				component: taskExamine
+			},
+			{ //平台币管理
 				path: '/investList',
 				name: 'investList',
 				component: investList
