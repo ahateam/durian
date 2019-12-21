@@ -13,7 +13,7 @@
 			<el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
 		</el-form-item>
 		<el-form-item>
-			<el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
+			<el-button type="primary" @click="submitForm('ruleForm')">修改</el-button>
 			<el-button @click="resetForm('ruleForm')">重置</el-button>
 		</el-form-item>
 	</el-form>
@@ -60,9 +60,10 @@
 				}
 			};
 			return {
+				userId: this.$route.params.info.userId,
 				ruleForm: {
-					userName: '',
-					phone: '',
+					userName: this.$route.params.info.userName,
+					phone: +this.$route.params.info.phone,
 					pass: '',
 					checkPass: ''
 				},
@@ -92,14 +93,15 @@
 					if (valid) {
 						console.log(this.ruleForm)
 						let cnt = {
+							userId: this.userId,
 							userName: this.ruleForm.userName,
 							phone: this.ruleForm.phone.toString(),
 							pwd: this.ruleForm.pass
 						}
-						this.$api.createUser(cnt, () => {
+						this.$api.updateUser(cnt, () => {
 							this.$message({
 								type: 'success',
-								message: '添加成功!'
+								message: '修改成功!'
 							});
 							this.$router.push({
 								path: '/adminList',

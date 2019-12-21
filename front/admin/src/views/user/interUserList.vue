@@ -1,10 +1,16 @@
 <template>
 	<div>
 		<el-row class="title-box">
-			用户管理
+			学生管理
 		</el-row>
 		<el-row class="content-box">
-			<el-button type="primary" round @click="dialogVisible = true">创建管理员</el-button>
+			<el-col :span="10" style="margin-bottom: 15px;">
+				<div>
+					<el-input placeholder="请输入用户名或手机号" v-model="nameOrPhone" class="input-with-select" @input="getDefault">
+						<el-button slot="append" icon="el-icon-search" @click="getUserByNameORPhone"></el-button>
+					</el-input>
+				</div>
+			</el-col>
 		</el-row>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData">
@@ -17,7 +23,7 @@
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
-						<el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button>
+						<!-- <el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button> -->
 					</template>
 				</el-table-column>
 			</el-table>
@@ -48,9 +54,34 @@
 				count: 10,
 				page: 1,
 				pageOver: true,
+				nameOrPhone: ''
 			}
 		},
 		methods: {
+			// 搜索栏清空重新获取
+			getDefault(){
+				if(this.nameOrPhone == ''){
+					let cnt = {
+						type: 2, // Byte <选填> 用户类型
+						count: this.count,
+						offset: (this.page - 1) * this.count
+					};
+					this.getContents(cnt)
+				}
+			},
+			// 用户名或手机号模糊查询
+			getUserByNameORPhone() {
+				let cnt = {
+					userName: this.nameOrPhone,
+					count: this.count,
+					offset: (this.page - 1) * this.count
+				}
+				this.$api.getUserByNameORPhone(cnt, (res) => {
+					if(res.data.rc == this.$util.RC.SUCCESS) {
+						this.tableData = this.$util.tryParseJson(res.data.c)
+					}
+				})
+			},
 			timeFliter(row, col, val) {
 				let timer = new Date(val)
 				let dataTime = timer.toLocaleDateString() + ' ' + timer.toLocaleTimeString('chinese', {
@@ -72,9 +103,11 @@
 				localStorage.setItem("page_contentList", this.page)
 				//获取内容列表
 				let cnt = {
+					type: 2,
 					count: this.count,
 					offset: (this.page - 1) * this.count
 				}
+				this.getContents(cnt)
 			},
 			getContents(cnt){
 				this.$api.getUserList(cnt, (res) => {
@@ -104,7 +137,7 @@
 		},
 		mounted() {
 			let cnt = {
-				type: 1, // Byte <选填> 用户类型
+				type: 2, // Byte <选填> 用户类型
 				count: this.count,
 				offset: (this.page - 1) * this.count
 			};

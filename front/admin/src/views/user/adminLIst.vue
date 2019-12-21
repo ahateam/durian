@@ -79,6 +79,7 @@
 					count: this.count,
 					offset: (this.page - 1) * this.count
 				}
+				this.getContents(cnt)
 			},
 			getContents(cnt) {
 				this.$api.getUserList(cnt, (res) => {
@@ -134,6 +135,16 @@
 						message: '已取消删除'
 					});
 				});
+			},
+			// 修改管理员信息
+			updateBtn(info) {
+				this.$router.push({
+					path: '/updateAdmin',
+					name: 'updateAdmin',
+					params: {
+						info: info
+					}
+				})
 			}
 		},
 		mounted() {

@@ -1,11 +1,13 @@
 <template>
 	<div>
 		<el-row class="title-box">
-			用户管理
+			任务管理
 		</el-row>
+		<el-switch v-model="openAudit" active-text="开启审核" inactive-text="关闭审核" @click="toOpenAudit">
+		</el-switch>
 		<el-row class="content-box">
 			<el-col :span="10" style="margin-bottom: 15px;">
-				<div style="margin-top: 15px;">
+				<div>
 					<el-input placeholder="请输入用户名或手机号" v-model="userName" class="input-with-select">
 						<el-select v-model="isPublishUser" slot="prepend" placeholder="请选择" width="30%">
 							<el-option label="发布者" value="true"></el-option>
@@ -19,7 +21,7 @@
 				<div class="block">
 					<span style="font-size: 15px;">请选择时间范围</span>
 					<el-date-picker v-model="timeRange" value-format="yyyyMMddHHmmss" type="datetimerange" :picker-options="pickerOptions"
-					 range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getTimeRange" @blur="loseFocus">
+						range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getTimeRange" @blur="loseFocus">
 					</el-date-picker>
 				</div>
 			</el-col>
@@ -29,7 +31,7 @@
 				<el-table-column prop="taskName" label="任务名称" width="180">
 				</el-table-column>
 				<el-table-column prop="taskStatus" label="状态" width="180" :formatter="taskStatusFliter" :filters="[{ text: '等待接收', value: 0 }, { text: '进行中/已分配', value: 1 }, { text: '完成未付/收款', value: 2}, { text: '已付/收款', value: 3}]"
-				 :filter-method="filterTag">
+					:filter-method="filterTag">
 				</el-table-column>
 				<el-table-column prop="taskCreateTime" label="创建时间" :formatter="timeFliter">
 				</el-table-column>
@@ -61,6 +63,7 @@
 	export default {
 		data() {
 			return {
+				openAudit: true,
 				isPublishUser: '',
 				userName: '',
 				isUserInfo: false,
@@ -101,6 +104,10 @@
 			}
 		},
 		methods: {
+			// 开启/关闭审核
+			toOpenAudit() {
+				
+			},
 			// 发布者或接受者昵称模糊查询
 			getTaskListByUserName() {
 				if (this.isPublishUser.length == 0 || this.userName.length == 0) {
@@ -137,9 +144,6 @@
 						return statusList[i].name
 					}
 				}
-			},
-			adduser() {
-
 			},
 			changePage(e) {
 				if (e) {

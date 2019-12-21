@@ -90,6 +90,17 @@ api.createUser = function (cnt, callback) {
 api.deleteUser = function (cnt, callback) {
 	util.call(baseUrl+'/user/deleteUser', cnt, callback)
 }
-
+// 封禁/解封用户
+api.closeUserComont = function (cnt, callback) {
+	util.call(baseUrl+'/user/closeUserComont', cnt, callback)
+}
+// 用户名或手机号模糊查询
+api.getUserByNameORPhone = function (cnt, callback) {
+	util.call(baseUrl+'/user/getUserByNameORPhone', cnt, callback)
+}
+// 修改用户信息
+api.updateUser = function (cnt, callback) {
+	util.call(baseUrl+'/user/updateUser', cnt, callback)
+}
 export default api
 

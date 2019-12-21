@@ -18,6 +18,7 @@ const userList = () => import('./views/user/userList')
 const interUserList = () => import('./views/user/interUserList')
 const userInfo = () => import('./views/user/userInfo')
 const addAdmin = () => import('./views/user/addAdmin')
+const updateAdmin = () => import('./views/user/updateAdmin')
 //任务管理
 const taskList = () => import('./views/taskList/taskList')
 const taskInfo = () => import('./views/taskList/taskInfo')
@@ -111,6 +112,10 @@ export default new Router({
 				path: '/addAdmin',
 				name: 'addAdmin',
 				component: addAdmin
+			}, {
+				path: '/updateAdmin',
+				name: 'updateAdmin',
+				component: updateAdmin
 			}, { //任务管理
 				path: '/taskList',
 				name: 'taskList',

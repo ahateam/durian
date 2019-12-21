@@ -1,10 +1,16 @@
 <template>
 	<div>
 		<el-row class="title-box">
-			用户管理
+			中介用户管理
 		</el-row>
 		<el-row class="content-box">
-			<el-button type="primary" round @click="dialogVisible = true">创建管理员</el-button>
+			<el-col :span="10" style="margin-bottom: 15px;">
+				<div>
+					<el-input placeholder="请输入用户名或手机号" v-model="nameOrPhone" class="input-with-select" @input="getDefault">
+						<el-button slot="append" icon="el-icon-search" @click="getUserByNameORPhone"></el-button>
+					</el-input>
+				</div>
+			</el-col>
 		</el-row>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData">
@@ -17,7 +23,8 @@
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
-						<el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button>
+						<el-button @click="updateBtn(scope.row)" type="text" size="small" v-if="scope.row.userStatus === 0" style="color: red;">禁用</el-button>
+						<el-button @click="cancelBtn(scope.row)" type="text" size="small" v-if="scope.row.userStatus === 1">取消禁用</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -27,7 +34,7 @@
 			<el-button type="primary" size="small" :disabled="page==1" @click="changePage(0)">上一页</el-button>
 			<el-button type="primary" size="small" :disabled="pageOver" @click="changePage(1)">下一页</el-button>
 		</el-row>
-		
+
 		<el-dialog title="提示" :visible.sync="isUserInfo" width="30%">
 			<p>1111</p>
 			<span slot="footer" class="dialog-footer">
@@ -42,7 +49,8 @@
 	export default {
 		data() {
 			return {
-				isUserInfo:false,
+				nameOrPhone: '',
+				isUserInfo: false,
 				dialogVisible: false,
 				tableData: [],
 				count: 10,
@@ -51,6 +59,65 @@
 			}
 		},
 		methods: {
+			// 搜索栏清空重新获取
+			getDefault(){
+				if(this.nameOrPhone == ''){
+					let cnt = {
+						type: 1, // Byte <选填> 用户类型
+						count: this.count,
+						offset: (this.page - 1) * this.count
+					};
+					this.getContents(cnt)
+				}
+			},
+			// 用户名或手机号模糊查询
+			getUserByNameORPhone() {
+				let cnt = {
+					userName: this.nameOrPhone,
+					count: this.count,
+					offset: (this.page - 1) * this.count
+				}
+				this.$api.getUserByNameORPhone(cnt, (res) => {
+					if(res.data.rc == this.$util.RC.SUCCESS) {
+						this.tableData = this.$util.tryParseJson(res.data.c)
+					}
+				})
+			},
+			// 取消禁用中介
+			cancelBtn(info) {
+				let cnt = {
+					userId: info.userId,
+					userStatus: 0
+				}
+				this.$api.closeUserComont(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						let cnt = {
+							type: 1, // Byte <选填> 用户类型
+							count: this.count,
+							offset: (this.page - 1) * this.count
+						};
+						this.getContents(cnt)
+					}
+				})
+			},
+			// 禁用中介
+			updateBtn(info) {
+				let cnt = {
+					userId: info.userId,
+					userStatus: 1
+				}
+				this.$api.closeUserComont(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						console.log(22222222222)
+						let cnt = {
+							type: 1, // Byte <选填> 用户类型
+							count: this.count,
+							offset: (this.page - 1) * this.count
+						};
+						this.getContents(cnt)
+					}
+				})
+			},
 			timeFliter(row, col, val) {
 				let timer = new Date(val)
 				let dataTime = timer.toLocaleDateString() + ' ' + timer.toLocaleTimeString('chinese', {
@@ -75,8 +142,9 @@
 					count: this.count,
 					offset: (this.page - 1) * this.count
 				}
+				this.getContents(cnt)
 			},
-			getContents(cnt){
+			getContents(cnt) {
 				this.$api.getUserList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
@@ -92,7 +160,7 @@
 					}
 				})
 			},
-			infoBtn(info){
+			infoBtn(info) {
 				this.$router.push({
 					path: '/userInfo',
 					name: 'userInfo',
