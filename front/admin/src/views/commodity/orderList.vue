@@ -12,16 +12,16 @@
 			<el-table border style="width: 100%" :data="tableData" v-loading="loading">
 				<el-table-column prop="createTime" label="订单创建时间" width="180" :formatter="timeFliter">
 				</el-table-column>
-				<el-table-column prop="goodsName" label="商品名称" width="180" :formatter="goodsTypeFliter">
+				<el-table-column prop="goodsName" label="商品名称" width="180">
 				</el-table-column>
 				<el-table-column prop="goodsNumber" label="商品数量" width="180">
 				</el-table-column>
-				<el-table-column prop="orderStatus" label="订单状态">
+				<el-table-column prop="orderStatus" label="订单状态" :formatter="orderStatusFliter">
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">查看详情</el-button>
-						<el-button @click="upperShelf(scope.row)" type="text" size="small">发货</el-button>
+						<el-button @click="deliverGoods(scope.row)" type="text" size="small">发货</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -47,7 +47,7 @@
 				pageOver: false,
 				loading: true,
 				title: '',
-				goodsTypeList: this.$constData.goodsTypeList
+				orderStatusList: this.$constData.orderStatusList
 			}
 		},
 		methods: {
@@ -147,15 +147,15 @@
 				})
 				return dataTime
 			},
-			// // 将商品类型转为文字
-			// goodsTypeFliter(row, col, val) {
-			// 	let goodsTypeList = this.goodsTypeList
-			// 	for (let i = 0; i < goodsTypeList.length; i++) {
-			// 		if (goodsTypeList[i].value == val) {
-			// 			return goodsTypeList[i].name
-			// 		}
-			// 	}
-			// },
+			// 将订单状态转为文字
+			orderStatusFliter(row, col, val) {
+				let orderStatusList = this.orderStatusList
+				for (let i = 0; i < orderStatusList.length; i++) {
+					if (orderStatusList[i].value == val) {
+						return orderStatusList[i].name
+					}
+				}
+			},
 			// 上下翻页点击事件
 			changePage(e) {
 				this.loading = true

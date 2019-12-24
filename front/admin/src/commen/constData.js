@@ -154,4 +154,18 @@ constData.addTaskList = [{
 >>>>>>> Stashed changes
 	}
 ]
+/*订单状态*/
+constData.orderStatusList = [{
+		name: '待发货',
+		value: 0
+	},
+	{
+		name: '已发货',
+		value: 1
+	},
+	{
+		name: '已收货',
+		value: 2
+	}
+]
 export default constData
