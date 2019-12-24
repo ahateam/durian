@@ -62,6 +62,10 @@ api.deleteTaskSteps = function (cnt, callback) {
 api.editTaskSteps = function (cnt, callback) {
 	util.call(baseUrl+'/task/editTaskSteps', cnt, callback)
 }
+//接取任务
+api.acceptTask = function (cnt, callback) {
+	util.call(baseUrl+'/task/acceptTask', cnt, callback)
+}
 //查询任务完成记录
 api.getChangeRecordList = function (cnt, callback) {
 	util.call(baseUrl+'/task/getChangeRecordList', cnt, callback)
@@ -114,7 +118,6 @@ api.getUserByNameORPhone = function (cnt, callback) {
 api.updateUser = function (cnt, callback) {
 	util.call(baseUrl+'/user/updateUser', cnt, callback)
 }
-<<<<<<< Updated upstream
 // 查询商品
 api.getGoodsList = function (cnt, callback) {
 	util.call(baseUrl+'/goods/getGoodsList', cnt, callback)
@@ -147,9 +150,5 @@ api.getAuditStatus = function (cnt, callback) {
 api.getAllOrder = function (cnt, callback) {
 	util.call(baseUrl+'/goods/getAllOrder', cnt, callback)
 }
-=======
-
-
->>>>>>> Stashed changes
 export default api
 

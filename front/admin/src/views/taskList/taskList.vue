@@ -19,7 +19,7 @@
 				<div class="block">
 					<span style="font-size: 15px;">请选择时间范围</span>
 					<el-date-picker v-model="timeRange" value-format="yyyyMMddHHmmss" type="datetimerange" :picker-options="pickerOptions"
-						range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getTimeRange" @blur="loseFocus">
+					 range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" align="right" @change="getTimeRange" @blur="loseFocus">
 					</el-date-picker>
 				</div>
 			</el-col>
@@ -29,14 +29,15 @@
 				<el-table-column prop="taskName" label="任务名称" width="180">
 				</el-table-column>
 				<el-table-column prop="taskStatus" label="状态" width="180" :formatter="taskStatusFliter" :filters="[{ text: '等待接收', value: 0 }, { text: '进行中/已分配', value: 1 }, { text: '完成未付/收款', value: 2}, { text: '已付/收款', value: 3}]"
-					:filter-method="filterTag">
+				 :filter-method="filterTag">
 				</el-table-column>
 				<el-table-column prop="taskCreateTime" label="创建时间" :formatter="timeFliter">
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
-						<el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button>
+						<!-- <el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button> -->
+						<el-button @click="acceptBtn(scope.row)" type="text" size="small">接任务</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -54,6 +55,13 @@
 				<el-button type="primary" @click="isUserInfo = false">确 定</el-button>
 			</span>
 		</el-dialog>
+		<el-dialog title="提示" :visible.sync="msg" width="20%">
+			<p>{{msgValue}}</p>
+			<span slot="footer" class="dialog-footer">
+				<el-button @click="msg = false">取 消</el-button>
+				<el-button type="primary" @click="msg = false">确 定</el-button>
+			</span>
+		</el-dialog>
 	</div>
 </template>
 
@@ -61,6 +69,8 @@
 	export default {
 		data() {
 			return {
+				msg:false,
+				msgValue:'',
 				isPublishUser: '',
 				userName: '',
 				isUserInfo: false,
@@ -180,6 +190,21 @@
 					name: 'updateTask',
 					params: {
 						info: info
+					}
+				})
+			},
+			acceptBtn(info) {
+				let cnt = {
+					taskId: info.taskId, // Long 任务id
+					userId: 403022498109672, // Long 用户id
+				};
+				this.$api.acceptTask(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.msg = true
+						this.msgValue = "接取成功"
+					}else{
+						this.msg = true
+						this.msgValue = res.data.rm
 					}
 				})
 			},

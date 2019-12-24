@@ -117,11 +117,11 @@
 	export default {
 		data() {
 			return {
-				pageNumber: '',
-				taskCategory: '',
-				LanguageList: [],
-				Language1: 403447297493087,
-				Language2: 403447297519712,
+				pageNumber:'',
+				taskCategory:'',
+				LanguageList:[],
+				Language1:403447297493087,
+				Language2:403447297519712,
 				qualificationList: [],
 				applicantAge: '',
 				applicantNationality: '',
@@ -138,7 +138,7 @@
 				viceApplicantAge: '',
 				fileData: [],
 				imgData: [],
-				fileList: [],
+				fileList:[],
 				size: '',
 				pictureCard: [],
 				taskType: '',
@@ -248,7 +248,7 @@
 					// pickUpUserId: pickUpUserId, // Long <选填> 接收者用户id
 					publishUserId: 403022498109672, // Long 发布者id
 					taskName: this.taskName, // String 任务名称
-					taskCategory: this.taskCategory, // String <选填> （表格、文书）具体类别
+					taskCategory:  this.taskCategory, // String <选填> （表格、文书）具体类别
 					oldLanguage: this.Language1, // String <选填> 翻译任务原语种
 					newLanguage: this.Language2, // String <选填> 翻译任务目标语种
 					qualifications: this.qualifications, // Long 任务接收者所需资质
@@ -258,13 +258,13 @@
 					applicantNationality: this.applicantNationality, // String <选填> 主申请人国籍
 					applicantAge: this.applicantAge, // Integer <选填> 主申请人年龄
 					viceApplicantAge: this.viceApplicantAge, // Integer <选填> 低于18岁副申请人年龄
-					pageNumber: this.pageNumber, // Integer <选填> 页数
+					pageNumber:  this.pageNumber, // Integer <选填> 页数
 					// Taskcontent: Taskcontent, // String <选填> 内容
 					fileData: this.fileData, // String <选填> 上传文件地址
 					imgData: this.imgData, // String <选填> 图片地址
 					taskBudget: this.taskBudget, // Double 任务预算金额
 					// payPrice: payPrice, // Double <选填> 付款金额
-					isDrafts: e == 0 ? true : false, // Boolean <选填> 是否存入草稿箱
+					isDrafts: e==0?true:false, // Boolean <选填> 是否存入草稿箱
 					finishDate: this.finishDate, // Date <选填> 任务完成时间
 				};
 				this.$api.createTask(cnt, (res) => {
@@ -296,17 +296,17 @@
 					}
 				})
 			},
-			getLanguage() {
+			getLanguage(){
 				let cnt = {
 					count: 400,
 					offset: 0,
 				};
 				this.$api.getLanguage(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.LanguageList = this.$util.tryParseJson(res.data.c)
+						this.LanguageList= this.$util.tryParseJson(res.data.c)
 						console.log(this.LanguageList)
 					} else {
-
+				
 					}
 				})
 			}

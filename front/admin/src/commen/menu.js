@@ -55,6 +55,9 @@ const menu = [{
 			path: '/taskList',
 			title: '任务列表'
 		},{
+			path: '/myTask',
+			title: '我的任务'
+		},{
 			path: '/stepList',
 			title: '任务步骤配置'
 		}],

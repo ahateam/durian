@@ -30,9 +30,9 @@
 			</div>
 		</el-tab-pane>
 		<el-tab-pane label="文件管理" name="second">
-			<el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :file-list="fileList"
-			 :http-request="uploadRequest">
+			<el-upload class="upload-demo" action="" :file-list="fileList" :http-request="uploadRequest">
 				<el-button size="small" type="primary">点击上传</el-button>
+				<el-button type="success" plain @click="addTaskFile">确定提交</el-button>
 			</el-upload>
 			<el-table :data="tableData" style="width: 100%" size="medium">
 				<el-table-column label="" width="50">
@@ -79,6 +79,7 @@
 				fileList: [],
 				tableData: [],
 				activeName: 'second',
+				activeNameRouter:'',
 				region: '',
 				regionName: '',
 				taskId: '',
@@ -219,8 +220,7 @@
 								url: upName,
 								size: this.getfilesize(upFile.size),
 							}
-							this.addTaskFile(refile)
-
+							this.tableData.push(refile)
 						}
 					}).catch(err => {
 						console.log(err)
@@ -246,15 +246,38 @@
 					}
 				})
 			},
-			addTaskFile(obj) {
-				this.tableData.push(obj)
+			addStep() {
+				//增加记录
+				let cnt = {
+					stepId: 403664102698373, // Long 步骤id
+					taskId: this.taskId, // Long 任务id
+				};
+				this.$api.createChangeRecord(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.$message({
+							message: '成功',
+							type: 'success'
+						});
+					} else {
+						this.$message({
+							message: '发生错误',
+							type: 'error'
+						});
+					}
+				})
+			},
+			addTaskFile() {
 				let cnt = {
 					taskId: this.taskId,
 					fileData: this.tableData, //上传文件地址
 				};
+				if(this.activeNameRouter == "second"){
+					cnt.taskStatus = this.$constData.taskStatus[2].value
+				}
 				this.$api.updateTaskByTaskId(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.getFileByTaskId(this.taskId)
+						this.addStep()
 					} else {
 
 					}
@@ -276,6 +299,7 @@
 			this.taskCreateTime = this.timeFliter(info.taskCreateTime)
 			this.finishDate = this.timeFliter(info.finishDate)
 			this.tableData = JSON.parse(info.fileData)
+			this.activeNameRouter = info.activeName
 			this.getUserByTaskId(info.taskId)
 		}
 	}

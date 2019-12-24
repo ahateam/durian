@@ -31,7 +31,7 @@
 					<el-step :title="item.stepName" :description="timeFliter(item.changeTime)" v-for="(item,index) in stepList" :key="index"></el-step>
 				</el-steps>
 			</div>
-			<el-button style="margin-top: 12px;" @click="readyNext">下一步</el-button>
+			<el-button style="margin-top: 12px;" @click="readyNext" v-if="false">下一步</el-button>
 		</el-row>
 
 		<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
