@@ -168,4 +168,18 @@ constData.orderStatusList = [{
 		value: 2
 	}
 ]
+/*订单类型*/
+constData.orderTypeList = [{
+		name: '商品',
+		value: 0
+	},
+	{
+		name: '打赏',
+		value: 1
+	},
+	{
+		name: '任务',
+		value: 2
+	}
+]
 export default constData

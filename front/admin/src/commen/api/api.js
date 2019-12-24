@@ -150,5 +150,9 @@ api.getAuditStatus = function (cnt, callback) {
 api.getAllOrder = function (cnt, callback) {
 	util.call(baseUrl+'/goods/getAllOrder', cnt, callback)
 }
+// 地址id查询地址
+api.getReceivingAddressById = function (cnt, callback) {
+	util.call(baseUrl+'/goods/getReceivingAddressById', cnt, callback)
+}
 export default api
 
