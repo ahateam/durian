@@ -1,23 +1,33 @@
 <template>
 	<div>
 		<el-row class="title-box">
-			用户管理
+			商品管理
 		</el-row>
 		<el-row class="content-box">
-			<el-button type="primary" round @click="isUserInfo = true">创建商品</el-button>
+			<el-button type="primary" round @click="createGoods">发布商品</el-button>
 		</el-row>
+		<div style="margin-top: 15px; width: 50%; margin-left: 20px;">
+			<el-input placeholder="请输入商品名称" v-model="title" class="input-with-select" @input="getDefault">
+				<el-button slot="append" icon="el-icon-search" @click="toSearch"></el-button>
+			</el-input>
+		</div>
 		<el-row class="table-box">
-			<el-table border style="width: 100%" :data="tableData">
-				<el-table-column prop="userName" label="用户名" width="180">
+			<el-table border style="width: 100%" :data="tableData" v-loading="loading">
+				<el-table-column prop="createTime" label="发布日期" width="180" :formatter="timeFliter">
 				</el-table-column>
-				<el-table-column prop="phone" label="电话" width="180">
+				<el-table-column prop="goodsType" label="商品类型" width="180" :formatter="goodsTypeFliter" :filters="[{ text: '自由交易', value: 0 }, { text: '平台币商品', value: 1 }]" 
+					:filter-method="filterTag">
 				</el-table-column>
-				<el-table-column prop="createTime" label="创建时间" :formatter="timeFliter">
+				<el-table-column prop="goodsName" label="商品名称" width="180">
+				</el-table-column>
+				<el-table-column prop="goodsDescribe" label="商品描述">
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
-						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
-						<el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button>
+						<el-button @click="infoBtn(scope.row)" type="text" size="small">查看详情</el-button>
+						<el-button @click="upperShelf(scope.row)" type="text" size="small" v-if="scope.row.goodsStatus === 1">上架</el-button>
+						<el-button @click="lowerShelf(scope.row)" type="text" size="small" style="color: red;" v-if="scope.row.goodsStatus === 0">下架</el-button>
+						<el-button type="text" size="small" style="color: red;" v-if="scope.row.goodsStatus === 2">未审核</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -27,14 +37,6 @@
 			<el-button type="primary" size="small" :disabled="page==1" @click="changePage(0)">上一页</el-button>
 			<el-button type="primary" size="small" :disabled="pageOver" @click="changePage(1)">下一页</el-button>
 		</el-row>
-		
-		<el-dialog title="提示" :visible.sync="isUserInfo" width="30%">
-			<p>1111</p>
-			<span slot="footer" class="dialog-footer">
-				<el-button @click="isUserInfo = false">取 消</el-button>
-				<el-button type="primary" @click="isUserInfo = false">确 定</el-button>
-			</span>
-		</el-dialog>
 	</div>
 </template>
 
@@ -42,14 +44,108 @@
 	export default {
 		data() {
 			return {
-				isUserInfo:false,
 				tableData: [],
+				moduleId: 1190,
 				count: 10,
+				offset: 0,
+				sort: false,
 				page: 1,
-				pageOver: true,
+				pageOver: false,
+				loading: true,
+				title: '',
+				goodsTypeList: this.$constData.goodsTypeList
 			}
 		},
 		methods: {
+			// 发布商品
+			createGoods() {
+				this.$router.push({
+					path: '/addGoods',
+					name: 'addGoods',
+				})
+			},
+			// 搜索栏清空重新获取
+			getDefault(){
+				if(this.title == ''){
+					this.page = 1
+					this.offset = 0
+					this.pageOver = false
+					this.loading = true
+					this.getGoodsList()
+				}
+			},
+			// 商品名称搜索
+			toSearch() {
+				if(this.title == '') {
+					return
+				}
+				this.page = 1
+				this.offset = 0
+				this.pageOver = false
+				this.loading = true
+				this.getByGoodsName()
+			},
+			// 根据商品名称查询
+			getByGoodsName() {
+				let cnt = {
+					goodsName: this.title,
+					count: this.count,
+					offset: this.offset
+				}
+				this.$api.getByGoodsName(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.tableData = this.$util.tryParseJson(res.data.c)
+						this.loading = false
+						if (this.tableData.length < this.count) {
+							this.pageOver = true
+						} else {
+							this.pageOver = false
+						}
+						console.log(this.pageOver)
+					}
+				})
+			},
+			// 页面跳转，查看待审核文章详情
+			infoBtn(info) {
+				this.$router.push({
+					path: '/goodsInfo',
+					name: 'goodsInfo',
+					params: {
+						info: info
+					}
+				})
+			},
+			// 下架商品
+			lowerShelf(info) {
+				let cnt = {
+					goodsId: info.goodsId,
+					goodsStatus: 1
+				}
+				this.$api.setGoodsStatus(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.getGoodsList()
+						console.log("下架商品")
+					}
+				})
+			},
+			// 上架商品
+			upperShelf(info) {
+				let cnt = {
+					goodsId: info.goodsId,
+					goodsStatus: 0
+				}
+				this.$api.setGoodsStatus(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.getGoodsList()
+						console.log("上架商品")
+					}
+				})
+			},
+			// 商品类型筛选
+			filterTag(value, row) {
+				return row.goodsType === value
+			},
+			// 将时间戳转化为中国时间
 			timeFliter(row, col, val) {
 				let timer = new Date(val)
 				let dataTime = timer.toLocaleDateString() + ' ' + timer.toLocaleTimeString('chinese', {
@@ -57,57 +153,60 @@
 				})
 				return dataTime
 			},
-			adduser() {
-
-			},
-			changePage(e) {
-				if (e) {
-					console.log(e)
-					this.page += 1
-				} else {
-					console.log(e)
-					this.page -= 1
+			// 将商品类型转为文字
+			goodsTypeFliter(row, col, val) {
+				let goodsTypeList = this.goodsTypeList
+				for (let i = 0; i < goodsTypeList.length; i++) {
+					if (goodsTypeList[i].value == val) {
+						return goodsTypeList[i].name
+					}
 				}
-				localStorage.setItem("page_contentList", this.page)
-				//获取内容列表
+			},
+			// 上下翻页点击事件
+			changePage(e) {
+				this.loading = true
+				if (e == 1) {
+					// 下一页
+					this.page += 1
+					this.offset = (this.page - 1) * this.count
+					if(this.title == '') {
+						this.getGoodsList()
+					}else {
+						this.getByGoodsName()
+					}
+				} else {
+					// 上一页
+					this.page -= 1
+					this.offset = (this.page - 1) * this.count
+					if(this.title == '') {
+						this.getGoodsList()
+					}else {
+						this.getByGoodsName()
+					}
+				}
+			},
+			// 获取所有通过审核的商品
+			getGoodsList() {
 				let cnt = {
 					count: this.count,
-					offset: (this.page - 1) * this.count
+					offset: this.offset,
 				}
-			},
-			getContents(cnt){
-				this.$api.getUserList(cnt, (res) => {
+				this.$api.getGoodsList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
-						console.log(this.tableData)
 						this.loading = false
-					} else {
-						this.tableData = []
-					}
-					if (this.tableData.length < this.count) {
-						this.pageOver = true
-					} else {
-						this.pageOver = false
-					}
-				})
-			},
-			infoBtn(info){
-				this.$router.push({
-					path: '/userInfo',
-					name: 'userInfo',
-					params: {
-						info: info
+						if (this.tableData.length < this.count) {
+							this.pageOver = true
+						} else {
+							this.pageOver = false
+						}
+						console.log(this.$util.tryParseJson(res.data.c))
 					}
 				})
 			}
 		},
 		mounted() {
-			let cnt = {
-				type: '0', // Byte <选填> 用户类型
-				count: this.count,
-				offset: (this.page - 1) * this.count
-			};
-			this.getContents(cnt)
+			this.getGoodsList()
 		}
 	}
 </script>
@@ -121,7 +220,6 @@
 	}
 
 	.content-box {
-		margin-top: 20px;
 		padding: 20px;
 	}
 

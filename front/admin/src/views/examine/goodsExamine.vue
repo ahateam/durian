@@ -3,6 +3,8 @@
 		<el-row class="title-box">
 			商品审核
 		</el-row>
+		<el-switch v-model="openAudit" active-text="开启审核" inactive-text="关闭审核" @change="toOpenAudit">
+		</el-switch>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData" v-loading="loading">
 				<el-table-column prop="createTime" label="发布日期" width="180" :formatter="timeFliter">
@@ -32,6 +34,8 @@
 	export default {
 		data() {
 			return {
+				openAudit: true,
+				auditType: 1,
 				tableData: [],
 				count: 10,
 				offset: 0,
@@ -43,6 +47,17 @@
 			}
 		},
 		methods: {
+			// 开启/关闭审核
+			toOpenAudit() {
+				console.log("点击")
+				let cnt = {
+					auditType: this.auditType,
+					isNeedAudit: this.openAudit
+				}
+				this.$api.editAuditStatus(cnt, () => {
+					console.log(this.openAudit)
+				})
+			},
 			// 页面跳转，查看待审核商品详情
 			infoBtn(info) {
 				this.$router.push({
@@ -123,10 +138,23 @@
 						console.log(this.$util.tryParseJson(res.data.c))
 					}
 				})
+			},
+			// 获取是否需要审核
+			getAuditStatus() {
+				let cnt = {
+					auditType: this.auditType
+				}
+				this.$api.getAuditStatus(cnt, (res) => {
+					if(res.data.rc == this.$util.RC.SUCCESS) {
+						this.openAudit = this.$util.tryParseJson(res.data.c).isNeedAudit
+						console.log(this.$util.tryParseJson(res.data.c))
+					}
+				})
 			}
 		},
 		mounted() {
 			this.getGoodsList()
+			this.getAuditStatus()
 		}
 	}
 </script>

@@ -2,27 +2,38 @@
 	<div>
 		<el-row style="padding: 20px">
 			<el-col :span="20">
-				<span class="title-box"> 内容：</span>
-				<el-input placeholder="请输入标题" v-model="text" type="textarea" :rows="10"></el-input>
+				<span class="title-box"> 商品名称：</span>
+				<el-input placeholder="请输入名称" v-model="goodsName"></el-input>
+			</el-col>
+			<el-col :span="8">
+				<span class="title-box"> 价格：</span>
+				<el-input placeholder="请输入价格" v-model="goodsPrice"></el-input>
+			</el-col>
+			<el-col :span="5" style="margin-left: 25px;">
+				<span class="title-box"> 商品类型：</span>
+				<el-form label-width="80px">
+					<el-select v-model="goodsType" placeholder="请选择" style="margin-right: 10px;">
+						<el-option label="自由交易" value="0"></el-option>
+						<el-option label="平台币商品" value="1"></el-option>
+					</el-select>
+				</el-form>
+			</el-col>
+			<el-col :span="5" style="margin-left: 15px;">
+				<span class="title-box"> 库存：</span>
+				<el-input placeholder="请输入库存" v-model="stock"></el-input>
+			</el-col>
+			<el-col :span="20">
+				<span class="title-box"> 商品描述：</span>
+				<el-input placeholder="描述一下吧" v-model="goodsDescribe" type="textarea" :rows="10"></el-input>
 			</el-col>
 		</el-row>
 		<el-row>
 			<el-col :span="8">
 				<el-upload class="upload-demo" action="" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList"
 				 list-type="picture" :http-request="uploadRequest">
-					<el-button size="small" type="primary">点击上传</el-button>
+					<el-button size="small" type="primary">点击上传图片</el-button>
 					<div slot="tip" class="el-upload__tip">只能上传jpg/png文件</div>
 				</el-upload>
-			</el-col>
-			<el-col :span="8">
-				<el-form label-width="80px">
-					<el-form-item label="选择:">
-						<el-select v-model="show" placeholder="请选择" style="margin-right: 10px;">
-							<el-option v-for="item in showList" :key="item.value" :label="item.name" :value="item.value">
-							</el-option>
-						</el-select>
-					</el-form-item>
-				</el-form>
 			</el-col>
 		</el-row>
 		<el-row style="margin-top: 20px">
@@ -41,7 +52,11 @@
 
 		data() {
 			return {
-				text: '',
+				goodsName:'',
+				goodsPrice:'',
+				goodsType:'',
+				stock:'',
+				goodsDescribe: '',
 				show: '',
 				fileList: [],
 				showList: this.$constData.showList,
@@ -51,20 +66,21 @@
 		methods: {
 			subBtn() {
 				let cnt = {
-					moduleId: this.$constData.module, // String 模块编号
-					type: this.typeList[1].value, // Byte 类型
-					upUserId: 403022498089447, // Long 创建者用户编号
-					show:this.show,
-					text: this.text, // String <选填> 文本
-					data: this.fileList, // String <选填> 其他图片视频数据
+					goodsName: this.goodsName,
+					senderId: localStorage.getItem("userId"),
+					goodsType: this.goodsType,
+					stock: this.stock,
+					goodsPrice: this.goodsPrice,
+					goodsDescribe:this.goodsDescribe,
+					goodsData: this.fileList
 				};
-				this.$api.createPosting(cnt, (res) => {
+				this.$api.createGoods(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.$message({
 							message: '添加成功',
 							type: 'success'
 						});
-					}else{
+					} else {
 						this.$message({
 							message: res.data.rm,
 							type: 'error'

@@ -3,6 +3,8 @@
 		<el-row class="title-box">
 			文章审核
 		</el-row>
+		<el-switch v-model="openAudit" active-text="开启审核" inactive-text="关闭审核" @change="toOpenAudit">
+		</el-switch>
 		<div style="margin-top: 15px; width: 50%; margin-left: 20px;">
 			<el-input placeholder="请输入文章标题" v-model="title" class="input-with-select" @input="getDefault">
 				<el-button slot="append" icon="el-icon-search" @click="toSearch"></el-button>
@@ -37,6 +39,8 @@
 	export default {
 		data() {
 			return {
+				openAudit: true,
+				auditType: 0,
 				tableData: [],
 				moduleId: 1190,
 				count: 10,
@@ -49,6 +53,17 @@
 			}
 		},
 		methods: {
+			// 开启/关闭审核
+			toOpenAudit() {
+				console.log("点击")
+				let cnt = {
+					auditType: this.auditType,
+					isNeedAudit: this.openAudit
+				}
+				this.$api.editAuditStatus(cnt, () => {
+					console.log(this.openAudit)
+				})
+			},
 			// 搜索栏清空重新获取
 			getDefault(){
 				if(this.title == ''){
@@ -153,10 +168,23 @@
 						console.log(this.$util.tryParseJson(res.data.c))
 					}
 				})
+			},
+			// 获取是否需要审核
+			getAuditStatus() {
+				let cnt = {
+					auditType: this.auditType
+				}
+				this.$api.getAuditStatus(cnt, (res) => {
+					if(res.data.rc == this.$util.RC.SUCCESS) {
+						this.openAudit = this.$util.tryParseJson(res.data.c).isNeedAudit
+						console.log(this.$util.tryParseJson(res.data.c))
+					}
+				})
 			}
 		},
 		mounted() {
 			this.getPostingList()
+			this.getAuditStatus()
 		}
 	}
 </script>

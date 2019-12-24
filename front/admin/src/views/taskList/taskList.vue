@@ -3,8 +3,6 @@
 		<el-row class="title-box">
 			任务管理
 		</el-row>
-		<el-switch v-model="openAudit" active-text="开启审核" inactive-text="关闭审核" @click="toOpenAudit">
-		</el-switch>
 		<el-row class="content-box">
 			<el-col :span="10" style="margin-bottom: 15px;">
 				<div>
@@ -63,7 +61,6 @@
 	export default {
 		data() {
 			return {
-				openAudit: true,
 				isPublishUser: '',
 				userName: '',
 				isUserInfo: false,
@@ -104,10 +101,6 @@
 			}
 		},
 		methods: {
-			// 开启/关闭审核
-			toOpenAudit() {
-				
-			},
 			// 发布者或接受者昵称模糊查询
 			getTaskListByUserName() {
 				if (this.isPublishUser.length == 0 || this.userName.length == 0) {

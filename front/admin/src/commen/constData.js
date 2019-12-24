@@ -53,11 +53,11 @@ constData.goodsStatusList = [{
 ]
 /*是否在线商品*/
 constData.isOnlineList = [{
-		name:'是',
+		name:'AUD',
 		value: 0
 	},
 	{
-		name:'否',
+		name:'平台币',
 		value: 1
 	},
 ]
@@ -118,6 +118,16 @@ constData.userTypeList = [{
 	},
 	{
 		name:'禁言',
+		value: 1
+	}
+]
+/*商品类型*/
+constData.goodsTypeList = [{
+		name: '自由交易',
+		value: 0
+	},
+	{
+		name: '平台币商品',
 		value: 1
 	}
 ]

@@ -102,5 +102,37 @@ api.getUserByNameORPhone = function (cnt, callback) {
 api.updateUser = function (cnt, callback) {
 	util.call(baseUrl+'/user/updateUser', cnt, callback)
 }
+// 查询商品
+api.getGoodsList = function (cnt, callback) {
+	util.call(baseUrl+'/goods/getGoodsList', cnt, callback)
+}
+// 设置商品状态
+api.setGoodsStatus = function (cnt, callback) {
+	util.call(baseUrl+'/goods/setGoodsStatus', cnt, callback)
+}
+// 根据商品名称查询
+api.getByGoodsName = function (cnt, callback) {
+	util.call(baseUrl+'/goods/getByGoodsName', cnt, callback)
+}
+// 获取用户信息
+api.getUserInfo = function (cnt, callback) {
+	util.call(baseUrl+'/user/getUserInfo', cnt, callback)
+}
+// 创建商品
+api.createGoods = function (cnt, callback) {
+	util.call(baseUrl+'/goods/createGoods', cnt, callback)
+}
+// 修改审核状态
+api.editAuditStatus = function (cnt, callback) {
+	util.call(baseUrl+'/task/editAuditStatus', cnt, callback)
+}
+// 查看审核状态
+api.getAuditStatus = function (cnt, callback) {
+	util.call(baseUrl+'/task/getAuditStatus', cnt, callback)
+}
+// 查询所有订单
+api.getAllOrder = function (cnt, callback) {
+	util.call(baseUrl+'/goods/getAllOrder', cnt, callback)
+}
 export default api
 

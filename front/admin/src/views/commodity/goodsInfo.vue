@@ -1,43 +1,56 @@
 <template>
 	<div>
+		<el-row class="row-box">
+			<el-col :span="24">
+				商品详情
+			</el-col>
+		</el-row>
 		<el-row class="row-title">
 			<h1>基本信息：</h1>
+			<!-- <p>用户头像：<img :src="userHead" width="5%" /> </p>
+			<p>用户名称：{{userName}}</p>
+			<p v-if="sex">性别：{{sex}}</p>
+			<p>电话：{{phone}}</p>
+			<p v-if="brithday">生日：{{brithday}}</p>
+			<p>创建时间：{{createTime}}</p>
+			<p>平台币余额：{{currency}}</p>
+			<p>密码：{{pwd}}</p>
+			<p v-if="updateTime">信息更改时间：{{updateTime}}</p>
+			<p>状态：{{userStatus}}</p> -->
 			<p>商品id：{{goodsId}}</p>
 			<p>发布者id：{{senderId}}</p>
-			<p>发布者名称：{{senderName}}</p>
 			<p>商品名称：{{goodsName}}</p>
-			<!-- <p>商品分类id：{{goodsClassifyId}}</p> -->
+			<p>商品类型：{{goodsType}}</p>
+			<p>商品关键字：{{keyword}}</p>
 			<p>库存：{{stock}}</p>
 			<p>商品价格：{{goodsPrice}}</p>
 			<p>商品描述：{{goodsDescribe}}</p>
-			<p>商品图片：<img style="width: 50px;height: 50px;" v-for="(item,index) in goodsData" :key="index" :src="item"/></p>
+			<p>商品图片：<img :src="goodsData" width="5%" /></p>
 			<p>商品状态：{{goodsStatus}}</p>
 			<p>创建时间：{{createTime}}</p>
 			<p>获取方式：{{isOnline}}</p>
-			<hr />
 		</el-row>
 	</div>
 </template>
 
 <script>
 	export default {
-		name: "contetnInfo",
+		name: "userInfo",
 		data() {
 			return {
 				goodsId:'',
 				senderId:'',
-				senderName:'',
 				goodsName:'',
-				goodsClassifyId:'',
+				goodsType:'',
+				keyword:'',
 				stock:'',
 				goodsPrice:'',
 				goodsDescribe:'',
 				goodsData:[],
 				goodsStatus:'',
 				createTime:'',
-				isOnline:'',
-				goodsStatusList: this.$constData.goodsStatusList,
-				isOnlineList: this.$constData.isOnlineList,
+				isOnline:''
+				// userTypeList: this.$constData.userTypeList
 			}
 		},
 		methods: {
@@ -48,19 +61,11 @@
 				})
 				return dataTime
 			},
-			goodsStatusFliter(val) {
-				let goodsStatusList = this.goodsStatusList
-				for(let i = 0; i< goodsStatusList.length; i++) {
-					if(goodsStatusList[i].value == val) {
-						return goodsStatusList[i].name
-					}
-				}
-			},
-			isOnlineFliter(val) {
-				let isOnlineList = this.isOnlineList
-				for(let i = 0; i<isOnlineList.length; i++) {
-					if(isOnlineList[i].value == val) {
-						return isOnlineList[i].name
+			userTypeFliter(val) {
+				let userTypeList = this.userTypeList
+				for(let i = 0; i< userTypeList.length; i++) {
+					if(userTypeList[i].value == val) {
+						return userTypeList[i].name
 					}
 				}
 			}
@@ -68,28 +73,18 @@
 		mounted() {
 			let info = this.$route.params.info
 			console.log(info)
-			console.log(info.goodsData)
+			this.createTime = this.timeFliter(info.createTime)
 			this.goodsId = info.goodsId
 			this.senderId = info.senderId
 			this.goodsName = info.goodsName
-			this.goodsClassifyId = info.goodsClassifyId
-			if (info.stock == '0') {
-				this.stock = '已售空'
-			}
+			this.goodsType = info.goodsType
+			this.keyword = info.keyword 
+			this.stock = info.stock
 			this.goodsPrice = info.goodsPrice
 			this.goodsDescribe = info.goodsDescribe
-			this.goodsData = this.$util.tryParseJson(info.goodsData)
-			this.goodsStatus = this.goodsStatusFliter(info.goodsStatus)
-			this.createTime = this.timeFliter(info.createTime)
-			this.isOnline = this.isOnlineFliter(info.isOnline)
-			let cnt = {
-				userId: this.senderId
-			}
-			this.$api.getUserInfo(cnt,  (res) => {
-				if (res.data.rc == this.$util.RC.SUCCESS) {
-					this.senderName = this.$util.tryParseJson(res.data.c).userName
-				}
-			})
+			this.goodsData = info.goodsData
+			this.goodsStatus = info.goodsStatus
+			this.isOnline = info.isOnline
 		}
 	}
 </script>
@@ -109,6 +104,7 @@
 		font-size: 16px;
 		color: #666;
 		border-left: 4px solid #67C23A;
+		margin-bottom: 100px;
 	}
 
 	.row-box1 {
