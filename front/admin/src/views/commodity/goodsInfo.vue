@@ -7,16 +7,6 @@
 		</el-row>
 		<el-row class="row-title">
 			<h1>基本信息：</h1>
-			<!-- <p>用户头像：<img :src="userHead" width="5%" /> </p>
-			<p>用户名称：{{userName}}</p>
-			<p v-if="sex">性别：{{sex}}</p>
-			<p>电话：{{phone}}</p>
-			<p v-if="brithday">生日：{{brithday}}</p>
-			<p>创建时间：{{createTime}}</p>
-			<p>平台币余额：{{currency}}</p>
-			<p>密码：{{pwd}}</p>
-			<p v-if="updateTime">信息更改时间：{{updateTime}}</p>
-			<p>状态：{{userStatus}}</p> -->
 			<p>商品id：{{goodsId}}</p>
 			<p>发布者id：{{senderId}}</p>
 			<p>商品名称：{{goodsName}}</p>

@@ -3,11 +3,6 @@
 		<el-row class="title-box">
 			订单管理
 		</el-row>
-		<div style="margin-top: 15px; width: 50%; margin-left: 20px;">
-			<el-input placeholder="请输入商品名称" v-model="title" class="input-with-select" @input="getDefault">
-				<el-button slot="append" icon="el-icon-search" @click="toSearch"></el-button>
-			</el-input>
-		</div>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData" v-loading="loading">
 				<el-table-column prop="createTime" label="订单创建时间" width="180" :formatter="timeFliter">
@@ -16,12 +11,13 @@
 				</el-table-column>
 				<el-table-column prop="goodsNumber" label="商品数量" width="180">
 				</el-table-column>
-				<el-table-column prop="orderStatus" label="订单状态" :formatter="orderStatusFliter">
+				<el-table-column prop="orderStatus" label="订单状态" :formatter="orderStatusFliter" :filters="[{ text: '待发货', value: 0 }, { text: '已发货', value: 1 }, { text: '已收货', value: 2 }]"
+					:filter-method="filterTag">
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">查看详情</el-button>
-						<el-button @click="deliverGoods(scope.row)" type="text" size="small">发货</el-button>
+						<el-button @click="deliverGoods(scope.row)" type="text" size="small" v-if="scope.row.orderStatus === 0">发货</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -39,105 +35,42 @@
 		data() {
 			return {
 				tableData: [],
-				moduleId: 1190,
+				status: 1,
 				count: 10,
 				offset: 0,
 				sort: false,
 				page: 1,
 				pageOver: false,
 				loading: true,
-				title: '',
 				orderStatusList: this.$constData.orderStatusList
 			}
 		},
 		methods: {
-			// 发布商品
-			createGoods() {
-				this.$router.push({
-					path: '/addGoods',
-					name: 'addGoods',
-				})
-			},
-			// 搜索栏清空重新获取
-			getDefault() {
-				if (this.title == '') {
-					this.page = 1
-					this.offset = 0
-					this.pageOver = false
-					this.loading = true
-					this.getAllOrder()
-				}
-			},
-			// 商品名称搜索
-			toSearch() {
-				if (this.title == '') {
-					return
-				}
-				this.page = 1
-				this.offset = 0
-				this.pageOver = false
-				this.loading = true
-				this.getByGoodsName()
-			},
-			// 根据商品名称查询
-			getByGoodsName() {
+			// 发货
+			deliverGoods(info) {
 				let cnt = {
-					goodsName: this.title,
-					count: this.count,
-					offset: this.offset
+					orderId: info.orderId,
+					status:	this.status
 				}
-				this.$api.getByGoodsName(cnt, (res) => {
-					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.tableData = this.$util.tryParseJson(res.data.c)
-						this.loading = false
-						if (this.tableData.length < this.count) {
-							this.pageOver = true
-						} else {
-							this.pageOver = false
-						}
-						console.log(this.pageOver)
+				this.$api.setOrderStatus(cnt, (res) => {
+					if(res.data.rc == this.$util.RC.SUCCESS) {
+						this.getAllOrder()
 					}
 				})
 			},
 			// 页面跳转，查看待审核文章详情
 			infoBtn(info) {
 				this.$router.push({
-					path: '/goodsInfo',
-					name: 'goodsInfo',
+					path: '/orderInfo',
+					name: 'orderInfo',
 					params: {
 						info: info
 					}
 				})
 			},
-			// // 下架商品
-			// lowerShelf(info) {
-			// 	let cnt = {
-			// 		goodsId: info.goodsId,
-			// 		goodsStatus: 1
-			// 	}
-			// 	this.$api.setGoodsStatus(cnt, (res) => {
-			// 		if (res.data.rc == this.$util.RC.SUCCESS) {
-			// 			this.getGoodsList()
-			// 			console.log("下架商品")
-			// 		}
-			// 	})
-			// },
-			// // 上架商品
-			// upperShelf(info) {
-			// 	let cnt = {
-			// 		goodsId: info.goodsId,
-			// 		goodsStatus: 0
-			// 	}
-			// 	this.$api.setGoodsStatus(cnt, (res) => {
-			// 		if (res.data.rc == this.$util.RC.SUCCESS) {
-			// 			this.getGoodsList()
-			// 			console.log("上架商品")
-			// 		}
-			// 	})
-			// },
-			// 商品类型筛选
+			// 订单状态筛选
 			filterTag(value, row) {
-				return row.goodsType === value
+				return row.orderStatus === value
 			},
 			// 将时间戳转化为中国时间
 			timeFliter(row, col, val) {

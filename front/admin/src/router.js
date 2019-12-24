@@ -12,6 +12,7 @@ const goodsType = () => import('./views/commodity/goodsType')
 const goodsList = () => import('./views/commodity/goodsList')
 const orderList = () => import('./views/commodity/orderList')
 const addGoods = () => import('./views/commodity/addGoods')
+const orderInfo = () => import('./views/commodity/orderInfo')
 //用户管理
 const adminList = () => import('./views/user/adminList')
 const userList = () => import('./views/user/userList')
@@ -94,6 +95,10 @@ export default new Router({
 				path: '/orderList',
 				name: 'orderList',
 				component: orderList
+			},  {
+				path: '/orderInfo',
+				name: 'orderInfo',
+				component: orderInfo
 			},  {//用户管理
 				path: '/adminList',
 				name: 'adminList',
