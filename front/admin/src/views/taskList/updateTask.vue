@@ -7,11 +7,11 @@
 						<h1>基本信息：</h1>
 						<p>任务id：{{taskId}}</p>
 						<p>发布者id：{{publishUserId}}</p>
-						<p>发布者头像：<img width="5%" :src="userInfo.publishUser.userHead" /></p>
+						<p>发布者头像：<img width="5%" :src="setUrl(userInfo.publishUser.userHead)" /></p>
 						<p>发布者名称：{{userInfo.publishUser.userName}}</p>
 						<div v-if="pickUpUserId">
 							<p>接受者id：{{pickUpUserId}}</p>
-							<p>接受者头像：<img width="5%" :src="userInfo.pickUpUser.userHead" /></p>
+							<p>接受者头像：<img width="5%" :src="setUrl(userInfo.pickUpUser.userHead)" /></p>
 							<p>接受者名称：{{userInfo.pickUpUser.userName}}</p>
 						</div>
 					</el-col>
@@ -30,8 +30,8 @@
 			</div>
 		</el-tab-pane>
 		<el-tab-pane label="文件管理" name="second">
-			<el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :on-change="handleChange"
-			 :file-list="fileList" :http-request="uploadRequest">
+			<el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :file-list="fileList"
+			 :http-request="uploadRequest">
 				<el-button size="small" type="primary">点击上传</el-button>
 			</el-upload>
 			<el-table :data="tableData" style="width: 100%" size="medium">
@@ -105,8 +105,8 @@
 			}
 		},
 		methods: {
-			handleChange(file, fileList) {
-				this.fileList = fileList.slice(-3);
+			setUrl(val) {
+				return this.$constData.httpurl + val
 			},
 			handleDelete(index, row) {
 				this.tableData.splice(index)
@@ -115,7 +115,7 @@
 			handleview(index, row) {
 				let num = row.name.lastIndexOf(".");
 				let suffix = row.name.substring(num + 1);
-				if(!(suffix == 'docx' || suffix == 'doc' ||suffix == 'pdf')){
+				if (!(suffix == 'docx' || suffix == 'doc' || suffix == 'pdf')) {
 					this.showImg = true
 				}
 				let url = client.signatureUrl(row.url);

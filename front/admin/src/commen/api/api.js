@@ -46,6 +46,10 @@ api.getTaskList = function (cnt, callback) {
 api.createTaskSteps = function (cnt, callback) {
 	util.call(baseUrl+'/task/createTaskSteps', cnt, callback)
 }
+//创建任务
+api.createTask = function (cnt, callback) {
+	util.call(baseUrl+'/task/createTask', cnt, callback)
+}
 //查询任务步骤
 api.getTaskStepsList = function (cnt, callback) {
 	util.call(baseUrl+'/task/getTaskStepsList', cnt, callback)
@@ -82,6 +86,14 @@ api.getTaskListByUserName = function (cnt, callback) {
 api.updateTaskByTaskId = function (cnt, callback) {
 	util.call(baseUrl+'/task/updateTaskByTaskId', cnt, callback)
 }
+// 查询资质
+api.getByQualId = function (cnt, callback) {
+	util.call(baseUrl+'/task/getByQualId', cnt, callback)
+}
+// 查询语言
+api.getLanguage = function (cnt, callback) {
+	util.call(baseUrl+'/task/getLanguage', cnt, callback)
+}
 // 添加管理员
 api.createUser = function (cnt, callback) {
 	util.call(baseUrl+'/user/createUser', cnt, callback)
@@ -102,6 +114,7 @@ api.getUserByNameORPhone = function (cnt, callback) {
 api.updateUser = function (cnt, callback) {
 	util.call(baseUrl+'/user/updateUser', cnt, callback)
 }
+<<<<<<< Updated upstream
 // 查询商品
 api.getGoodsList = function (cnt, callback) {
 	util.call(baseUrl+'/goods/getGoodsList', cnt, callback)
@@ -134,5 +147,9 @@ api.getAuditStatus = function (cnt, callback) {
 api.getAllOrder = function (cnt, callback) {
 	util.call(baseUrl+'/goods/getAllOrder', cnt, callback)
 }
+=======
+
+
+>>>>>>> Stashed changes
 export default api
 

@@ -154,7 +154,6 @@
 				this.$api.getTaskList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
-						console.log(this.tableData)
 						this.loading = false
 					} else {
 						this.tableData = []

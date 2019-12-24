@@ -5,11 +5,11 @@
 				<h1>基本信息：</h1>
 				<p>任务id：{{taskId}}</p>
 				<p>发布者id：{{publishUserId}}</p>
-				<p>发布者头像：<img width="5%" :src="userInfo.publishUser.userHead" /></p>
+				<p>发布者头像：<img width="5%" :src="setUrl(userInfo.publishUser.userHead)" /></p>
 				<p>发布者名称：{{userInfo.publishUser.userName}}</p>
 				<div v-if="pickUpUserId">
 					<p>接受者id：{{pickUpUserId}}</p>
-					<p>接受者头像：<img width="5%" :src="userInfo.pickUpUser.userHead" /></p>
+					<p>接受者头像：<img width="5%" :src="setUrl(userInfo.pickUpUser.userHead)" /></p>
 					<p>接受者名称：{{userInfo.pickUpUser.userName}}</p>
 				</div>
 			</el-col>
@@ -99,6 +99,9 @@
 			}
 		},
 		methods: {
+			setUrl(val){
+				return this.$constData.httpurl+val
+			},
 			// 时间格式转换
 			timeFliter(val) {
 				let timer = new Date(val)

@@ -24,6 +24,7 @@ const taskList = () => import('./views/taskList/taskList')
 const taskInfo = () => import('./views/taskList/taskInfo')
 const stepList = () => import('./views/taskList/stepList')
 const updateTask = () => import('./views/taskList/updateTask')
+const addTask = () => import('./views/taskList/addTask')
 //审核管理
 const interExamine = () => import('./views/examine/interExamine')
 const contentExamine = () => import('./views/examine/contentExamine')
@@ -132,6 +133,10 @@ export default new Router({
 				path: '/updateTask',
 				name: 'updateTask',
 				component: updateTask
+			}, {
+				path: '/addTask',
+				name: 'addTask',
+				component: addTask
 			}, { //审核管理
 				path: '/interExamine',
 				name: 'interExamine',

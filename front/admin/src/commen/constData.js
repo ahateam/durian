@@ -121,6 +121,7 @@ constData.userTypeList = [{
 		value: 1
 	}
 ]
+<<<<<<< Updated upstream
 /*商品类型*/
 constData.goodsTypeList = [{
 		name: '自由交易',
@@ -129,6 +130,28 @@ constData.goodsTypeList = [{
 	{
 		name: '平台币商品',
 		value: 1
+=======
+/*添加任务类型*/
+constData.addTaskList = [{
+		name:'全案助理',
+		value: '0'
+	},
+	{
+		name:'翻译',
+		value: 1
+	},
+	{
+		name:'表格填写',
+		value: 2
+	},
+	{
+		name:'撰写文书',
+		value: 3
+	},
+	{
+		name:'其他',
+		value: 4
+>>>>>>> Stashed changes
 	}
 ]
 export default constData

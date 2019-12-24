@@ -49,6 +49,9 @@ const menu = [{
 		title: '任务管理',
 		icon: 'course_tongzhi1',
 		child: [{
+			path: '/addTask',
+			title: '添加任务'
+		},{
 			path: '/taskList',
 			title: '任务列表'
 		},{
