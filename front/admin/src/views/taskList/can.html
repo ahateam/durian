@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<title>My JSP 'index.jsp' starting page</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+		<script type="text/javascript" src="../../commen/jSignature.min.js"></script>
+		<style type="text/css">
+			#signature {
+				border: 1px solid red;
+			}
+		</style>
+		<script type="text/javascript">
+			//初始化画布  
+			$(document).ready(function() {
+				$("#signature").jSignature({
+					height: 300,
+					color: "#000",
+					lineWidth: 4
+				});
+			})
+			//重置画布  
+			function clearSig() {
+				$("#signature").jSignature("clear");
+			}
+			//将画布内容显示到IMG  
+			function importImg() {
+				var sig = $("#signature");
+				$("#img").attr("src", "data:" + sig.jSignature('getData'));
+			}
+		</script>
+	</head>
+	<body>
+		<button onclick="clearSig()">重置</button>
+		<button onclick="importImg()">获取</button>
+		<div id="signature" style="20%"></div>
+		<img id="img">
+	</body>
+</html>

@@ -58,6 +58,9 @@ const menu = [{
 			path: '/myTask',
 			title: '我的任务'
 		},{
+			path: '/myContract',
+			title: '我的合同'
+		},{
 			path: '/stepList',
 			title: '任务步骤配置'
 		}],

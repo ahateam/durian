@@ -154,5 +154,14 @@ api.getAllOrder = function (cnt, callback) {
 api.getReceivingAddressById = function (cnt, callback) {
 	util.call(baseUrl+'/goods/getReceivingAddressById', cnt, callback)
 }
+// 创建合同
+api.createContract = function (cnt, callback) {
+	util.call(baseUrl+'/contract/createContract', cnt, callback)
+}
+// pdf合同
+api.setpPDF = function (cnt, callback) {
+	util.call(baseUrl+'/contract/setpPDF', cnt, callback)
+}
+
 export default api
 

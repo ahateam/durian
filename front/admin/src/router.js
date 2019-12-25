@@ -27,6 +27,8 @@ const stepList = () => import('./views/taskList/stepList')
 const updateTask = () => import('./views/taskList/updateTask')
 const addTask = () => import('./views/taskList/addTask')
 const myTask = () => import('./views/taskList/myTask')
+const myContract = () => import('./views/taskList/myContract')
+
 //审核管理
 const interExamine = () => import('./views/examine/interExamine')
 const contentExamine = () => import('./views/examine/contentExamine')
@@ -147,6 +149,10 @@ export default new Router({
 				path: '/myTask',
 				name: 'myTask',
 				component: myTask
+			},{
+				path: '/myContract',
+				name: 'myContract',
+				component: myContract
 			},{ //审核管理
 				path: '/interExamine',
 				name: 'interExamine',
