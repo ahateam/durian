@@ -60,6 +60,7 @@
 					type: this.typeList[1].value, // Byte 类型
 					upUserId: 403022498089447, // Long 创建者用户编号
 					show:this.show,
+					postingStatus: 4,
 					text: this.text, // String <选填> 文本
 					data: this.fileList, // String <选填> 其他图片视频数据
 				};
