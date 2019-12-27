@@ -162,6 +162,19 @@ api.createContract = function (cnt, callback) {
 api.setpPDF = function (cnt, callback) {
 	util.call(baseUrl+'/contract/setpPDF', cnt, callback)
 }
+// 查询用户签名列表
+api.getAutographList = function (cnt, callback) {
+	util.call(baseUrl+'/autograph/getAutographList', cnt, callback)
+}
+// 查询合同列表
+api.getContractList = function (cnt, callback) {
+	util.call(baseUrl+'/contract/getContractList', cnt, callback)
+}
+//学生合同签名
+api.setStudentAutograph = function (cnt, callback) {
+	util.call(baseUrl+'/contract/setStudentAutograph', cnt, callback)
+}
+
 
 export default api
 

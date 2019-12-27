@@ -181,4 +181,14 @@ constData.orderTypeList = [{
 		value: 2
 	}
 ]
+/*合同类型*/
+constData.contractTypeList = [{
+		name: '普通合同',
+		value: 0
+	},
+	{
+		name: '留学合同',
+		value: 1
+	}
+]
 export default constData

@@ -20,9 +20,16 @@ Vue.prototype.$constData = constData
 Vue.prototype.$util = util
 Vue.prototype.$api = api
 
-
-
-
+Vue.prototype.setUrl = function(val){
+	return this.$constData.httpurl+val
+}
+Vue.prototype.timeFliter = function(row, col, val){
+	let timer = new Date(val)
+	let dataTime = timer.toLocaleDateString() + ' ' + timer.toLocaleTimeString('chinese', {
+		hour12: false
+	})
+	return dataTime
+}
 new Vue({
 	router,
 	store,
