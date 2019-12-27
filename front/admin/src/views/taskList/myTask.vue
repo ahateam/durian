@@ -27,7 +27,9 @@
 						<el-table-column label="操作" width="200">
 							<template slot-scope="scope">
 								<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
-								<el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button>
+								<el-button @click="updateBtn(scope.row)" type="text" size="small" v-if="scope.row.taskStatus == 0">修改</el-button>
+								<el-button @click="revokeBtn(scope.row)" type="text" size="small" v-if="scope.row.taskStatus == 0">撤销</el-button>
+								<el-button @click="deleteBtn(scope.row)" type="text" size="small" v-if="scope.row.taskStatus == 0">删除</el-button>
 								<el-button @click="pay(scope.row)" type="text" size="small" v-if="scope.row.taskStatus == 2">付款</el-button>
 							</template>
 						</el-table-column>
@@ -87,7 +89,39 @@
 			}
 		},
 		methods: {
-			handleClick(tab, event) {
+			// 撤销待接收的任务
+			revokeBtn(info) {
+				let cnt = {
+					taskId: info.taskId
+				}
+				this.$api.withdrawTask(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.$message({
+							message: '撤销成功',
+							type: 'success'
+						});
+					} else {
+						this.$message.error('撤销失败，请稍后再试');
+					}
+				})
+			},
+			// 删除待接收的任务
+			deleteBtn(info) {
+				let cnt = {
+					taskId: info.taskId
+				}
+				this.$api.deletDurianTaskByTaskId(cnt, (res) => {
+					if(res.data.rc == this.$util.RC.SUCCESS) {
+						this.$message({
+							message: '删除成功',
+							type: 'success'
+						});
+					}else {
+						this.$message.error('删除失败，请稍后再试');
+					}
+				})
+			},
+			handleClick() {
 				let cnt = {
 					status: 0,
 					count: this.count,
@@ -156,6 +190,7 @@
 					}
 				})
 			},
+			// 修改待接收任务
 			updateBtn(info) {
 				info.activeName = this.activeName
 				this.$router.push({

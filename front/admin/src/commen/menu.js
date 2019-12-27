@@ -21,9 +21,6 @@ const menu = [{
 		title: '商品管理',
 		icon: 'course_xueyuanpeizhi',
 		child: [{
-			path: '/goodsType',
-			title: '商品分类管理',
-		},{
 			path: '/goodsList',
 			title: '商品管理',
 		},{
@@ -73,14 +70,18 @@ const menu = [{
 			title: '中介资质审核'
 		}, {
 			path: '/contentExamine',
-			title: '文章审核'
+			title: '帖子审核'
 		},{
 			path: '/goodsExamine',
 			title: '商品审核'
 		},{
 			path: '/taskExamine',
 			title: '任务审核'
+		},{
+			path: 'replyExamine',
+			title: '评论审核'
 		}]
+		
 	},
 	{
 		title: '平台币管理',

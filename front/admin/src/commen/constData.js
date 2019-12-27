@@ -138,19 +138,19 @@ constData.addTaskList = [{
 	},
 	{
 		name: '翻译',
-		value: 1
+		value: '1'
 	},
 	{
 		name: '表格填写',
-		value: 2
+		value: '2'
 	},
 	{
 		name: '撰写文书',
-		value: 3
+		value: '3'
 	},
 	{
 		name: '其他',
-		value: 4
+		value: '4'
 	}
 ]
 /*订单状态*/
@@ -189,6 +189,34 @@ constData.contractTypeList = [{
 	{
 		name: '留学合同',
 		value: 1
+	}
+]
+/*帖子可见范围*/
+constData.showList = [{
+		name: '公开',
+		value: 0
+	},
+	{
+		name: '仅校内可见',
+		value: 1
+	},
+	{
+		name: '仅校外可见',
+		value: 2
+	}
+]
+/*商品标签*/
+constData.isOnlineList = [{
+		name: '实物',
+		value: 0
+	},
+	{
+		name: '虚拟',
+		value: 1
+	},
+	{
+		name: '兑换',
+		value: 2
 	}
 ]
 export default constData

@@ -174,7 +174,42 @@ api.getContractList = function (cnt, callback) {
 api.setStudentAutograph = function (cnt, callback) {
 	util.call(baseUrl+'/contract/setStudentAutograph', cnt, callback)
 }
-
+// 获取评论
+api.getReplys = function (cnt, callback) {
+	util.call(baseUrl+'/posting/getReplys', cnt, callback)
+}
+// 获取二级评论
+api.getComments = function (cnt, callback) {
+	util.call(baseUrl+'/posting/getComments', cnt, callback)
+}
+// 删除一级评论
+api.delReply = function (cnt, callback) {
+	util.call(baseUrl+'/reply/delReply', cnt, callback)
+}
+// 删除二级评论
+api.delComments = function (cnt, callback) {
+	util.call(baseUrl+'/reply/delComments', cnt, callback)
+}
+// 发布帖子
+api.createPosting = function (cnt, callback) {
+	util.call(baseUrl+'/posting/createPosting', cnt, callback)
+}
+// 根据状态获取评论
+api.getReplyByStatus = function (cnt, callback) {
+	util.call(baseUrl+'/posting/getReplyByStatus', cnt, callback)
+}
+// 修改评论状态
+api.examineReply = function (cnt, callback) {
+	util.call(baseUrl+'/reply/examineReply', cnt, callback)
+}
+// 撤回发布的任务
+api.withdrawTask = function (cnt, callback) {
+	util.call(baseUrl+'/task/withdrawTask', cnt, callback)
+}
+// 删除发布的任务
+api.deletDurianTaskByTaskId = function (cnt, callback) {
+	util.call(baseUrl+'/task/deletDurianTaskByTaskId', cnt, callback)
+}
 
 export default api
 

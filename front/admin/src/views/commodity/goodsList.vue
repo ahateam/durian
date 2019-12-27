@@ -22,6 +22,9 @@
 				</el-table-column>
 				<el-table-column prop="goodsDescribe" label="商品描述">
 				</el-table-column>
+				<el-table-column prop="isOnline" label="商品标签" :formatter="isOnlineFliter" :filters="[{ text: '实物', value: 0 }, { text: '虚拟', value: 1 }, { text: '兑换', value: 2 }]" 
+					:filter-method="filterTag2">
+				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">查看详情</el-button>
@@ -53,7 +56,8 @@
 				pageOver: false,
 				loading: true,
 				title: '',
-				goodsTypeList: this.$constData.goodsTypeList
+				goodsTypeList: this.$constData.goodsTypeList,
+				isOnlineList: this.$constData.isOnlineList
 			}
 		},
 		methods: {
@@ -141,6 +145,10 @@
 					}
 				})
 			},
+			// 商品标签筛选
+			filterTag2(value, row){
+				return row.isOnline === value
+			},
 			// 商品类型筛选
 			filterTag(value, row) {
 				return row.goodsType === value
@@ -159,6 +167,15 @@
 				for (let i = 0; i < goodsTypeList.length; i++) {
 					if (goodsTypeList[i].value == val) {
 						return goodsTypeList[i].name
+					}
+				}
+			},
+			// 商品标签转文字
+			isOnlineFliter(row, col, val) {
+				let isOnlineList = this.isOnlineList
+				for (let i = 0; i < isOnlineList.length; i++) {
+					if (isOnlineList[i].value == val) {
+						return isOnlineList[i].name
 					}
 				}
 			},

@@ -69,7 +69,7 @@
 	export default {
 		data() {
 			return {
-				id:'',
+				id: '',
 				text: '',
 				show: '',
 				fileList: [],
@@ -126,7 +126,7 @@
 					this.fileList.push(this.tempFileList[i].url)
 				}
 				let cnt = {
-					id:this.id,
+					id: this.id,
 					show: this.show,
 					text: this.text, // String <选填> 文本
 					data: this.fileList, // String <选填> 其他图片视频数据
@@ -177,7 +177,7 @@
 						message: '已取消删除'
 					});
 				});
-			
+
 			},
 			getContents(cnt) {
 				this.$api.getPostingList(cnt, (res) => {
@@ -262,11 +262,12 @@
 					console.log(e)
 				}
 			},
-			getContentsDefault(){
+			getContentsDefault() {
 				let cnt = {
 					moduleId: this.$constData.module,
 					sort: true, // boolean 是否倒序
 					isShowShare: 2,
+					status: 4,
 					count: this.count,
 					offset: (this.page - 1) * this.count
 				};

@@ -23,7 +23,8 @@
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
-						<!-- <el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button> -->
+						<el-button @click="updateBtn(scope.row)" type="text" size="small" v-if="scope.row.userStatus === 0" style="color: red;">禁用</el-button>
+						<el-button @click="cancelBtn(scope.row)" type="text" size="small" v-if="scope.row.userStatus === 1">取消禁用</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -58,6 +59,41 @@
 			}
 		},
 		methods: {
+			// 取消禁用中介
+			cancelBtn(info) {
+				let cnt = {
+					userId: info.userId,
+					userStatus: 0
+				}
+				this.$api.closeUserComont(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						let cnt = {
+							type: 2, // Byte <选填> 用户类型
+							count: this.count,
+							offset: (this.page - 1) * this.count
+						};
+						this.getContents(cnt)
+					}
+				})
+			},
+			// 禁用中介
+			updateBtn(info) {
+				let cnt = {
+					userId: info.userId,
+					userStatus: 1
+				}
+				this.$api.closeUserComont(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						console.log(22222222222)
+						let cnt = {
+							type: 2, // Byte <选填> 用户类型
+							count: this.count,
+							offset: (this.page - 1) * this.count
+						};
+						this.getContents(cnt)
+					}
+				})
+			},
 			// 搜索栏清空重新获取
 			getDefault(){
 				if(this.nameOrPhone == ''){

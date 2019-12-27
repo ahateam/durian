@@ -1,30 +1,98 @@
 <template>
 	<el-tabs v-model="activeName">
-		<el-tab-pane label="基本信息" name="first">
+		<el-tab-pane label="信息修改" name="first">
 			<div>
-				<el-row class="row-title">
-					<el-col :span="12">
-						<h1>基本信息：</h1>
-						<p>任务id：{{taskId}}</p>
-						<p>发布者id：{{publishUserId}}</p>
-						<p>发布者头像：<img width="5%" :src="setUrl(userInfo.publishUser.userHead)" /></p>
-						<p>发布者名称：{{userInfo.publishUser.userName}}</p>
-						<div v-if="pickUpUserId">
-							<p>接受者id：{{pickUpUserId}}</p>
-							<p>接受者头像：<img width="5%" :src="setUrl(userInfo.pickUpUser.userHead)" /></p>
-							<p>接受者名称：{{userInfo.pickUpUser.userName}}</p>
+				请先选择任务分类
+				<el-select v-model="taskType" placeholder="请选择">
+					<el-option v-for="item in addTaskList" :key="item.value" :label="item.name" :value="item.value">
+					</el-option>
+				</el-select>
+				<el-row v-if="taskType">
+					<el-col :span="12" style="margin-right: 40px;">
+						<div class="input-suffix">
+							<p>
+								任务名称
+								<el-input placeholder="请输入内容" v-model="taskName">
+								</el-input>
+							</p>
+							<p v-if="taskType == 1">
+								页数
+								<el-input placeholder="请输入内容" v-model="pageNumber">
+								</el-input>
+								<el-select v-model="Language1" placeholder="请选择">
+									<el-option v-for="item in LanguageList" :key="item.languageId" :label="item.languageName" :value="item.languageName">
+									</el-option>
+								</el-select>
+								<i class="el-icon-refresh"></i>
+								<el-select v-model="Language2" placeholder="请选择">
+									<el-option v-for="item in LanguageList" :key="item.languageId" :label="item.languageName" :value="item.languageName">
+									</el-option>
+								</el-select>
+							</p>
+							<p v-if="taskType == 0">
+								申请人数
+								<el-input placeholder="请输入内容" v-model="applyNumber">
+								</el-input>
+							</p>
+							<p v-if="taskType == 2">
+								表格类别
+								<el-input placeholder="请输入内容" v-model="taskCategory">
+								</el-input>
+							</p>
+							<p v-if="taskType == 3">
+								文书类别
+								<el-input placeholder="请输入内容" v-model="taskCategory">
+								</el-input>
+							</p>
+							<p v-if="taskType == 0">
+								主申请人国籍
+								<el-input placeholder="请输入内容" v-model="applicantNationality">
+								</el-input>
+							</p>
+							<p v-if="taskType == 0">
+								主申请人年龄
+								<el-input placeholder="请输入内容" v-model="applicantAge">
+								</el-input>
+							</p>
+							<p v-if="taskType == 0">
+								低于18岁副申请人人数
+								<el-input placeholder="请输入内容" v-model="viceApplicantAge">
+								</el-input>
+							</p>
 						</div>
+						<el-button type="success" plain @click="subBtn(1)">修改并发布任务</el-button>
+						<el-button plain @click="subBtn(0)">保存为草稿箱</el-button>
 					</el-col>
-					<el-col :span="12">
-						<p>任务类型：{{taskType}}</p>
-						<p>任务状态：{{taskStatus}}</p>
-						<p>任务名称：{{taskName}}</p>
-						<p>接收者所需资质：{{qualifications}}</p>
-						<p>任务描述：{{taskDescribe}}</p>
-						<p>其他说明：{{otherDescribe}}</p>
-						<p>任务预算金额：{{taskBudget}}</p>
-						<p>创建时间：{{taskCreateTime}}</p>
-						<p>完成时间：{{finishDate}}</p>
+					<el-col :span="9">
+						<div class="input-suffix">
+							<p>
+								任务者所需资质</br>
+								<el-select v-model="qualifications" placeholder="请选择">
+									<el-option v-for="item in qualificationList" :key="item.qualId" :label="item.qualName" :value="item.qualId">
+									</el-option>
+								</el-select>
+							</p>
+							<p>
+								任务描述
+								<el-input placeholder="请输入内容" v-model="taskDescribe">
+								</el-input>
+							</p>
+							<p>
+								特别提醒
+								<el-input placeholder="请输入内容" v-model="otherDescribe">
+								</el-input>
+							</p>
+							<p>
+								你给多少钱
+								<el-input placeholder="请输入内容" v-model="taskBudget">
+								</el-input>
+							</p>
+							<p>
+								完成时间
+								<el-date-picker v-model="finishDate" type="datetime" placeholder="选择日期时间" align="right" :picker-options="pickerOptions">
+								</el-date-picker>
+							</p>
+						</div>
 					</el-col>
 				</el-row>
 			</div>
@@ -78,8 +146,8 @@
 				url: '',
 				fileList: [],
 				tableData: [],
-				activeName: 'second',
-				activeNameRouter:'',
+				activeName: 'first',
+				activeNameRouter: '',
 				region: '',
 				regionName: '',
 				taskId: '',
@@ -92,8 +160,13 @@
 						"userHead": ''
 					}
 				},
+				applyNumber: '',
+				applicantAge: '',
+				applicantNationality: '',
 				pickUpUserId: '',
-				taskType: '',
+				pickerOptions: '',
+				viceApplicantAge: '',
+				taskType: '0',
 				taskName: '',
 				qualifications: '',
 				taskDescribe: '',
@@ -101,11 +174,86 @@
 				taskBudget: '',
 				taskCreateTime: '',
 				finishDate: '',
-				taskTypeList: this.$constData.taskTypeList,
+				qualificationList: [],
+				LanguageList: [],
+				Language1: '',
+				Language2: '',
+				addTaskList: this.$constData.addTaskList,
+
+				List: this.$constData.taskTypeList,
 				taskStatus: this.$constData.taskStatus
 			}
 		},
 		methods: {
+			subBtn(e) {
+				let cnt = {
+					taskId:this.taskId,
+					taskType: this.taskType, // Byte 任务类型
+					// pickUpUserId: pickUpUserId, // Long <选填> 接收者用户id
+					publishUserId: 403022498109672, // Long 发布者id
+					taskName: this.taskName, // String 任务名称
+					taskCategory:  this.taskCategory, // String <选填> （表格、文书）具体类别
+					oldLanguage: this.Language1, // String <选填> 翻译任务原语种
+					newLanguage: this.Language2, // String <选填> 翻译任务目标语种
+					qualifications: this.qualifications, // Long 任务接收者所需资质
+					taskDescribe: this.taskDescribe, // String 任务描述
+					otherDescribe: this.otherDescribe, // String 其他说明
+					applyNumber: this.applyNumber, // Integer <选填> 申请人数
+					applicantNationality: this.applicantNationality, // String <选填> 主申请人国籍
+					applicantAge: this.applicantAge, // Integer <选填> 主申请人年龄
+					viceApplicantAge: this.viceApplicantAge, // Integer <选填> 低于18岁副申请人年龄
+					pageNumber:  this.pageNumber, // Integer <选填> 页数
+					// Taskcontent: Taskcontent, // String <选填> 内容
+					fileData: this.fileData, // String <选填> 上传文件地址
+					imgData: this.imgData, // String <选填> 图片地址
+					taskBudget: this.taskBudget, // Double 任务预算金额
+					// payPrice: payPrice, // Double <选填> 付款金额
+					status: e==0?2:3, // Boolean <选填> 是否存入草稿箱
+					finishDate: this.finishDate, // Date <选填> 任务完成时间
+				};
+				this.$api.updateTaskByTaskId(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.$router.push({
+							path: '/taskList',
+							name: 'taskList',
+						})
+						this.$message({
+							message: '操作成功',
+							type: 'success'
+						});
+					} else {
+			
+					}
+				})
+			},
+			getLanguage() {
+				let cnt = {
+					count: 400,
+					offset: 0,
+				};
+				this.$api.getLanguage(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.LanguageList = this.$util.tryParseJson(res.data.c)
+						console.log(this.LanguageList)
+					} else {
+
+					}
+				})
+			},
+			getByQualId() {
+				let cnt = {
+					count: 400,
+					offset: 0,
+				};
+				this.$api.getByQualId(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.qualificationList = this.$util.tryParseJson(res.data.c)
+
+					} else {
+
+					}
+				})
+			},
 			setUrl(val) {
 				return this.$constData.httpurl + val
 			},
@@ -271,7 +419,7 @@
 					taskId: this.taskId,
 					fileData: this.tableData, //上传文件地址
 				};
-				if(this.activeNameRouter == "second"){
+				if (this.activeNameRouter == "second") {
 					cnt.taskStatus = this.$constData.taskStatus[2].value
 				}
 				this.$api.updateTaskByTaskId(cnt, (res) => {
@@ -286,10 +434,21 @@
 		},
 		mounted() {
 			let info = this.$route.params.info
+			console.log(info)
+			this.pageNumber = info.pageNumber
 			this.taskId = info.taskId
+			this.Language1 = info.oldLanguage
+			this.Language2 = info.newLanguage
 			this.publishUserId = info.publishUserId
 			this.pickUpUserId = info.pickUpUserId
-			this.taskType = this.taskTypeFliter(info.taskType)
+			this.applyNumber = info.applyNumber
+			this.taskCategory = info.taskCategory
+			this.applicantNationality = info.applicantNationality
+			this.applicantAge = info.applicantAge
+			this.viceApplicantAge = info.viceApplicantAge
+			// this.taskType = this.taskTypeFliter(info.taskType)
+			this.taskType = info.taskType+''
+			console.log(this.taskType)
 			this.taskStatus = this.taskStatusFliter(info.taskStatus)
 			this.taskName = info.taskName
 			this.qualifications = info.qualifications
@@ -301,6 +460,8 @@
 			this.tableData = JSON.parse(info.fileData)
 			this.activeNameRouter = info.activeName
 			this.getUserByTaskId(info.taskId)
+			this.getByQualId()
+			this.getLanguage()
 		}
 	}
 </script>

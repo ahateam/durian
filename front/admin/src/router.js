@@ -7,6 +7,7 @@ const addContent = () => import('./views/content/addContent')
 const contentList = () => import('./views/content/contentList')
 const ReplyList = () => import('./views/content/ReplyList')
 const contentInfo = () => import('./views/content/contentInfo')
+const replyInfo = () => import('./views/content/replyInfo')
 // 商品列表
 const goodsType = () => import('./views/commodity/goodsType')
 const goodsList = () => import('./views/commodity/goodsList')
@@ -35,6 +36,7 @@ const contentExamine = () => import('./views/examine/contentExamine')
 const goodsExamine = () => import('./views/examine/goodsExamine')
 const goodsInfo = () => import('./views/examine/goodsInfo')
 const taskExamine = () => import('./views/examine/taskExamine')
+const replyExamine = () => import('./views/examine/replyExamine')
 
 //平台币管理
 const investList = () => import('./views/currency/investList')
@@ -61,151 +63,156 @@ export default new Router({
 			path: '/content',
 			name: 'home',
 			component: home,
-			children: [
-			{
-				path: '/contentList',
-				name: 'contentList',
-				component: contentList
-			},
-			{
-				path: '/contentInfo',
-				name: 'contentInfo',
-				component: contentInfo
-			}
-			,
-			{
-				path: '/addContent',
-				name: 'addContent',
-				component: addContent
-			}, {
-				path: '/ReplyList',
-				name: 'ReplyList',
-				component: ReplyList
-			},  {
-				path: '/goodsType',
-				name: 'goodsType',
-				component: goodsType
-			},  {
-				path: '/addGoods',
-				name: 'addGoods',
-				component: addGoods
-			},  {
-				path: '/goodsList',
-				name: 'goodsList',
-				component: goodsList
-			},   {
-				path: '/orderList',
-				name: 'orderList',
-				component: orderList
-			},  {
-				path: '/orderInfo',
-				name: 'orderInfo',
-				component: orderInfo
-			},  {//用户管理
-				path: '/adminList',
-				name: 'adminList',
-				component: adminList
-			}, {
-				path: '/userList',
-				name: 'userList',
-				component: userList
-			}, {
-				path: '/interUserList',
-				name: 'interUserList',
-				component: interUserList
-			}, {
-				path: '/userInfo',
-				name: 'userInfo',
-				component: userInfo
-			}, {
-				path: '/addAdmin',
-				name: 'addAdmin',
-				component: addAdmin
-			}, {
-				path: '/updateAdmin',
-				name: 'updateAdmin',
-				component: updateAdmin
-			}, { //任务管理
-				path: '/taskList',
-				name: 'taskList',
-				component: taskList
-			}, {
-				path: '/taskInfo',
-				name: 'taskInfo',
-				component: taskInfo
-			},{
-				path: '/stepList',
-				name: 'stepList',
-				component: stepList
-			},{
-				path: '/updateTask',
-				name: 'updateTask',
-				component: updateTask
-			}, {
-				path: '/addTask',
-				name: 'addTask',
-				component: addTask
-			}, {
-				path: '/myTask',
-				name: 'myTask',
-				component: myTask
-			},{
-				path: '/myContract',
-				name: 'myContract',
-				component: myContract
-			},{ //审核管理
-				path: '/interExamine',
-				name: 'interExamine',
-				component: interExamine
-				
-			}, { 
-				path: '/contentExamine',
-				name: 'contentExamine',
-				component: contentExamine
-				
-			}, {
-				path: '/goodsExamine',
-				name: 'goodsExamine',
-				component: goodsExamine
-			}, {
-				path: '/goodsInfo',
-				name: 'goodsInfo',
-				component: goodsInfo
-			},{
-				path: '/taskExamine',
-				name: 'taskExamine',
-				component: taskExamine
-			},
-			{ //平台币管理
-				path: '/investList',
-				name: 'investList',
-				component: investList
-				
-			},  { 
-				path: '/virtualcoinList',
-				name: 'virtualcoinList',
-				component: virtualcoinList
-			},   { //帮助中心
-				path: '/homeTag',
-				name: 'homeTag',
-				component: homeTag
-				
-			},  { 
-				path: '/tagGroup',
-				name: 'tagGroup',
-				component: tagGroup
-			},   { //数据统计
-				path: '/interestTagList',
-				name: 'interestTagList',
-				component: interestTagList
-				
-			},  { 
-				path: '/enrollList',
-				name: 'enrollList',
-				component: enrollList
-			}, 
-			
-			    ]
+			children: [{
+					path: '/contentList',
+					name: 'contentList',
+					component: contentList
+				},
+				{
+					path: '/contentInfo',
+					name: 'contentInfo',
+					component: contentInfo
+				},
+				{
+					path: '/addContent',
+					name: 'addContent',
+					component: addContent
+				}, {
+					path: '/ReplyList',
+					name: 'ReplyList',
+					component: ReplyList
+				}, {
+					path: '/replyInfo',
+					name: 'replyInfo',
+					component: replyInfo
+				}, {
+					path: '/goodsType',
+					name: 'goodsType',
+					component: goodsType
+				}, {
+					path: '/addGoods',
+					name: 'addGoods',
+					component: addGoods
+				}, {
+					path: '/goodsList',
+					name: 'goodsList',
+					component: goodsList
+				}, {
+					path: '/orderList',
+					name: 'orderList',
+					component: orderList
+				}, {
+					path: '/orderInfo',
+					name: 'orderInfo',
+					component: orderInfo
+				}, { //用户管理
+					path: '/adminList',
+					name: 'adminList',
+					component: adminList
+				}, {
+					path: '/userList',
+					name: 'userList',
+					component: userList
+				}, {
+					path: '/interUserList',
+					name: 'interUserList',
+					component: interUserList
+				}, {
+					path: '/userInfo',
+					name: 'userInfo',
+					component: userInfo
+				}, {
+					path: '/addAdmin',
+					name: 'addAdmin',
+					component: addAdmin
+				}, {
+					path: '/updateAdmin',
+					name: 'updateAdmin',
+					component: updateAdmin
+				}, { //任务管理
+					path: '/taskList',
+					name: 'taskList',
+					component: taskList
+				}, {
+					path: '/taskInfo',
+					name: 'taskInfo',
+					component: taskInfo
+				}, {
+					path: '/stepList',
+					name: 'stepList',
+					component: stepList
+				}, {
+					path: '/updateTask',
+					name: 'updateTask',
+					component: updateTask
+				}, {
+					path: '/addTask',
+					name: 'addTask',
+					component: addTask
+				}, {
+					path: '/myTask',
+					name: 'myTask',
+					component: myTask
+				}, {
+					path: '/myContract',
+					name: 'myContract',
+					component: myContract
+				}, { //审核管理
+					path: '/interExamine',
+					name: 'interExamine',
+					component: interExamine
+
+				}, {
+					path: '/contentExamine',
+					name: 'contentExamine',
+					component: contentExamine
+
+				}, {
+					path: '/goodsExamine',
+					name: 'goodsExamine',
+					component: goodsExamine
+				}, {
+					path: '/goodsInfo',
+					name: 'goodsInfo',
+					component: goodsInfo
+				}, {
+					path: '/taskExamine',
+					name: 'taskExamine',
+					component: taskExamine
+				}, {
+					path: '/replyExamine',
+					name: 'replyExamine',
+					component: replyExamine
+				}, { //平台币管理
+					path: '/investList',
+					name: 'investList',
+					component: investList
+
+				}, {
+					path: '/virtualcoinList',
+					name: 'virtualcoinList',
+					component: virtualcoinList
+				}, { //帮助中心
+					path: '/homeTag',
+					name: 'homeTag',
+					component: homeTag
+
+				}, {
+					path: '/tagGroup',
+					name: 'tagGroup',
+					component: tagGroup
+				}, { //数据统计
+					path: '/interestTagList',
+					name: 'interestTagList',
+					component: interestTagList
+
+				}, {
+					path: '/enrollList',
+					name: 'enrollList',
+					component: enrollList
+				},
+
+			]
 		},
 		{
 			path: '/login',
