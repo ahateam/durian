@@ -8,6 +8,7 @@ const contentList = () => import('./views/content/contentList')
 const ReplyList = () => import('./views/content/ReplyList')
 const contentInfo = () => import('./views/content/contentInfo')
 const replyInfo = () => import('./views/content/replyInfo')
+const secretLetterInfo = () => import('./views/content/secretLetterInfo')
 // 商品列表
 const goodsType = () => import('./views/commodity/goodsType')
 const goodsList = () => import('./views/commodity/goodsList')
@@ -85,6 +86,10 @@ export default new Router({
 					path: '/replyInfo',
 					name: 'replyInfo',
 					component: replyInfo
+				}, {
+					path: '/secretLetterInfo',
+					name: 'secretLetterInfo',
+					component: secretLetterInfo
 				}, {
 					path: '/goodsType',
 					name: 'goodsType',

@@ -210,6 +210,13 @@ api.withdrawTask = function (cnt, callback) {
 api.deletDurianTaskByTaskId = function (cnt, callback) {
 	util.call(baseUrl+'/task/deletDurianTaskByTaskId', cnt, callback)
 }
-
+// 获取密信
+api.getSecretLetter = function (cnt, callback) {
+	util.call(baseUrl+'/secret/getSecretLetter', cnt, callback)
+}
+// 删除密信
+api.deleteSecretLetter = function (cnt, callback) {
+	util.call(baseUrl+'/secret/deleteSecretLetter', cnt, callback)
+}
 export default api
 

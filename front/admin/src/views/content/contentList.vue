@@ -14,6 +14,14 @@
 				</el-table-column>
 				<el-table-column prop="posting.postingCreateTime" label="创建时间" :formatter="timeFliter">
 				</el-table-column>
+				<el-table-column label="设置" width="200">
+					<template slot-scope="scope1">
+						<el-button @click="newest(scope1.row)" type="text" size="small">设为最新</el-button>
+						<el-button @click="hotspot(scope1.row)" type="text" size="small" v-if="scope1.row.posting.selected == 0">设为精选</el-button>
+						<el-button @click="cancelHotspot(scope1.row)" type="text" size="small" v-if="scope1.row.posting.selected == 1"
+						 style="color: red;">取消精选</el-button>
+					</template>
+				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
@@ -85,6 +93,72 @@
 			}
 		},
 		methods: {
+			// 时间格式转换
+			timeFormat(value) {
+				let date = new Date(value);
+				let y = date.getFullYear();
+				let MM = date.getMonth() + 1;
+				MM = MM < 10 ? ('0' + MM) : MM;
+				let d = date.getDate();
+				d = d < 10 ? ('0' + d) : d;
+				let h = date.getHours();
+				h = h < 10 ? ('0' + h) : h;
+				let m = date.getMinutes();
+				m = m < 10 ? ('0' + m) : m;
+				let s = date.getSeconds();
+				s = s < 10 ? ('0' + s) : s;
+				return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+			},
+			// 将帖子设为最新
+			newest(info) {
+				console.log(info)
+				let cnt = {
+					id: info.posting.postingId,
+					postingCreateTime: this.timeFormat(new Date)
+				}
+				this.$api.updatePosting(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.$message({
+							message: '设置成功',
+							type: 'success'
+						});
+						this.getContentsDefault()
+					}
+				})
+			},
+			// 将帖子设为精选
+			hotspot(info) {
+				let cnt = {
+					id: info.posting.postingId,
+					selected: 1
+				}
+				this.$api.updatePosting(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.$message({
+							message: '设置成功',
+							type: 'success'
+						});
+						this.getContentsDefault()
+					}
+				})
+			},
+			// 将帖子取消精选
+			cancelHotspot(info) {
+				let cnt = {
+					id: info.posting.postingId,
+					selected: 0
+				}
+				this.$api.updatePosting(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.$message({
+							message: '设置成功',
+							type: 'success'
+						});
+						this.getContentsDefault()
+					}
+				})
+			},
+			// 发帖
 			goCreatePosting() {
 				this.$router.push('/addContent')
 			},

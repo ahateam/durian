@@ -18,8 +18,9 @@
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
-						<!-- <el-button @click="infoBtn(scope.row)" type="text" size="small">查看详情</el-button> -->
+						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
 						<el-button @click="viewReply(scope.row)" type="text" size="small">查看评论</el-button>
+						<el-button @click="viewSecretLetter(scope.row)" type="text" size="small">查看密信</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -50,6 +51,16 @@
 			}
 		},
 		methods: {
+			// 查看密信
+			viewSecretLetter(info) {
+				this.$router.push({
+					path: '/secretLetterInfo',
+					name: 'secretLetterInfo',
+					params: {
+						info: info
+					}
+				})
+			},
 			// 搜索栏清空重新获取
 			getDefault(){
 				if(this.title == ''){
