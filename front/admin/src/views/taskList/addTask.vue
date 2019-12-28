@@ -18,12 +18,12 @@
 						<el-input placeholder="请输入内容" v-model="pageNumber">
 						</el-input>
 						<el-select v-model="Language1" placeholder="请选择">
-							<el-option v-for="item in LanguageList" :key="item.languageId" :label="item.languageName" :value="item.languageId">
+							<el-option v-for="item in LanguageList" :key="item.languageId" :label="item.languageName" :value="item.languageName">
 							</el-option>
 						</el-select>
 						<i class="el-icon-refresh"></i>
 						<el-select v-model="Language2" placeholder="请选择">
-							<el-option v-for="item in LanguageList" :key="item.languageId" :label="item.languageName" :value="item.languageId">
+							<el-option v-for="item in LanguageList" :key="item.languageId" :label="item.languageName" :value="item.languageName">
 							</el-option>
 						</el-select>
 					</p>
@@ -141,7 +141,7 @@
 				fileList:[],
 				size: '',
 				pictureCard: [],
-				taskType: '',
+				taskType: '0',
 				addTaskList: this.$constData.addTaskList,
 				pickerOptions: {
 					shortcuts: [{
