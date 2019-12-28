@@ -118,6 +118,10 @@ api.getUserByNameORPhone = function (cnt, callback) {
 api.updateUser = function (cnt, callback) {
 	util.call(baseUrl+'/user/updateUser', cnt, callback)
 }
+// 后台登录
+api.login = function (cnt, callback) {
+	util.call(baseUrl+'/user/loginByadmin', cnt, callback)
+}
 // 查询商品
 api.getGoodsList = function (cnt, callback) {
 	util.call(baseUrl+'/goods/getGoodsList', cnt, callback)

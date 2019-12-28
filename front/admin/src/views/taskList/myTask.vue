@@ -48,7 +48,7 @@
 						</el-table-column>
 						<el-table-column label="操作" width="200">
 							<template slot-scope="scope">
-								<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
+								<el-button @click="infoBtnByReceive(scope.row)" type="text" size="small">详情</el-button>
 								<el-button @click="updateBtn(scope.row)" type="text" size="small" v-if="scope.row.taskStatus != 3">上传文件完成任务</el-button>
 							</template>
 						</el-table-column>
@@ -182,6 +182,16 @@
 				})
 			},
 			infoBtn(info) {
+				this.$router.push({
+					path: '/taskInfo',
+					name: 'taskInfo',
+					params: {
+						info: info
+					}
+				})
+			},
+			infoBtnByReceive(info){
+				info.contractInfo = true
 				this.$router.push({
 					path: '/taskInfo',
 					name: 'taskInfo',

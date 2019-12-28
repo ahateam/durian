@@ -1,7 +1,7 @@
 <template>
 	<el-tabs v-model="activeName" type="card" @tab-click="handleClick">
 		<el-tab-pane label="创建合同" name="first">
-			<el-select v-model="contractType" placeholder="请选择合同模版">
+			<el-select v-model="contractType" placeholder="请选择合同模版" style="width: 120px;">
 				<el-option v-for="item in contractTypeList" :key="item.value" :label="item.name" :value="item.value">
 				</el-option>
 			</el-select>
@@ -155,8 +155,9 @@
 				marn: 'marn_0203',
 				advance: '',
 				loading: '',
-				intermediaryId: 403022498089447, // Long 中介编号
-				studentId: 403029719057634, // Long 学生编号
+				intermediaryId: JSON.parse(localStorage.getItem("loginUser")).userId, // Long 中介编号
+				userId:JSON.parse(localStorage.getItem("loginUser")).userId,
+				studentId: '', // Long 学生编号
 				clientName: '张画画', // String 当事人姓名
 				deputyApplicantName: '历小名', // String 副申请人姓名
 				intermediary: '中介',
@@ -215,7 +216,7 @@
 			handleClick(tab, event) {
 				this.tableData = []
 				let cnt = {
-					intermediaryId: 403022498089447,
+					intermediaryId: this.userId,
 					count: this.count,
 					offset: (this.page - 1) * this.count
 				};
@@ -237,7 +238,7 @@
 					this.page -= 1
 				}
 				let cnt = {
-					intermediaryId: 403022498089447,
+					intermediaryId: this.userId,
 					status: val,
 					count: this.count,
 					offset: (this.page - 1) * this.count
@@ -306,6 +307,10 @@
 				this.getAutograph()
 			},
 			addsubContract() {
+				if(this.radio == ''){
+					this.$message.error('请选择有一个签名')
+					return
+				}
 				let cnt = {
 					intermediaryId: this.intermediaryId, // Long 中介编号
 					studentId: this.studentId, // Long 学生编号

@@ -119,9 +119,27 @@ const menu = [{
 		]
 	},
 ]
-
+const insiderMenu = [
+	{
+		title: '任务管理',
+		icon: 'course_tongzhi1',
+		child: [{
+			path: '/addTask',
+			title: '添加任务'
+		},{
+			path: '/taskList',
+			title: '任务列表'
+		},{
+			path: '/myTask',
+			title: '我的任务'
+		},{
+			path: '/myContract',
+			title: '我的合同'
+		}],
+	}
+]
 
 
 export default {
-	menu,
+	menu,insiderMenu
 }

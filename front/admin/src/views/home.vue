@@ -74,9 +74,9 @@
 		},
 		methods: {
 			getUserName() {
-				// let userData = localStorage.getItem("loginUser");
-				// userData = this.$util.tryParseJson(userData);
-				// return userData.name;
+				let userData = localStorage.getItem("loginUser");
+				userData = this.$util.tryParseJson(userData);
+				return userData.userName;
 				return 'test';
 			},
 
@@ -102,9 +102,13 @@
 				text: "拼命加载中...",
 				spinner: "el-icon-loading"
 			});
-			// let loginUser = JSON.parse(localStorage.getItem("loginUser"));
-			this.menuList = menu.menu;
-			this.$router.push("/content");
+			let loginUser = JSON.parse(localStorage.getItem("loginUser"));
+			if (loginUser.userType == 0) {//管理
+			  this.menuList = menu.menu;
+			}else if (loginUser.userType == 1) {//中介
+			  this.menuList = menu.insiderMenu;
+			} 
+			this.$router.push("/contentList");
 			this.showActive = true;
 			this.$store.state.navDefaultActive = "0-0";
 			loading.close();

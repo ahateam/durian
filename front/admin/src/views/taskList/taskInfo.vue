@@ -31,12 +31,12 @@
 					<el-step :title="item.stepName" :description="timeFliter(item.changeTime)" v-for="(item,index) in stepList" :key="index"></el-step>
 				</el-steps>
 			</div>
-			<el-button style="margin-top: 12px;" @click="readyNext" v-if="false">下一步</el-button>
+			<el-button style="margin-top: 12px;" @click="readyNext" v-if="contractInfo">下一步</el-button>
 		</el-row>
 
 		<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-			<el-button style="margin-bottom: 8px;" :type="stepCurr == index?'primary':'text'" size="mini" round @click="changeType(index)"
-			 v-for="(item,index) in stepTypeList">{{item.name}}</el-button>
+			<!-- <el-button style="margin-bottom: 8px;" :type="stepCurr == index?'primary':'text'" size="mini" round @click="changeType(index)"
+			 v-for="(item,index) in stepTypeList">{{item.name}}</el-button> -->
 			<el-select v-model="region" placeholder="请选择活动步骤描述" filterable clearable @change="stepListValueFun">
 				<el-option :label="item.stepName" :value="item.stepId" v-for="(item,index) in explainList" :key="index" :disabled="item.disabled"></el-option>
 			</el-select>
@@ -53,6 +53,7 @@
 		name: "contetnInfo",
 		data() {
 			return {
+				contractInfo: false,
 				userInfo: {
 					"publishUser": {
 						"userHead": ''
@@ -99,8 +100,8 @@
 			}
 		},
 		methods: {
-			setUrl(val){
-				return this.$constData.httpurl+val
+			setUrl(val) {
+				return this.$constData.httpurl + val
 			},
 			// 时间格式转换
 			timeFliter(val) {
@@ -190,7 +191,7 @@
 			},
 			getTaskStepsList() {
 				let cnt = {
-					stepType: this.type,
+					stepType: 1,
 					count: 400,
 					offset: 0,
 				};
@@ -210,7 +211,7 @@
 				};
 				this.$api.getChangeRecordList(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.stepList = this.$util.tryParseJson(res.data.c)
+						this.stepList = this.$util.tryParseJson(res.data.c).list
 						this.active = this.stepList.length
 						this.explainList = this.comparison(this.stepList, this.explainList)
 					} else {
@@ -255,6 +256,9 @@
 			this.taskBudget = info.taskBudget
 			this.taskCreateTime = this.timeFliter(info.taskCreateTime)
 			this.finishDate = this.timeFliter(info.finishDate)
+			if(info.contractInfo != '') {
+				this.contractInfo = info.contractInfo
+			}
 			this.getChangeRecordList(info.taskId)
 			this.getTaskStepsList(info.taskId)
 			this.getUserByTaskId(info.taskId)
