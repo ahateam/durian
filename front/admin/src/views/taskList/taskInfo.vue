@@ -23,6 +23,8 @@
 				<p>任务预算金额：{{taskBudget}}</p>
 				<p>创建时间：{{taskCreateTime}}</p>
 				<p>完成时间：{{finishDate}}</p>
+				<p v-if="taskStatus === '已付/收款'">付款金额：{{payPrice}}</p>
+				<p v-if="taskStatus === '已付/收款'">付款时间：{{payTime}}</p>
 			</el-col>
 		</el-row>
 		<el-row style="margin-bottom: 100px;">
@@ -94,6 +96,8 @@
 				taskBudget: '',
 				taskCreateTime: '',
 				finishDate: '',
+				payPrice:'',
+				payTime:'',
 				taskTypeList: this.$constData.taskTypeList,
 				taskStatus: this.$constData.taskStatus,
 				stepTypeList: this.$constData.stepTypeList
@@ -256,6 +260,8 @@
 			this.taskBudget = info.taskBudget
 			this.taskCreateTime = this.timeFliter(info.taskCreateTime)
 			this.finishDate = this.timeFliter(info.finishDate)
+			this.payPrice = info.payPrice
+			this.payTime = this.timeFliter(info.payTime)
 			if(info.contractInfo != '') {
 				this.contractInfo = info.contractInfo
 			}
