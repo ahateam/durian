@@ -55,11 +55,26 @@
 		},
 		methods: {
 			subBtn() {
+				console.log(this.show)
+				if (this.text == null || this.text == undefined || this.text == '') {
+					this.$message({
+						message: '请输入发布内容',
+						type: 'warning'
+					});
+					return
+				}
+				if (this.show == null || this.show == undefined || this.show == '') {
+					this.$message({
+						message: '请选择可见范围',
+						type: 'warning'
+					});
+					return 
+				}
 				let cnt = {
 					moduleId: this.$constData.module, // String 模块编号
 					type: this.typeList[1].value, // Byte 类型
 					upUserId: 403022498089447, // Long 创建者用户编号
-					show:this.show,
+					show: this.show,
 					postingStatus: 4,
 					text: this.text, // String <选填> 文本
 					data: this.fileList, // String <选填> 其他图片视频数据
@@ -70,7 +85,10 @@
 							message: '添加成功',
 							type: 'success'
 						});
-					}else{
+						this.text = ''
+						this.show = ''
+						this.fileList = []
+					} else {
 						this.$message({
 							message: res.data.rm,
 							type: 'error'

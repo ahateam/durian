@@ -63,6 +63,7 @@
 					this.$api.login(cnt, (res) => {
 						if (res.data.rc == this.$util.RC.SUCCESS) {
 							localStorage.setItem("loginUser", res.data.c)
+							console.log(this.$util.tryParseJson(res.data.c))
 							this.$router.push('/content')
 						} else {
 							if (res.data.rm == '此账号没有登录权限') {

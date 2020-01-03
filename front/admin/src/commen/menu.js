@@ -99,10 +99,10 @@ const menu = [{
 		icon: 'course_908caidan_anpai',
 		child: [{
 			path: '/homeTag',
-			title: '测试'
+			title: '帮助文案'
 		}, {
 			path: '/tagGroup',
-			title: '测试'
+			title: '智能客服'
 		}]
 	},
 	{

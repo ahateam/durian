@@ -16,7 +16,7 @@
 				</el-table-column>
 				<el-table-column label="设置" width="200">
 					<template slot-scope="scope1">
-						<el-button @click="newest(scope1.row)" type="text" size="small">设为最新</el-button>
+						<!-- <el-button @click="newest(scope1.row)" type="text" size="small">设为最新</el-button> -->
 						<el-button @click="hotspot(scope1.row)" type="text" size="small" v-if="scope1.row.posting.selected == 0">设为精选</el-button>
 						<el-button @click="cancelHotspot(scope1.row)" type="text" size="small" v-if="scope1.row.posting.selected == 1"
 						 style="color: red;">取消精选</el-button>

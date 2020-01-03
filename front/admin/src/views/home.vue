@@ -77,7 +77,6 @@
 				let userData = localStorage.getItem("loginUser");
 				userData = this.$util.tryParseJson(userData);
 				return userData.userName;
-				return 'test';
 			},
 
 			//事件层

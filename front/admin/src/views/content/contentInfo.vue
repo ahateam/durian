@@ -111,7 +111,7 @@
 			this.postingUpdateTime = this.timeFliter(info.postingUpdateTime)
 			this.userId = info.userId
 			this.userName = info.userName
-			this.userHead = info.userHead
+			this.userHead = this.$constData.httpurl+info.userHead
 		}
 	}
 </script>

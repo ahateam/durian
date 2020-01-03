@@ -150,6 +150,10 @@ api.editAuditStatus = function (cnt, callback) {
 api.getAuditStatus = function (cnt, callback) {
 	util.call(baseUrl+'/task/getAuditStatus', cnt, callback)
 }
+// 修改订单状态
+api.setOrderStatus = function (cnt, callback) {
+	util.call(baseUrl+'/goods/setOrderStatus', cnt, callback)
+}
 // 查询所有订单
 api.getAllOrder = function (cnt, callback) {
 	util.call(baseUrl+'/goods/getAllOrder', cnt, callback)
@@ -222,5 +226,30 @@ api.getSecretLetter = function (cnt, callback) {
 api.deleteSecretLetter = function (cnt, callback) {
 	util.call(baseUrl+'/secret/deleteSecretLetter', cnt, callback)
 }
+// 获取帮助文案
+api.getAutoReplyList = function (cnt, callback) {
+	util.call(baseUrl+'/help/getAutoReplyList', cnt, callback)
+}
+// 根据id查询帮助文案详情
+api.getAutoReply = function (cnt, callback) {
+	util.call(baseUrl+'/help/getAutoReply', cnt, callback)
+}
+// 创建帮助文案
+api.createAutoReply = function (cnt, callback) {
+	util.call(baseUrl+'/help/createAutoReply', cnt, callback)
+}
+// 修改帮助文案
+api.editAutoReply = function (cnt, callback) {
+	util.call(baseUrl+'/help/editAutoReply', cnt, callback)
+}
+// 删除帮助文案
+api.delAutoReply = function (cnt, callback) {
+	util.call(baseUrl+'/help/delAutoReply', cnt, callback)
+}
+// 根据帖子编号查看帖子信息
+api.getPosting = function (cnt, callback) {
+	util.call(baseUrl+'/posting/getPosting', cnt, callback)
+}
 export default api
+
 

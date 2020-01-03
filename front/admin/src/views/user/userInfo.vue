@@ -7,7 +7,7 @@
 		</el-row>
 		<el-row class="row-title">
 			<h1>基本信息：</h1>
-			<p>用户头像：<img :src="userHead" width="5%" /> </p>
+			<p>用户头像：<img :src="httpurl+userHead" width="5%" /> </p>
 			<p>用户名称：{{userName}}</p>
 			<p v-if="sex">性别：{{sex}}</p>
 			<p>电话：{{phone}}</p>
@@ -40,7 +40,8 @@
 				userSigCreateTime: '',
 				userStatus: '',
 				userType: '',
-				userTypeList: this.$constData.userTypeList
+				userTypeList: this.$constData.userTypeList,
+				httpurl: this.$constData.httpurl
 			}
 		},
 		methods: {

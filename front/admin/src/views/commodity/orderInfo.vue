@@ -23,6 +23,8 @@
 			<p v-if="!sendGoodsTime">发货时间：{{sendGoodsTime}}</p>
 			<p v-if="!receivingGoodsTime">收货时间：{{receivingGoodsTime}}</p>
 			<p v-if="!updateTime">更改时间：{{updateTime}}</p>
+			<p v-if="orderStatus != 0">快递公司：{{courierCompany}}</p>
+			<p v-if="orderStatus != 0">快递单号：{{courierNumber}}</p>
 		</el-row>
 	</div>
 </template>
@@ -32,6 +34,8 @@
 		name: "userInfo",
 		data() {
 			return {
+				courierCompany: '',
+				courierNumber: '',
 				orderId: '',
 				orderType: '',
 				orderStatus: '',
@@ -39,17 +43,17 @@
 				sellerId: '',
 				address: '',
 				goodsId: '',
-				goodsName:'',
-				goodsNumber:'',
-				payWay:'',
-				payment:'',
-				createTime:'',
-				payTime:'',
-				sendGoodsTime:'',
-				receivingGoodsTime:'',
-				updateTime:'',
-				orderStatusList:this.$constData.orderStatusList,
-				orderTypeList:this.$constData.orderTypeList
+				goodsName: '',
+				goodsNumber: '',
+				payWay: '',
+				payment: '',
+				createTime: '',
+				payTime: '',
+				sendGoodsTime: '',
+				receivingGoodsTime: '',
+				updateTime: '',
+				orderStatusList: this.$constData.orderStatusList,
+				orderTypeList: this.$constData.orderTypeList
 			}
 		},
 		methods: {
@@ -78,16 +82,16 @@
 					}
 				}
 			},
-			getReceivingAddressById(addressId) {
-				let cnt = {
-					addressId: addressId
-				}
-				this.$api.getReceivingAddressById(cnt, (res) => {
-					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.address = this.$util.tryParseJson(res.data.c).address
-					}
-				})
-			}
+			// getReceivingAddressById(addressId) {
+			// 	let cnt = {
+			// 		addressId: addressId
+			// 	}
+			// 	this.$api.getReceivingAddressById(cnt, (res) => {
+			// 		if (res.data.rc == this.$util.RC.SUCCESS) {
+			// 			this.address = this.$util.tryParseJson(res.data.c).address
+			// 		}
+			// 	})
+			// }
 		},
 		mounted() {
 			let info = this.$route.params.info
@@ -107,7 +111,10 @@
 			this.sendGoodsTime = this.timeFliter(info.sendGoodsTime)
 			this.receivingGoodsTime = this.timeFliter(info.receivingGoodsTime)
 			this.updateTime = this.timeFliter(info.updateTime)
-			this.getReceivingAddressById(info.addressId)
+			this.address = info.addressName
+			this.courierCompany = this.$util.tryParseJson(info.shippingInfo).name
+			this.courierNumber = this.$util.tryParseJson(info.shippingInfo).id
+			// this.getReceivingAddressById(info.addressId)
 		}
 	}
 </script>
@@ -185,4 +192,3 @@
 		margin: 10px 0 10px 20px;
 	}
 </style>
-

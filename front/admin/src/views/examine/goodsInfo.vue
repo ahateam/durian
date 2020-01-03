@@ -10,7 +10,7 @@
 			<p>库存：{{stock}}</p>
 			<p>商品价格：{{goodsPrice}}</p>
 			<p>商品描述：{{goodsDescribe}}</p>
-			<p>商品图片：<img style="width: 50px;height: 50px;" v-for="(item,index) in goodsData" :key="index" :src="item"/></p>
+			<p>商品图片：<img style="width: 50px;height: 50px;" v-for="(item,index) in goodsData" :key="index" :src="httpurl+item"/></p>
 			<p>商品状态：{{goodsStatus}}</p>
 			<p>创建时间：{{createTime}}</p>
 			<p>获取方式：{{isOnline}}</p>
@@ -38,6 +38,7 @@
 				isOnline:'',
 				goodsStatusList: this.$constData.goodsStatusList,
 				isOnlineList: this.$constData.isOnlineList,
+				httpurl: this.$constData.httpurl
 			}
 		},
 		methods: {

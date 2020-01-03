@@ -12,16 +12,31 @@
 				<el-table-column prop="goodsNumber" label="商品数量" width="180">
 				</el-table-column>
 				<el-table-column prop="orderStatus" label="订单状态" :formatter="orderStatusFliter" :filters="[{ text: '待发货', value: 0 }, { text: '已发货', value: 1 }, { text: '已收货', value: 2 }]"
-					:filter-method="filterTag">
+				 :filter-method="filterTag">
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">查看详情</el-button>
-						<el-button @click="deliverGoods(scope.row)" type="text" size="small" v-if="scope.row.orderStatus === 0">发货</el-button>
+						<el-button @click="dialogFormVisible = true, rowVal=scope.row" type="text" size="small" v-if="scope.row.orderStatus === 0">发货</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
 		</el-row>
+		<!-- 添加快递信息 -->
+		<el-dialog title="请添加快递信息" :visible.sync="dialogFormVisible">
+			<el-form :model="form" :rules="rules">
+				<el-form-item label="快递公司" :label-width="formLabelWidth" prop="name">
+					<el-input v-model="form.name" autocomplete="off"></el-input>
+				</el-form-item>
+				<el-form-item label="快递单号" :label-width="formLabelWidth" prop="id">
+					<el-input v-model="form.id" autocomplete="off"></el-input>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="cancel">取 消</el-button>
+				<el-button type="primary" @click="deliverGoods(form)">确认发货</el-button>
+			</div>
+		</el-dialog>
 		<el-row style="height: 80px;">
 			当前页数：{{page}}
 			<el-button type="primary" size="small" :disabled="page==1" @click="changePage(0)">上一页</el-button>
@@ -34,6 +49,8 @@
 	export default {
 		data() {
 			return {
+				rowVal:'',
+				dialogFormVisible: false,
 				tableData: [],
 				status: 1,
 				count: 10,
@@ -42,19 +59,51 @@
 				page: 1,
 				pageOver: false,
 				loading: true,
-				orderStatusList: this.$constData.orderStatusList
+				orderStatusList: this.$constData.orderStatusList,
+				form: {
+					name: '',
+					id: ''
+				},
+				formLabelWidth: '120px',
+				rules: {
+					name: [{
+						required: true,
+						message: '请输入快递公司',
+						trigger: 'blur'
+					}],
+					id: [{
+						required: true,
+						message: '请输入快递单号',
+						trigger: 'blur'
+					}],
+				}
 			}
 		},
 		methods: {
+			// 取消发货
+			cancel() {
+				this.$message('发货取消');
+				this.dialogFormVisible = false
+				this.form = ''
+			},
 			// 发货
 			deliverGoods(info) {
 				let cnt = {
-					orderId: info.orderId,
-					status:	this.status
+					orderId: this.rowVal.orderId,
+					status: 1,
+					shippingInfo: JSON.stringify(info)
 				}
 				this.$api.setOrderStatus(cnt, (res) => {
-					if(res.data.rc == this.$util.RC.SUCCESS) {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.$message({
+							message: '发货成功',
+							type: 'success'
+						});
+						this.dialogFormVisible = false
+						this.form = ''
 						this.getAllOrder()
+					} else {
+						this.$message.error('请输入快递信息');
 					}
 				})
 			},

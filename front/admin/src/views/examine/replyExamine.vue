@@ -17,6 +17,7 @@
 						</el-table-column>
 						<el-table-column label="操作" width="200">
 							<template slot-scope="scope">
+								<el-button @click="showContent1(scope.row)" type="text" size="small">查看原帖</el-button>
 								<el-button @click="pass1(scope.row)" type="text" size="small">通过</el-button>
 								<el-button @click="refuse1(scope.row)" type="text" size="small" style="color: red;">不通过</el-button>
 							</template>
@@ -42,6 +43,7 @@
 						</el-table-column>
 						<el-table-column label="操作" width="200">
 							<template slot-scope="scope">
+								<el-button @click="showContent2(scope.row)" type="text" size="small">查看原帖</el-button>
 								<el-button @click="pass2(scope.row)" type="text" size="small">通过</el-button>
 								<el-button @click="refuse2(scope.row)" type="text" size="small" style="color: red;">不通过</el-button>
 							</template>
@@ -80,6 +82,33 @@
 			}
 		},
 		methods: {
+			// 通过二级评论查看原帖
+			showContent2(info) {
+				console.log(info)
+			},
+			// 通过一级评论查看原帖
+			showContent1(info) {
+				console.log(JSON.parse(localStorage.getItem("loginUser")))
+				let cnt = {
+					id: info.ownerId,
+					userId: JSON.parse(localStorage.getItem("loginUser")).userId,
+					sort: this.sort,
+					count: 1,
+					offset: 0
+				}
+				this.$api.getPosting(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						console.log(this.$util.tryParseJson(res.data.c))
+						this.$router.push({
+							path: '/contentInfo',
+							name: 'contentInfo',
+							params: {
+								info: this.$util.tryParseJson(res.data.c)[0]
+							}
+						})
+					}
+				})
+			},
 			// 开启/关闭审核
 			toOpenAudit() {
 				console.log("点击")

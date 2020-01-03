@@ -240,6 +240,7 @@
 				this.$api.getUserByTaskId(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.userInfo = this.$util.tryParseJson(res.data.c)
+						console.log(this.userInfo.publishUser.userHead)
 					} else {
 						this.tableData = []
 					}
