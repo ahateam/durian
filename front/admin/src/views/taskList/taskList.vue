@@ -37,7 +37,7 @@
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
 						<!-- <el-button @click="updateBtn(scope.row)" type="text" size="small">修改</el-button> -->
-						<el-button @click="acceptBtn(scope.row)" type="text" size="small">接任务</el-button>
+						<el-button @click="acceptBtn(scope.row)" type="text" size="small" v-if="scope.row.taskStatus==0">接任务</el-button>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -69,8 +69,8 @@
 	export default {
 		data() {
 			return {
-				msg:false,
-				msgValue:'',
+				msg: false,
+				msgValue: '',
 				isPublishUser: '',
 				userName: '',
 				isUserInfo: false,
@@ -202,7 +202,7 @@
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.msg = true
 						this.msgValue = "接取成功"
-					}else{
+					} else {
 						this.msg = true
 						this.msgValue = res.data.rm
 					}

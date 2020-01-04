@@ -10,8 +10,8 @@
 			<el-table border style="width: 100%" :data="tableData">
 				<el-table-column prop="stepName" label="描述" width="180">
 				</el-table-column>
-				<!-- <el-table-column prop="stepType" label="类型" width="180" :formatter="stepTypeListFliter">
-				</el-table-column> -->
+				<el-table-column prop="stepType" label="类型" width="180" :formatter="stepTypeListFliter">
+				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="upBtn(scope.row)" type="text" size="small">修改</el-button>
@@ -27,7 +27,7 @@
 		</el-row>
 
 		<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-			<!-- <el-button :type="stepCurr == index?'primary':'text'" size="mini" round @click="changeType(index)" v-for="(item,index) in stepTypeList">{{item.name}}</el-button> -->
+			<el-button :type="stepCurr == index?'primary':'text'" size="mini" round @click="changeType(index)" v-for="(item,index) in stepTypeList">{{item.name}}</el-button>
 			<el-input v-model="inputStep" placeholder="请输入描述"></el-input>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="dialogVisible = false">取 消</el-button>
@@ -35,8 +35,8 @@
 			</span>
 		</el-dialog>
 		<el-dialog title="修改" :visible.sync="showUp" width="30%">
-			<!-- <el-button style="margin-bottom: 8px;" :type="stepCurr == index?'primary':'text'" size="mini" round @click="changeType(index)"
-			 v-for="(item,index) in stepTypeList">{{item.name}}</el-button> -->
+			<el-button style="margin-bottom: 8px;" :type="stepCurr == index?'primary':'text'" size="mini" round @click="changeType(index)"
+			 v-for="(item,index) in stepTypeList">{{item.name}}</el-button>
 			<el-input v-model="inputUpStep" placeholder="请输入描述"></el-input>
 			<span slot="footer" class="dialog-footer">
 				<el-button @click="showUp = false">取 消</el-button>
@@ -92,7 +92,7 @@
 			addStep() {
 				let cnt = {
 					stepName: this.inputStep,
-					stepType: 1,
+					stepType: this.stepCurr,
 				};
 				this.$api.createTaskSteps(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
@@ -105,6 +105,7 @@
 							message: '操作成功',
 							type: 'success'
 						});
+						this.dialogVisible = false
 					} else {
 						this.$message({
 							message: '出现错误',
@@ -150,7 +151,7 @@
 				let cnt = {
 					stepId: this.stepInfo.stepId, // Long 步骤id
 					stepName: this.inputUpStep, // String <选填> 步骤名称
-					stepType: 1, // Byte <选填> 步骤类型
+					stepType: this.stepCurr, // Byte <选填> 步骤类型
 				};
 				this.$api.editTaskSteps(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
@@ -163,6 +164,7 @@
 							message: '操作成功',
 							type: 'success'
 						});
+						this.showUp = false
 					} else {
 						this.$message({
 							message: '出现错误',

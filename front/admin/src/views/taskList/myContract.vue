@@ -21,7 +21,7 @@
 					</p>
 				</el-col>
 				<el-col :span="8" style="margin-left: 15px;">
-					乙方Party B：<el-input v-model="intermediary" placeholder="请输入内容"></el-input>
+					乙方姓名Party B：<el-input v-model="intermediary" placeholder="请输入内容"></el-input>
 					代理号 MARN ：<el-input v-model="marn" placeholder="请输入内容"></el-input>
 					签证申请：<el-input v-model="visasType" placeholder="请输入内容"></el-input>
 					咨询代理费总额：<el-input v-model="contractMoney" placeholder="请输入内容"></el-input>
@@ -151,19 +151,19 @@
 				dialogVisible: false,
 				isnext: true,
 				activeName: 'first',
-				interEmail: '12344@163.com',
+				interEmail: '1655749587@qq.com',
 				marn: 'marn_0203',
 				advance: '',
 				loading: '',
 				intermediaryId: JSON.parse(localStorage.getItem("loginUser")).userId, // Long 中介编号
 				userId:JSON.parse(localStorage.getItem("loginUser")).userId,
-				studentId: '', // Long 学生编号
+				studentId: 403022498109672, // Long 学生编号
 				clientName: '张画画', // String 当事人姓名
 				deputyApplicantName: '历小名', // String 副申请人姓名
 				intermediary: '中介',
 				address: '贵州', // String 家庭住址
 				phone: '15812361236', // String 手机号
-				Email: '16551655@163.com', // String Email地址
+				Email: '1878749344@qq.com', // String Email地址
 				onAddress: '澳大利亚', // String onAddress
 				onshore: '澳洲境外', // String 境内/澳洲境外
 				visasType: '留学', // String 申请签证类型
@@ -265,7 +265,7 @@
 					}
 				})
 			},
-			setpPDF(id) {
+			setpPDF(info) {
 				const loading = this.$loading({
 					lock: true,
 					text: '生成合同中...Loading',
@@ -273,7 +273,7 @@
 					background: 'rgba(0, 0, 0, 0.7)'
 				});
 				let cnt = {
-					id: id,
+					id: info,
 					interautoImg: this.setUrl(this.radio)
 				};
 				this.$api.setpPDF(cnt, (res) => {
