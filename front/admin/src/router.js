@@ -30,6 +30,7 @@ const updateTask = () => import('./views/taskList/updateTask')
 const addTask = () => import('./views/taskList/addTask')
 const myTask = () => import('./views/taskList/myTask')
 const myContract = () => import('./views/taskList/myContract')
+const moneyProportion = () => import('./views/taskList/moneyProportion')
 
 //审核管理
 const interExamine = () => import('./views/examine/interExamine')
@@ -162,6 +163,10 @@ export default new Router({
 					path: '/myContract',
 					name: 'myContract',
 					component: myContract
+				}, {
+					path: '/moneyProportion',
+					name: 'moneyProportion',
+					component: moneyProportion
 				}, { //审核管理
 					path: '/interExamine',
 					name: 'interExamine',

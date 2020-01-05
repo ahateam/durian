@@ -258,6 +258,34 @@ api.getReplyById = function (cnt, callback) {
 api.getPostingsWithReply = function (cnt, callback) {
 	util.call(baseUrl+'/posting/getPostingsWithReply', cnt, callback)
 }
+// 查询抽成配置	
+api.getProportions = function (cnt, callback) {
+	util.call(baseUrl+'/proportion/getProportions', cnt, callback)
+}
+// 修改抽成配置	
+api.updateProportion = function (cnt, callback) {
+	util.call(baseUrl+'/proportion/updateProportion', cnt, callback)
+}
+// 创建任务步骤类型
+api.createTaskStepType = function (cnt, callback) {
+	util.call(baseUrl+'/task/createTaskStepType', cnt, callback)
+}
+// 创建任务步骤类型
+api.createTaskStepType = function (cnt, callback) {
+	util.call(baseUrl+'/task/createTaskStepType', cnt, callback)
+}
+// 修改任务步骤类型
+api.editTaskStepType = function (cnt, callback) {
+	util.call(baseUrl+'/task/editTaskStepType', cnt, callback)
+}
+// 查询任务步骤类型
+api.getTaskStepsTypeList = function (cnt, callback) {
+	util.call(baseUrl+'/task/getTaskStepsTypeList', cnt, callback)
+}
+// 删除任务步骤类型
+api.deleteTaskStepType = function (cnt, callback) {
+	util.call(baseUrl+'/task/deleteTaskStepType', cnt, callback)
+}
 export default api
 
 

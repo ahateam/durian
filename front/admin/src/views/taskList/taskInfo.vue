@@ -27,7 +27,7 @@
 				<p v-if="taskStatus === '已付/收款'">付款时间：{{payTime}}</p>
 			</el-col>
 		</el-row>
-		<el-row style="margin-bottom: 100px;">
+		<el-row >
 			<div>
 				<el-steps direction="vertical" :active="active" finish-status="success">
 					<el-step :title="item.stepName" :description="timeFliter(item.changeTime)" v-for="(item,index) in stepList" :key="index"></el-step>
@@ -37,8 +37,10 @@
 		</el-row>
 
 		<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-			<!-- <el-button style="margin-bottom: 8px;" :type="stepCurr == index?'primary':'text'" size="mini" round @click="changeType(index)"
-			 v-for="(item,index) in stepTypeList">{{item.name}}</el-button> -->
+			<el-select v-model="stepCurr" placeholder="请选择" @change="getTaskStepsList">
+				<el-option v-for="item in tableData1" :key="item.stepTypeId" :label="item.stepTypeName" :value="item.stepTypeId">
+				</el-option>
+			</el-select>
 			<el-select v-model="region" placeholder="请选择活动步骤描述" filterable clearable @change="stepListValueFun">
 				<el-option :label="item.stepName" :value="item.stepId" v-for="(item,index) in explainList" :key="index" :disabled="item.disabled"></el-option>
 			</el-select>
@@ -55,6 +57,7 @@
 		name: "contetnInfo",
 		data() {
 			return {
+				tableData1:[],
 				contractInfo: false,
 				userInfo: {
 					"publishUser": {
@@ -65,7 +68,7 @@
 					}
 				},
 				type: 0,
-				stepCurr: 0,
+				stepCurr: '',
 				dialogVisible: false,
 				region: '',
 				regionName: '',
@@ -77,12 +80,6 @@
 				explainList: [{
 					"stepId": 1,
 					"stepName": "签证已递交"
-				}, {
-					"stepId": 2,
-					"stepName": "签证申请补材料清单已发"
-				}, {
-					"stepId": 3,
-					"stepName": "签证申请补材料已发"
 				}],
 				active: 2,
 				taskId: '',
@@ -104,6 +101,17 @@
 			}
 		},
 		methods: {
+			getTaskStepsTypeList() {
+				let cnt = {
+					count: 400,
+					offset: 0
+				}
+				this.$api.getTaskStepsTypeList(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.tableData1 = this.$util.tryParseJson(res.data.c)
+					}
+				})
+			},
 			setUrl(val) {
 				return this.$constData.httpurl + val
 			},
@@ -195,7 +203,7 @@
 			},
 			getTaskStepsList() {
 				let cnt = {
-					stepType: 1,
+					stepType: this.stepCurr,
 					count: 400,
 					offset: 0,
 				};
@@ -267,8 +275,8 @@
 				this.contractInfo = info.contractInfo
 			}
 			this.getChangeRecordList(info.taskId)
-			this.getTaskStepsList(info.taskId)
 			this.getUserByTaskId(info.taskId)
+			this.getTaskStepsTypeList()
 		}
 	}
 </script>

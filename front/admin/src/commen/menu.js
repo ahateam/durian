@@ -60,6 +60,9 @@ const menu = [{
 		},{
 			path: '/stepList',
 			title: '任务步骤配置'
+		},{
+			path: '/moneyProportion',
+			title: '抽成比例'
 		}],
 	},
 	{
