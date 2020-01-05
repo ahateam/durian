@@ -6,7 +6,7 @@
 		<el-row class="content-box">
 		</el-row>
 		<el-row class="table-box">
-			<el-table :data="tableData" style="width: 100%;margin-bottom: 20px;">
+			<el-table :data="tableData" style="width: 100%;margin-bottom: 20px;" v-loading="loading">
 				<el-table-column prop="user.userName" label="用户名" width="200">
 				</el-table-column>
 				<el-table-column prop="reply.text" label="评论">
@@ -64,6 +64,7 @@
 				count: 10,
 				page: 1,
 				pageOver: true,
+				loading: true
 			}
 		},
 		methods: {
@@ -79,6 +80,7 @@
 				this.$api.getReplys(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
+						this.loading = false
 						console.log(this.tableData)
 					} else {
 						this.tableData = []
@@ -161,7 +163,7 @@
 							});
 							let cnt = {
 								ownerId: this.replyInfo.posting.postingId,
-								userId: 403022498089447,
+								userId: JSON.parse(localStorage.getItem("loginUser")).userId,
 								sort: true,
 								count: this.count,
 								offset: (this.page - 1) * this.count
@@ -188,7 +190,7 @@
 			this.replyInfo = info
 			let cnt = {
 				ownerId: info.posting.postingId,
-				userId: 403022498089447,
+				userId: JSON.parse(localStorage.getItem("loginUser")).userId,
 				sort: true,
 				count: this.count,
 				offset: (this.page - 1) * this.count

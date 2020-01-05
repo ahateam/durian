@@ -85,6 +85,34 @@
 			// 通过二级评论查看原帖
 			showContent2(info) {
 				console.log(info)
+				console.log("来了吗")
+				let cnt = {
+					replyId: info.replyId
+				}
+				this.$api.getReplyById(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						console.log(this.$util.tryParseJson(res.data.c))
+						let cnt = {
+							id: this.$util.tryParseJson(res.data.c).ownerId,
+							userId: JSON.parse(localStorage.getItem("loginUser")).userId,
+							sort: this.sort,
+							count: 1,
+							offset: 0
+						}
+						this.$api.getPosting(cnt, (res) => {
+							if (res.data.rc == this.$util.RC.SUCCESS) {
+								console.log(this.$util.tryParseJson(res.data.c))
+								this.$router.push({
+									path: '/contentInfo',
+									name: 'contentInfo',
+									params: {
+										info: this.$util.tryParseJson(res.data.c)[0]
+									}
+								})
+							}
+						})
+					}
+				})
 			},
 			// 通过一级评论查看原帖
 			showContent1(info) {

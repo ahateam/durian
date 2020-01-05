@@ -68,7 +68,7 @@
 					this.offset = 0
 					this.pageOver = true
 					this.loading = true
-					this.getPostingList()
+					this.getPostingsWithReply()
 				}
 			},
 			// 文章标题搜索
@@ -80,7 +80,7 @@
 				this.offset = 0
 				this.pageOver = true
 				this.loading = true
-				this.getPostingList()
+				this.getPostingsWithReply()
 			},
 			// 页面跳转，查看通过审核文章详情
 			infoBtn(info) {
@@ -117,17 +117,17 @@
 					// 下一页
 					this.page += 1
 					this.offset = (this.page - 1) * this.count
-					this.getPostingList()
+					this.getPostingsWithReply()
 				} else {
 					// 上一页
 					this.page -= 1
 					this.offset = (this.page - 1) * this.count
-					this.getPostingList()
+					this.getPostingsWithReply()
 				}
 				// localStorage.setItem("page_contentList", this.page)
 			},
 			// 获取通过审核文章
-			getPostingList() {
+			getPostingsWithReply() {
 				let cnt = {
 					moduleId: this.moduleId,
 					sort: this.sort,
@@ -137,7 +137,7 @@
 					text: this.title,
 					// isShowShare: 1
 				}
-				this.$api.getPostingList(cnt, (res) => {
+				this.$api.getPostingsWithReply(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
 						this.loading = false
@@ -152,7 +152,7 @@
 			},
 		},
 		mounted() {
-			this.getPostingList()
+			this.getPostingsWithReply()
 			// this.getAuditStatus()
 		}
 	}

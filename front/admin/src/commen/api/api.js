@@ -250,6 +250,14 @@ api.delAutoReply = function (cnt, callback) {
 api.getPosting = function (cnt, callback) {
 	util.call(baseUrl+'/posting/getPosting', cnt, callback)
 }
+// 根据一级评论编号查看评论详情
+api.getReplyById = function (cnt, callback) {
+	util.call(baseUrl+'/reply/getReplyById', cnt, callback)
+}
+// 查询包含评论的帖子
+api.getPostingsWithReply = function (cnt, callback) {
+	util.call(baseUrl+'/posting/getPostingsWithReply', cnt, callback)
+}
 export default api
 
 
