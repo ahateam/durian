@@ -59,6 +59,7 @@
 				goodsDescribe: '',
 				show: '',
 				fileList: [],
+				userId: JSON.parse(localStorage.getItem("loginUser")).userId,
 				showList: this.$constData.showList,
 				typeList: this.$constData.typeList,
 			}
@@ -67,7 +68,7 @@
 			subBtn() {
 				let cnt = {
 					goodsName: this.goodsName,
-					senderId: localStorage.getItem("userId"),
+					senderId: this.userId,
 					goodsType: this.goodsType,
 					stock: this.stock,
 					goodsPrice: this.goodsPrice,

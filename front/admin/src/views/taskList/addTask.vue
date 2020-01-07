@@ -129,7 +129,7 @@
 				finishDate: "2019-12-25 07:00:00",
 				imgData: '',
 				otherDescribe: "特别提醒",
-				publishUserId: 403022498089447,
+				publishUserId: JSON.parse(localStorage.getItem("loginUser")).userId,
 				qualName: "MARN号",
 				qualifications: 403025201823662,
 				taskBudget: "100",
@@ -246,7 +246,7 @@
 				let cnt = {
 					taskType: this.taskType, // Byte 任务类型
 					// pickUpUserId: pickUpUserId, // Long <选填> 接收者用户id
-					publishUserId: 403022498109672, // Long 发布者id
+					publishUserId: this.publishUserId, // Long 发布者id
 					taskName: this.taskName, // String 任务名称
 					taskCategory:  this.taskCategory, // String <选填> （表格、文书）具体类别
 					oldLanguage: this.Language1, // String <选填> 翻译任务原语种

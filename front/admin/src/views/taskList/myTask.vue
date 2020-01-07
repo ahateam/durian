@@ -85,7 +85,7 @@
 				pageOver: true,
 				taskStatus: this.$constData.taskStatus,
 				timeRange: '',
-				publishUserId: 403022498109672, //发布者id
+				publishUserId: JSON.parse(localStorage.getItem("loginUser")).userId, //发布者id
 			}
 		},
 		methods: {
