@@ -20,6 +20,8 @@
 				</el-table-column>
 				<el-table-column prop="createTime" label="创建时间" :formatter="timeFliter">
 				</el-table-column>
+				<el-table-column prop="currency" label="平台币">
+				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
 						<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>

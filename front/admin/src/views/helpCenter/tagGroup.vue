@@ -4,7 +4,7 @@
 			智能客服
 		</el-row>
 		<el-row class="content-box" style="margin: 0px; padding: 0 0 0 20px;">
-			<el-button type="primary" round @click="dialogFormVisible1 = true">添加客服</el-button>
+			<el-button type="primary" round @click="dialogFormVisible1 = true">添加关键字回复</el-button>
 		</el-row>
 		<div style="margin-top: 15px; width: 50%; margin-left: 20px;">
 			<el-input placeholder="请输入客服标签" v-model="title" class="input-with-select" @input="getDefault">
@@ -15,7 +15,7 @@
 			<el-table border style="width: 100%" :data="tableData" v-loading="loading">
 				<el-table-column prop="tag" label="标签" width="180">
 				</el-table-column>
-				<el-table-column prop="context" label="智能客服回复">
+				<el-table-column prop="context" label="智能回复">
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">
@@ -32,7 +32,7 @@
 				<el-form-item label="标签" :label-width="formLabelWidth">
 					<el-input v-model="form1.tag" autocomplete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="智能客服回复" :label-width="formLabelWidth">
+				<el-form-item label="智能回复" :label-width="formLabelWidth">
 					<el-input v-model="form1.context" autocomplete="off" type="textarea" autosize></el-input>
 				</el-form-item>
 			</el-form>
@@ -47,7 +47,7 @@
 				<el-form-item label="标签" :label-width="formLabelWidth">
 					<el-input v-model="form.tag" autocomplete="off"></el-input>
 				</el-form-item>
-				<el-form-item label="智能客服回复" :label-width="formLabelWidth">
+				<el-form-item label="智能回复" :label-width="formLabelWidth">
 					<el-input v-model="form.context" autocomplete="off" type="textarea" autosize></el-input>
 				</el-form-item>
 			</el-form>
@@ -112,7 +112,7 @@
 						this.form1 = ''
 					} else {
 						this.$message({
-							message: '请输入标签和智能客服回复',
+							message: '请输入标签和智能回复',
 							type: 'warning'
 						});
 					}
@@ -208,6 +208,11 @@
 							message: '修改成功!'
 						});
 						this.dialogFormVisible = false
+					} else {
+						this.$message({
+							message: '请输入标签和智能回复',
+							type: 'warning'
+						});
 					}
 				})
 			},
