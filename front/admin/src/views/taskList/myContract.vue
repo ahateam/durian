@@ -197,8 +197,8 @@
 					background: 'rgba(0, 0, 0, 0.7)'
 				});
 				let cnt = {
-					studentId: 403022498109672, // Long 学生编号
-					contractId: conId, // Long 合同编号
+					studentId: 403022498122729, // Long 学生编号
+					contractId: 404111805897485, // Long 合同编号
 					url: 'http://durian-file.oss-ap-southeast-2.aliyuncs.com/403022498109672/autograph/test.png', // String 学生签名图片地址
 				};
 				this.$api.setStudentAutograph(cnt, (res) => {

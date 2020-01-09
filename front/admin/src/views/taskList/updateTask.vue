@@ -60,8 +60,8 @@
 								</el-input>
 							</p>
 						</div>
-						<el-button type="success" plain @click="subBtn(1)">修改并发布任务</el-button>
-						<el-button plain @click="subBtn(0)">保存为草稿箱</el-button>
+						<el-button type="success" plain @click="subBtn(1)" v-if="ext">修改并发布任务</el-button>
+						<el-button plain @click="subBtn(0)" v-if="ext">保存为草稿箱</el-button>
 					</el-col>
 					<el-col :span="9">
 						<div class="input-suffix">
@@ -142,6 +142,7 @@
 		name: "updateTask",
 		data() {
 			return {
+				ext:true,
 				showImg: false,
 				url: '',
 				fileList: [],
@@ -434,7 +435,7 @@
 		},
 		mounted() {
 			let info = this.$route.params.info
-			console.log(info)
+			this.ext = this.$route.params.ext
 			this.pageNumber = info.pageNumber
 			this.taskId = info.taskId
 			this.Language1 = info.oldLanguage
@@ -448,7 +449,6 @@
 			this.viceApplicantAge = info.viceApplicantAge
 			// this.taskType = this.taskTypeFliter(info.taskType)
 			this.taskType = info.taskType+''
-			console.log(this.taskType)
 			this.taskStatus = this.taskStatusFliter(info.taskStatus)
 			this.taskName = info.taskName
 			this.qualifications = info.qualifications

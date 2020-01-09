@@ -27,7 +27,7 @@
 						<el-table-column label="操作" width="200">
 							<template slot-scope="scope">
 								<el-button @click="infoBtn(scope.row)" type="text" size="small">详情</el-button>
-								<el-button @click="updateBtn(scope.row)" type="text" size="small" v-if="scope.row.taskStatus == 0">修改</el-button>
+								<el-button @click="updateBtn(scope.row,true)" type="text" size="small" v-if="scope.row.taskStatus == 0">修改</el-button>
 								<el-button @click="revokeBtn(scope.row)" type="text" size="small" v-if="scope.row.taskStatus == 0">撤销</el-button>
 								<el-button @click="deleteBtn(scope.row)" type="text" size="small" v-if="scope.row.taskStatus == 0">删除</el-button>
 								<el-button @click="pay(scope.row)" type="text" size="small" v-if="scope.row.taskStatus == 2">付款</el-button>
@@ -49,7 +49,7 @@
 						<el-table-column label="操作" width="200">
 							<template slot-scope="scope">
 								<el-button @click="infoBtnByReceive(scope.row)" type="text" size="small">详情</el-button>
-								<el-button @click="updateBtn(scope.row)" type="text" size="small" v-if="scope.row.taskStatus != 3">上传文件完成任务</el-button>
+								<el-button @click="updateBtn(scope.row,false)" type="text" size="small" v-if="scope.row.taskStatus != 3">上传文件完成任务</el-button>
 							</template>
 						</el-table-column>
 					</el-table>
@@ -201,13 +201,14 @@
 				})
 			},
 			// 修改待接收任务
-			updateBtn(info) {
+			updateBtn(info,e) {
 				info.activeName = this.activeName
 				this.$router.push({
 					path: '/updateTask',
 					name: 'updateTask',
 					params: {
-						info: info
+						info: info,
+						ext:e
 					}
 				})
 			},
