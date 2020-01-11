@@ -73,7 +73,6 @@
 				replyInfo: '',
 				dialogTableVisible: false,
 				tableData: [],
-				tableData1: [],
 				count: 10,
 				page: 1,
 				sort: true,
@@ -273,11 +272,6 @@
 					offset: (this.page - 1) * this.count
 				}
 				this.getContents(cnt)
-			},
-			infoBtn(info) {
-				this.tableData1 = info.comment
-				this.dialogTableVisible = true
-				// console.log(this.tableData1)
 			},
 			// 获取是否需要审核
 			getAuditStatus() {

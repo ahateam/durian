@@ -155,8 +155,8 @@ api.setOrderStatus = function (cnt, callback) {
 	util.call(baseUrl+'/goods/setOrderStatus', cnt, callback)
 }
 // 查询所有订单
-api.getAllOrder = function (cnt, callback) {
-	util.call(baseUrl+'/goods/getAllOrder', cnt, callback)
+api.getOrderByStatus = function (cnt, callback) {
+	util.call(baseUrl+'/goods/getOrderByStatus', cnt, callback)
 }
 // 地址id查询地址
 api.getReceivingAddressById = function (cnt, callback) {
