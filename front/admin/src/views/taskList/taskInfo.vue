@@ -30,17 +30,19 @@
 		<el-row >
 			<div>
 				<el-steps direction="vertical" :active="active" finish-status="success">
-					<el-step :title="item.stepName" :description="timeFliter(item.changeTime)" v-for="(item,index) in stepList" :key="index"></el-step>
+					<el-step :title="item.stepName" :description="timeFliter(item.changeTime)" v-for="(item,index) in stepList" :key="index">
+					</el-step>
 				</el-steps>
+				<el-button @click="delStep" v-if="contractInfo && stepList.length>2">删除</el-button>
 			</div>
-			<el-button style="margin-top: 12px;" @click="readyNext" v-if="contractInfo">下一步</el-button>
+			<el-button style="margin-top: 12px;margin-bottom: 100px;" @click="readyNext" v-if="contractInfo&&taskTypeByte == 5">下一步</el-button>
 		</el-row>
 
 		<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-			<el-select v-model="stepCurr" placeholder="请选择" @change="getTaskStepsList">
+			<!-- <el-select v-model="stepCurr" placeholder="请选择" @change="getTaskStepsList">
 				<el-option v-for="item in tableData1" :key="item.stepTypeId" :label="item.stepTypeName" :value="item.stepTypeId">
 				</el-option>
-			</el-select>
+			</el-select> -->
 			<el-select v-model="region" placeholder="请选择活动步骤描述" filterable clearable @change="stepListValueFun">
 				<el-option :label="item.stepName" :value="item.stepId" v-for="(item,index) in explainList" :key="index" :disabled="item.disabled"></el-option>
 			</el-select>
@@ -86,6 +88,7 @@
 				publishUserId: '',
 				pickUpUserId: '',
 				taskType: '',
+				taskTypeByte: '',
 				taskName: '',
 				qualifications: '',
 				taskDescribe: '',
@@ -101,6 +104,16 @@
 			}
 		},
 		methods: {
+			delStep(){
+				let cnt = {
+					stepId:this.stepList[this.stepList.length-1].stepId
+				}
+				this.$api.deleteTaskSteps(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.getChangeRecordList(this.taskId)
+					}
+				})
+			},
 			getTaskStepsTypeList() {
 				let cnt = {
 					count: 400,
@@ -141,6 +154,7 @@
 				if (this.active++ > 1) {
 					this.dialogVisible = true
 				}
+				this.getTaskStepsList()
 			},
 			next() {
 				if (this.region == '') {
@@ -248,9 +262,22 @@
 				this.$api.getUserByTaskId(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.userInfo = this.$util.tryParseJson(res.data.c)
-						console.log(this.userInfo.publishUser.userHead)
 					} else {
 						this.tableData = []
+					}
+				})
+			},
+			getContract(id){//查询任务详情
+				let cnt = {
+					id: id, // 合同id
+				};
+				this.$api.getContract(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						if(this.$util.tryParseJson(res.data.c).contractType == this.stepTypeList[0].value){
+							this.stepCurr = 404021951096328
+						}else if (this.$util.tryParseJson(res.data.c).contractType == this.stepTypeList[1].value){
+							this.stepCurr = 404021954731273
+						}
 					}
 				})
 			}
@@ -273,6 +300,10 @@
 			this.payTime = this.timeFliter(info.payTime)
 			if(info.contractInfo != '') {
 				this.contractInfo = info.contractInfo
+			}
+			if(info.contractId>0){
+				this.taskTypeByte = 5
+				this.getContract(info.contractId)
 			}
 			this.getChangeRecordList(info.taskId)
 			this.getUserByTaskId(info.taskId)

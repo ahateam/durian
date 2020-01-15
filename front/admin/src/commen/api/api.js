@@ -286,6 +286,14 @@ api.getTaskStepsTypeList = function (cnt, callback) {
 api.deleteTaskStepType = function (cnt, callback) {
 	util.call(baseUrl+'/task/deleteTaskStepType', cnt, callback)
 }
+//查询任务详情
+api.getContract = function (cnt, callback) {
+	util.call(baseUrl+'/contract/getContract', cnt, callback)
+}
+//拉取好友
+api.getFriend = function (cnt, callback) {
+	util.call(baseUrl+'/friend/getFriend', cnt, callback)
+}
 export default api
 
 

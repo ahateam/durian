@@ -232,6 +232,13 @@
 				}
 			},
 			addStep() {
+				if(this.stepCurr == ''){
+					this.$message({
+						message: '请选择一个步骤类型',
+						type: 'error'
+					});
+					return
+				}
 				let cnt = {
 					stepName: this.inputStep,
 					stepType: this.stepCurr,

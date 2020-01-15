@@ -38,9 +38,9 @@
 			<el-row v-if="contractType==1">
 				<el-col>
 					<el-table :data="schoolList" style="width: 100%">
-						<el-table-column prop="item" label="学校" width="180">
+						<el-table-column prop="name" label="学校" width="180">
 						</el-table-column>
-						<el-table-column prop="major" label="申请" width="180">
+						<el-table-column prop="price" label="申请" width="180">
 						</el-table-column>
 					</el-table>
 				</el-col>
@@ -54,15 +54,29 @@
 			</el-row>
 			<hr />
 			<el-button type="primary" @click="addContract" style="margin-bottom: 100px;">创建合同</el-button>
-			<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
-				<el-radio v-model="radio" :label="item.autographUrl" v-for="item in autographList" :key="item.auId" v-if="!isshow">
-					<img :src="setUrl(item.autographUrl)" width="50%" border="1px solid red" />
-				</el-radio>
-				<div v-if="isshow">
-					<a :href="url" target="_blank">
-						<el-button type="primary">预览</el-button>
-					</a>
-				</div>
+			<el-dialog title="提示1" :visible.sync="dialogVisible" width="40%">
+				<el-row>
+					<el-col :span="12">
+						<el-select v-model="studentId" filterable  placeholder="请选择要签约的通讯录学生">
+						   <el-option
+						     v-for="item in options"
+						     :key="item.To_Account"
+						     :label="item.SnsProfileItem[2].Value"
+						     :value="item.To_Account">
+						   </el-option>
+						 </el-select>
+					</el-col>
+					<el-col :span="12">
+						<el-radio v-model="radio" :label="item.autographUrl" v-for="item in autographList" :key="item.auId" v-if="!isshow">
+							<img :src="setUrl(item.autographUrl)" width="100px" height="100px" border="1px solid red" />
+						</el-radio>
+						<div v-if="isshow">
+							<a :href="url" target="_blank">
+								<el-button type="primary">预览</el-button>
+							</a>
+						</div>
+					</el-col>
+				</el-row>
 				<span slot="footer" class="dialog-footer">
 					<el-button @click="dialogVisible = false">取 消</el-button>
 					<el-button type="primary" @click="addsubContract"  v-if="!isshow">确 定</el-button>
@@ -109,32 +123,13 @@
 				<el-button type="primary" size="small" :disabled="pageOver" @click="changePage(1,1)">下一页</el-button>
 			</el-row>
 		</el-tab-pane>
-		<el-tab-pane label="学生临时测试页面" name="st">
-			<el-row class="table-box">
-				<el-table border style="width: 100%" :data="tableData">
-					<el-table-column prop="clientName" label="名称" width="180">
-					</el-table-column>
-					<el-table-column prop="createTime" label="创建时间" :formatter="timeFliter">
-					</el-table-column>
-					<el-table-column label="操作" width="200">
-						<template slot-scope="scope">
-							<el-button type="primary" size="small" @click="addst(scope.row.conId)">学生签名</el-button>
-						</template>
-					</el-table-column>
-				</el-table>
-			</el-row>
-			<el-row style="height: 80px;">
-				当前页数：{{page}}
-				<el-button type="primary" size="small" :disabled="page==1" @click="changePage(0,0)">上一页</el-button>
-				<el-button type="primary" size="small" :disabled="pageOver" @click="changePage(1,0)">下一页</el-button>
-			</el-row>
-		</el-tab-pane>
 	</el-tabs>
 </template>
 <script>
 	export default {
 		data() {
 			return {
+				options:[],
 				pier: 'PIER_123456',
 				school: '',
 				major: '',
@@ -157,7 +152,7 @@
 				loading: '',
 				intermediaryId: JSON.parse(localStorage.getItem("loginUser")).userId, // Long 中介编号
 				userId:JSON.parse(localStorage.getItem("loginUser")).userId,
-				studentId: 403022498109672, // Long 学生编号
+				studentId: '', // Long 学生编号
 				clientName: '张画画', // String 当事人姓名
 				deputyApplicantName: '历小名', // String 副申请人姓名
 				intermediary: '中介',
@@ -182,36 +177,12 @@
 			addSchool() {
 				if (this.school == '' || this.major == '' || this.schoolList > 4) return
 				let item = {
-					item: this.school,
-					major: this.major
+					name: this.school,
+					price: this.major
 				}
 				this.schoolList.push(item)
 				this.school = ''
 				this.major = ''
-			},
-			addst(conId) {
-				const loading = this.$loading({
-					lock: true,
-					text: '学生签名生成中...Loading',
-					spinner: 'el-icon-loading',
-					background: 'rgba(0, 0, 0, 0.7)'
-				});
-				let cnt = {
-					studentId: 403022498122729, // Long 学生编号
-					contractId: 404111805897485, // Long 合同编号
-					url: 'http://durian-file.oss-ap-southeast-2.aliyuncs.com/403022498109672/autograph/test.png', // String 学生签名图片地址
-				};
-				this.$api.setStudentAutograph(cnt, (res) => {
-					if (res.data.rc == this.$util.RC.SUCCESS) {
-						loading.close();
-						this.isshow = true
-						this.url = this.setUrl(this.$util.tryParseJson(res.data.c).fileUrl)
-						this.$message({
-							message: 'ok',
-							type: 'success'
-						});
-					}
-				})
 			},
 			handleClick(tab, event) {
 				this.tableData = []
@@ -303,12 +274,25 @@
 				})
 			},
 			addContract() {
+				let cnt = {
+					fromUserId:this.userId,
+					startIndex:0
+				}
+				//拉取好友
+				this.$api.getFriend(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.options =  (JSON.parse(this.$util.tryParseJson(res.data.c)).InfoItem)
+					}
+				})
 				this.dialogVisible = true
 				this.getAutograph()
 			},
 			addsubContract() {
 				if(this.radio == ''){
 					this.$message.error('请选择有一个签名')
+					return
+				}if(this.studentId == ''){
+					this.$message.error('请选择要签约的用户')
 					return
 				}
 				let cnt = {
