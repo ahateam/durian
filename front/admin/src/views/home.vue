@@ -102,12 +102,15 @@
 				spinner: "el-icon-loading"
 			});
 			let loginUser = JSON.parse(localStorage.getItem("loginUser"));
+			let page = ''
 			if (loginUser.userType == 0) {//管理
 			  this.menuList = menu.menu;
+			  page ="/contentList";
 			}else if (loginUser.userType == 1) {//中介
 			  this.menuList = menu.insiderMenu;
+			  page ="/addTask";
 			} 
-			this.$router.push("/contentList");
+			this.$router.push(page);
 			this.showActive = true;
 			this.$store.state.navDefaultActive = "0-0";
 			loading.close();
