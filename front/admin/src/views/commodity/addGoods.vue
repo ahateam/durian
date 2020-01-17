@@ -7,7 +7,7 @@
 			</el-col>
 			<el-col :span="8">
 				<span class="title-box"> 价格：</span>
-				<el-input placeholder="请输入价格" v-model="goodsPrice"></el-input>
+				<el-input placeholder="请输入价格" v-model.number="goodsPrice"></el-input>
 			</el-col>
 			<el-col :span="5" style="margin-left: 25px;">
 				<span class="title-box"> 商品类型：</span>
@@ -20,7 +20,7 @@
 			</el-col>
 			<el-col :span="5" style="margin-left: 15px;">
 				<span class="title-box"> 库存：</span>
-				<el-input placeholder="请输入库存" v-model="stock"></el-input>
+				<el-input placeholder="请输入库存" v-model.number="stock"></el-input>
 			</el-col>
 			<el-col :span="20">
 				<span class="title-box"> 商品描述：</span>
@@ -52,10 +52,10 @@
 
 		data() {
 			return {
-				goodsName:'',
-				goodsPrice:'',
-				goodsType:'',
-				stock:'',
+				goodsName: '',
+				goodsPrice: '',
+				goodsType: '',
+				stock: '',
 				goodsDescribe: '',
 				show: '',
 				fileList: [],
@@ -66,13 +66,17 @@
 		},
 		methods: {
 			subBtn() {
+				if(this.goodsType == ''){
+					this.$message.error('请选择商品类型')
+					return
+				}
 				let cnt = {
 					goodsName: this.goodsName,
 					senderId: this.userId,
 					goodsType: this.goodsType,
 					stock: this.stock,
 					goodsPrice: this.goodsPrice,
-					goodsDescribe:this.goodsDescribe,
+					goodsDescribe: this.goodsDescribe,
 					goodsData: this.fileList
 				};
 				this.$api.createGoods(cnt, (res) => {
@@ -130,8 +134,7 @@
 							src = address.substring(0, _index)
 						}
 						if (val == 0) {
-							this.fileList.push(src)
-							console.log(this.fileList)
+							this.fileList.push(upName)
 						}
 					}).catch(err => {
 						console.log(err)

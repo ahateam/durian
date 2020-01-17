@@ -4,23 +4,45 @@
 			中介资质审核
 		</el-row>
 		<el-row class="table-box">
-			<el-table border style="width: 100%" :data="tableData" v-loading="loading">
-				<el-table-column prop="posting.postingUpdateTime" label="日期" width="180" :formatter="timeFliter">
-				</el-table-column>
-				<el-table-column prop="posting.userName" label="姓名" width="180">
-				</el-table-column>
-				<el-table-column prop="posting.postingTextDate" label="MARN号">
-				</el-table-column>
-				<el-table-column prop="posting.postingTextDate" label="FIER号">
-				</el-table-column>
-				<el-table-column prop="posting.postingTextDate" label="NAATI号">
-				</el-table-column>
-				<el-table-column label="操作" width="200">
-					<template slot-scope="scope">
-						<el-button @click="infoBtn(scope.row)" type="text" size="small">查看详情</el-button>
-						<el-button @click="updateBtn(scope.row)" type="text" size="small">通过</el-button>
-						<el-button @click="delBtn(scope.row)" type="text" size="small" style="color: red;">不通过</el-button>
+			<el-table :data="tableData" style="width: 100%">
+				<el-table-column type="expand">
+					<template slot-scope="props">
+						<el-form label-position="left" inline class="demo-table-expand">
+							<el-form-item label="PIER号">
+								<span style="margin-right: 10px;">{{ props.row.fierNumber }}</span>
+								<span style="color: #BD2C00;" v-if="props.row.fierStatus == '0'">未通过</span>
+								<span style="color: #0077AA;" v-if="props.row.fierStatus == 1">已通过</span>
+								<span v-if="props.row.fierStatus == 2">
+									<el-button type="success" plain size="mini" @click="updateBtn(props.row.userId,'PIER',true)">审核通过</el-button>
+									<el-button type="danger" plain size="mini" @click="updateBtn(props.row.userId,'PIER',false)">审核不通过</el-button>
+								</span>
+							</el-form-item>
+							<el-form-item label="MARN号">
+								<span style="margin-right: 10px;">{{ props.row.marnNumber }}</span>
+								<span style="color: #BD2C00;" v-if="props.row.marnStatus == '0'">未通过</span>
+								<span style="color: #0077AA;" v-if="props.row.marnStatus == 1">已通过</span>
+								<span v-if="props.row.marnStatus == 2">
+									<el-button type="success" plain size="mini" @click="updateBtn(props.row.userId,'MARN',true)">审核通过</el-button>
+									<el-button type="danger" plain size="mini" @click="updateBtn(props.row.userId,'MARN',false)">审核不通过</el-button>
+								</span>
+							</el-form-item>
+							<el-form-item label="NAATI号">
+								<span style="margin-right: 10px;">{{ props.row.naatiNumber }}</span>
+								<span style="color: #BD2C00;" v-if="props.row.naatiStatus == '0'">未通过</span>
+								<span style="color: #0077AA;" v-if="props.row.naatiStatus == 1">已通过</span>
+								<span v-if="props.row.naatiStatus == 2">
+									<el-button type="success" plain size="mini" @click="updateBtn(props.row.userId,'NAATI',true)">审核通过</el-button>
+									<el-button type="danger" plain size="mini" @click="updateBtn(props.row.userId,'NAATI',false)">审核不通过</el-button>
+								</span>
+							</el-form-item>
+						</el-form>
 					</template>
+				</el-table-column>
+				<el-table-column label="ID" prop="userId">
+				</el-table-column>
+				<el-table-column label="用户名称" prop="userName">
+				</el-table-column>
+				<el-table-column label="修改时间" prop="updateTime" :formatter="timeFliter">
 				</el-table-column>
 			</el-table>
 		</el-row>
@@ -48,60 +70,27 @@
 			}
 		},
 		methods: {
-			// 搜索栏清空重新获取
-			getDefault(){
-				if(this.title == ''){
-					this.page = 1
-					this.offset = 0
-					this.pageOver = true
-					this.loading = true
-					this.getPostingList()
-				}
-			},
-			// 文章标题搜索
-			toSearch() {
-				if(this.title == '') {
-					return
-				}
-				this.page = 1
-				this.offset = 0
-				this.pageOver = true
-				this.loading = true
-				this.getPostingList()
-			},
-			// 页面跳转，查看待审核文章详情
-			infoBtn(info) {
-				this.$router.push({
-					path: '/contentInfo',
-					name: 'contentInfo',
-					params: {
-						info: info
-					}
-				})
-			},
-			// 待审核文章不通过审核
-			delBtn(info) {
+			// 通过审核
+			updateBtn(info, val, e) {
 				let cnt = {
-					id: info.posting.postingId,
-					status: 2
+					userId: info
 				}
-				this.$api.updatePosting(cnt, (res) => {
-					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.getPostingList()
-						console.log("未通过审核")
-					}
-				})
-			},
-			// 待审核文章通过审核
-			updateBtn(info) {
-				let cnt = {
-					id: info.posting.postingId,
-					status: 4
+				if (val == 'PIER') {
+					cnt.fier = e ? 1 : 0
+
 				}
-				this.$api.updatePosting(cnt, (res) => {
+				if (val == 'MARN') {
+					cnt.marn = e ? 1 : 0
+
+				}
+				if (val == 'NAATI') {
+					cnt.naati = e ? 1 : 0
+
+				}
+				console.log(cnt)
+				this.$api.updateUserByExin(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
-						this.getPostingList()
-						console.log("通过审核")
+						this.getUserByExin()
 					}
 				})
 			},
@@ -120,42 +109,36 @@
 					// 下一页
 					this.page += 1
 					this.offset = (this.page - 1) * this.count
-					this.getPostingList()
+					this.getUserByExin()
 				} else {
 					// 上一页
 					this.page -= 1
 					this.offset = (this.page - 1) * this.count
-					this.getPostingList()
+					this.getUserByExin()
 				}
-				// localStorage.setItem("page_contentList", this.page)
 			},
-			// 获取待审核文章
-			getPostingList() {
+			// 获取待审核中介
+			getUserByExin() {
 				let cnt = {
-					moduleId: this.moduleId,
-					sort: this.sort,
-					status: 1,
 					count: this.count,
 					offset: this.offset,
-					text: this.title,
-					// isShowShare: 1
 				}
-				this.$api.getPostingList(cnt, (res) => {
+				this.$api.getUserByExin(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
 						this.tableData = this.$util.tryParseJson(res.data.c)
+						console.log(this.tableData)
 						this.loading = false
 						if (this.tableData.length < this.count) {
 							this.pageOver = true
 						} else {
 							this.pageOver = false
 						}
-						console.log(this.$util.tryParseJson(res.data.c))
 					}
 				})
 			}
 		},
 		mounted() {
-			this.getPostingList()
+			this.getUserByExin()
 		}
 	}
 </script>
@@ -167,13 +150,28 @@
 		line-height: 50px;
 		padding-left: 15px;
 	}
-	
+
 	.content-box {
 		margin-top: 20px;
 		padding: 20px;
 	}
-	
+
 	.table-box {
 		padding: 20px;
+	}
+
+	.demo-table-expand {
+		font-size: 0;
+	}
+
+	.demo-table-expand label {
+		width: 90px;
+		color: #99a9bf;
+	}
+
+	.demo-table-expand .el-form-item {
+		margin-right: 0;
+		margin-bottom: 0;
+		width: 50%;
 	}
 </style>

@@ -63,7 +63,7 @@
 					});
 					return
 				}
-				if (this.show == null || this.show == undefined || this.show == '') {
+				if (this.show == '') {
 					this.$message({
 						message: '请选择可见范围',
 						type: 'warning'
@@ -114,7 +114,7 @@
 				let date = new Date()
 				this.size = file.size
 				let tmpName = 'durianData/image/' + date.getFullYear() + '' + (1 * date.getMonth() + 1) + '' + date.getDate() + '/' +
-					encodeURIComponent(file.name)
+					file.name
 				this.multipartUpload(tmpName, file, 0)
 			},
 			multipartUpload(upName, upFile, val) {
@@ -137,8 +137,7 @@
 							src = address.substring(0, _index)
 						}
 						if (val == 0) {
-							this.fileList.push(src)
-							console.log(this.fileList)
+							this.fileList.push(upName)
 						}
 					}).catch(err => {
 						console.log(err)

@@ -81,6 +81,10 @@ constData.taskTypeList = [{
 	{
 		name: '其他',
 		value: 4
+	},
+	{
+		name: '合同任务',
+		value: 5
 	}
 ]
 /*任务状态*/
@@ -194,7 +198,7 @@ constData.contractTypeList = [{
 /*帖子可见范围*/
 constData.showList = [{
 		name: '公开',
-		value: 0
+		value: '0'
 	},
 	{
 		name: '仅校内可见',

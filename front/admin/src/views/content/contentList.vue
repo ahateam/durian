@@ -8,7 +8,7 @@
 		</el-row>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData" v-loading="loading">
-				<el-table-column prop="posting.postingTextDate" label="标题" width="180">
+				<el-table-column prop="posting.postingTextDate" label="标题" width="180" :show-overflow-tooltip="true">
 				</el-table-column>
 				<el-table-column prop="posting.postingPageView" label="浏览量" width="180">
 				</el-table-column>
@@ -321,7 +321,7 @@
 						if (val == 0) {
 							let temp = {
 								name: src.substring(10, 8),
-								url: src
+								url: upName
 							}
 							this.tempFileList.push(temp)
 						}

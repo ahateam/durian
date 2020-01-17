@@ -302,6 +302,14 @@ api.createPlatformPush = function(cnt, callback) {
 api.getPlatformPushList = function(cnt, callback) {
 	util.call(baseUrl+'/help/getPlatformPushList', cnt, callback)
 }
+// 审核中介资质
+api.updateUserByExin = function(cnt, callback) {
+	util.call(baseUrl+'/user/updateUserByExin', cnt, callback)
+}
+// 获取中介资质
+api.getUserByExin = function(cnt, callback) {
+	util.call(baseUrl+'/user/getUserByExin', cnt, callback)
+}
 export default api
 
 

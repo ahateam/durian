@@ -69,6 +69,7 @@
 	export default {
 		data() {
 			return {
+				userId: JSON.parse(localStorage.getItem("loginUser")).userId,
 				msg: false,
 				msgValue: '',
 				isPublishUser: '',
@@ -196,7 +197,7 @@
 			acceptBtn(info) {
 				let cnt = {
 					taskId: info.taskId, // Long 任务id
-					userId: 403022498109672, // Long 用户id
+					userId: this.userId, // Long 用户id
 				};
 				this.$api.acceptTask(cnt, (res) => {
 					if (res.data.rc == this.$util.RC.SUCCESS) {
