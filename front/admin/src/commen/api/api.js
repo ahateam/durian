@@ -294,6 +294,14 @@ api.getContract = function (cnt, callback) {
 api.getFriend = function (cnt, callback) {
 	util.call(baseUrl+'/friend/getFriend', cnt, callback)
 }
+// 创建平台推送
+api.createPlatformPush = function(cnt, callback) {
+	util.call(baseUrl+'/help/createPlatformPush', cnt, callback)
+}
+// 获取平台推送信息列表
+api.getPlatformPushList = function(cnt, callback) {
+	util.call(baseUrl+'/help/getPlatformPushList', cnt, callback)
+}
 export default api
 
 

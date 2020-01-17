@@ -9,7 +9,11 @@
 				</el-table-column>
 				<el-table-column prop="posting.userName" label="姓名" width="180">
 				</el-table-column>
-				<el-table-column prop="posting.postingTextDate" label="文本标题">
+				<el-table-column prop="posting.postingTextDate" label="MARN号">
+				</el-table-column>
+				<el-table-column prop="posting.postingTextDate" label="FIER号">
+				</el-table-column>
+				<el-table-column prop="posting.postingTextDate" label="NAATI号">
 				</el-table-column>
 				<el-table-column label="操作" width="200">
 					<template slot-scope="scope">

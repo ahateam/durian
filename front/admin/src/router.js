@@ -47,6 +47,7 @@ const virtualcoinList = () => import('./views/currency/virtualcoinList')
 const tagGroup = () => import('./views/helpCenter/tagGroup')
 const homeTag = () => import('./views/helpCenter/homeTag')
 const helpInfo = () => import('./views/helpCenter/helpInfo')
+const platformPush = () => import('./views/helpCenter/platformPush')
 //数据统计
 const interestTagList = () => import('./views/dataStatistics/interestTagList')
 const enrollList = () => import('./views/dataStatistics/enrollList')
@@ -215,6 +216,10 @@ export default new Router({
 					path: '/helpInfo',
 					name: 'helpInfo',
 					component: helpInfo
+				}, {
+					path: '/platformPush',
+					name: 'platformPush',
+					component: platformPush
 				}, { //数据统计
 					path: '/interestTagList',
 					name: 'interestTagList',
