@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<el-row class="title-box">
-			商品管理
+			平台推送
 		</el-row>
 		<el-row class="content-box">
-			<el-button type="primary" round @click="createPlatformPush">发布商品</el-button>
+			<el-button type="primary" round @click="dialogFormVisible = true">发布推送</el-button>
 		</el-row>
 		<el-row class="table-box">
 			<el-table border style="width: 100%" :data="tableData" v-loading="loading">
@@ -21,6 +21,24 @@
 			<el-button type="primary" size="small" :disabled="page==1" @click="changePage(0)">上一页</el-button>
 			<el-button type="primary" size="small" :disabled="pageOver" @click="changePage(1)">下一页</el-button>
 		</el-row>
+
+		<!-- 发送推送 -->
+		<el-dialog title="推送信息" :visible.sync="dialogFormVisible">
+			<el-form :model="form">
+				<el-form-item label="推送标题" :label-width="formLabelWidth">
+					<el-input type="textarea" autosize placeholder="请输入标题" v-model="form.pushTitle">
+					</el-input>
+				</el-form-item>
+				<el-form-item label="推送内容" :label-width="formLabelWidth">
+					<el-input type="textarea" autosize placeholder="请输入内容" v-model="form.pushText">
+					</el-input>
+				</el-form-item>
+			</el-form>
+			<div slot="footer" class="dialog-footer">
+				<el-button @click="dialogFormVisible = false">取 消</el-button>
+				<el-button type="primary" @click="createPlatformPush">确 定</el-button>
+			</div>
+		</el-dialog>
 	</div>
 </template>
 
@@ -35,15 +53,30 @@
 				pageOver: false,
 				loading: true,
 				goodsTypeList: this.$constData.goodsTypeList,
-				isOnlineList: this.$constData.isOnlineList
+				isOnlineList: this.$constData.isOnlineList,
+				dialogFormVisible: false,
+				formLabelWidth: '120px',
+				form: {
+					pushTitle: '',
+					pushText: ''
+				}
 			}
 		},
 		methods: {
-			// 发布商品
-			createGoods() {
-				this.$router.push({
-					path: '/addGoods',
-					name: 'addGoods',
+			createPlatformPush() {
+				let cnt = {
+					pushTitle: this.form.pushTitle,
+					pushText: this.form.pushText
+				}
+				this.$api.createPlatformPush(cnt, (res) => {
+					if (res.data.rc == this.$util.RC.SUCCESS) {
+						this.$message({
+							message: '推送成功',
+							type: 'success'
+						});
+						this.form = ''
+						this.dialogFormVisible = false
+					}
 				})
 			},
 			// 将时间戳转化为中国时间
@@ -61,18 +94,18 @@
 					// 下一页
 					this.page += 1
 					this.offset = (this.page - 1) * this.count
-					if(this.title == '') {
+					if (this.title == '') {
 						this.getGoodsList()
-					}else {
+					} else {
 						this.getByGoodsName()
 					}
 				} else {
 					// 上一页
 					this.page -= 1
 					this.offset = (this.page - 1) * this.count
-					if(this.title == '') {
+					if (this.title == '') {
 						this.getGoodsList()
-					}else {
+					} else {
 						this.getByGoodsName()
 					}
 				}
@@ -120,4 +153,3 @@
 
 	}
 </style>
-
