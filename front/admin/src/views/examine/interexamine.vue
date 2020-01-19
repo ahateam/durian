@@ -10,8 +10,8 @@
 						<el-form label-position="left" inline class="demo-table-expand">
 							<el-form-item label="PIER号">
 								<span style="margin-right: 10px;">{{ props.row.fierNumber }}</span>
-								<span style="color: #BD2C00;" v-if="props.row.fierStatus == '0'">未通过</span>
-								<span style="color: #0077AA;" v-if="props.row.fierStatus == 1">已通过</span>
+								<span style="color: #f56c6c;" v-if="props.row.fierStatus == '0'">未通过</span>
+								<span style="color: #67c23a;" v-if="props.row.fierStatus == 1">已通过</span>
 								<span v-if="props.row.fierStatus == 2">
 									<el-button type="success" plain size="mini" @click="updateBtn(props.row.userId,'PIER',true)">审核通过</el-button>
 									<el-button type="danger" plain size="mini" @click="updateBtn(props.row.userId,'PIER',false)">审核不通过</el-button>
@@ -19,8 +19,8 @@
 							</el-form-item>
 							<el-form-item label="MARN号">
 								<span style="margin-right: 10px;">{{ props.row.marnNumber }}</span>
-								<span style="color: #BD2C00;" v-if="props.row.marnStatus == '0'">未通过</span>
-								<span style="color: #0077AA;" v-if="props.row.marnStatus == 1">已通过</span>
+								<span style="color: #f56c6c;" v-if="props.row.marnStatus == '0'">未通过</span>
+								<span style="color: #67c23a;" v-if="props.row.marnStatus == 1">已通过</span>
 								<span v-if="props.row.marnStatus == 2">
 									<el-button type="success" plain size="mini" @click="updateBtn(props.row.userId,'MARN',true)">审核通过</el-button>
 									<el-button type="danger" plain size="mini" @click="updateBtn(props.row.userId,'MARN',false)">审核不通过</el-button>
@@ -28,8 +28,8 @@
 							</el-form-item>
 							<el-form-item label="NAATI号">
 								<span style="margin-right: 10px;">{{ props.row.naatiNumber }}</span>
-								<span style="color: #BD2C00;" v-if="props.row.naatiStatus == '0'">未通过</span>
-								<span style="color: #0077AA;" v-if="props.row.naatiStatus == 1">已通过</span>
+								<span style="color: #f56c6c;" v-if="props.row.naatiStatus == '0'">未通过</span>
+								<span style="color: #67c23a;" v-if="props.row.naatiStatus == 1">已通过</span>
 								<span v-if="props.row.naatiStatus == 2">
 									<el-button type="success" plain size="mini" @click="updateBtn(props.row.userId,'NAATI',true)">审核通过</el-button>
 									<el-button type="danger" plain size="mini" @click="updateBtn(props.row.userId,'NAATI',false)">审核不通过</el-button>
