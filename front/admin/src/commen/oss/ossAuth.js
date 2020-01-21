@@ -13,8 +13,8 @@ let client = new OSS({
     // accessKeySecret: '89EMlXLsP13H8mWKIvdr4iM1OvdVxs',
     // bucket: 'weapp-xhj',
 	region: "oss-ap-southeast-2", //阿里云获取
-	 accessKeyId: "LTAI4FqngBZhahjCXBPUDwSu",
-	 accessKeySecret: "n1AjWfS1Jfdcl5ks8REHsIgHf3RT07",
+	 accessKeyId: "",
+	 accessKeySecret: "",
 	 bucket: "durian-file" //要存储的目录名
 });
 
